@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from app.forms import CreateLocationForm
@@ -22,6 +22,7 @@ def add_location():
                 'location':form.location.data
             }
         )
+        flash("Location created", "success")
         location = form.location.data
         return redirect(url_for('add_suggestion', location=location))
     return render_template('addlocation.html', form=form)
@@ -45,5 +46,6 @@ def add_suggestion():
                 }
             }
             })
+        flash(location + "added", "success")
         return redirect(url_for('index'))
     return render_template('addsuggestion.html', location=location, form=form)
