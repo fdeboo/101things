@@ -8,7 +8,8 @@ from app import app, mongo
 @app.route('/')
 @app.route('/home')
 def index():
-    return render_template('home.html')
+    query = mongo.db.cities.find({})
+    return render_template('home.html', locations=query)
 
 
 
@@ -49,3 +50,15 @@ def add_suggestion(location):
         flash(location + " added", "success")
         return redirect(url_for('index'))
     return render_template('addsuggestion.html', location=location, form=form)
+
+
+@app.route('/thingstodo/<city>', methods=['GET', 'POST'])
+def suggestion_list(city):
+    cities = mongo.db.cities   
+    query =  cities.find_one(
+        {'location': city},
+        {'_id':0, 'thingsToDo':1} 
+    )
+
+    suggestions=query['thingsToDo']
+    return render_template('thingstodo.html', city=city, activities=suggestions, title='Things to do')
