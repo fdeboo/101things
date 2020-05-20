@@ -10,6 +10,8 @@ flask = "*"
 dnspython = "*"
 flask-pymongo = "*"
 gunicorn = "*"
+wtforms = "*"
+flask-wtf = "*"
 
 [requires]
 python_version = "3.7"
