@@ -16,7 +16,7 @@ class CreateLocationForm(FlaskForm):
 
 class CreateSuggestionForm(FlaskForm):
     location = HiddenField('Location')
-    suggestion = StringField('Suggestion', validators=[InputRequired(), Length(min=2, max=25)])
+    suggestion = StringField('Suggestion', validators=[InputRequired(), Length(min=2, max=50)])
     category = SelectField('Category', validators=[DataRequired()], choices=[('Museums', 'Museums'), ('Nature & Parks', 'Nature & Parks'), ('Shopping', 'Shopping'), ('Foodie Hotspots', 'Foodie Hotspots'), ('Restaurants & Bars', 'Restaurants & Bars'), ('Tourist Landmarks', 'Tourist Landmarks'), ('Theme Parks', 'Theme Parks'), ('Accommodation', 'Accommodation'), ('Theatre & Shows', 'Theatre & Shows'), ('Skyscraper', 'Skyscraper'), ('Vineyards', 'Vineyards'), ('Zoo & Aquariums', 'Zoos & Aquariums'), ('Attractions', 'Attractions'), ('PLaces of Worship', 'Places of Worship'), ('Plazas', 'Plazas'), ('Tour Groups', 'Tour Groups')])
     cost = SelectField('Cost Per Person', choices=[('Free', 'Free'), ('<10', 'Less than £10'), ('10-20', '£10-£20'), ('20-50', '£20-£50'), ('>50', 'Over £50')])
     url = StringField('Website', validators=[URL(require_tld=True), Length(min=5, max=200), Optional()])

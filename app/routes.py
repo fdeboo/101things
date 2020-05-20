@@ -61,4 +61,4 @@ def suggestion_list(city):
     )
 
     suggestions=query['thingsToDo']
-    return render_template('thingstodo.html', city=city, activities=suggestions, title='Things to do')
+    return render_template('thingstodo.html', city=city, things=suggestions, title='Things to do')
