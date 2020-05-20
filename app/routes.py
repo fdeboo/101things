@@ -12,17 +12,38 @@ def index():
 
 
 
-@app.route('/addlocation', methods['POST'])
+@app.route('/addlocation', methods=['GET', 'POST'])
 def add_location():
     form = CreateLocationForm()
     cities = mongo.db.cities
     if form.validate_on_submit():
         cities.insert(
             {
-                'location':form.location.data,
-                'picture':form.location.data
+                'location':form.location.data
             }
         )
         location = form.location.data
-        return redirect(url_for('add_activity', location=location))
-    return render_template('addlocation', form=form)
+        return redirect(url_for('add_suggestion', location=location))
+    return render_template('addlocation.html', form=form)
+
+
+
+@app.route('/addsuggestion/<location>', methods=['GET', 'POST'])
+def add_suggestion():
+    form = CreateSuggestionForm()
+    cities = mongo.db.cities
+    if form.validate_on_submit():
+        cities.update(
+            { 'location': city },
+            { '$push': {
+                'thingsToDo': {
+                    'suggestion' : form.activity.data,
+                    'category' : form.category.data,
+                    'cost' : form.cost.data,
+                    'url' : form.url.data,
+                    'comment' : form.comment.data
+                }
+            }
+            })
+        return redirect(url_for('index'))
+    return render_template('addsuggestion.html', location=location, form=form)
