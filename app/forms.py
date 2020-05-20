@@ -1,7 +1,28 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, HiddenField, TextAreaField, SelectField
-from wtforms.validators import InputRequired, Length, DataRequired, ValidationError, URL, Optional
-from app import mongo
+from wtforms import StringField, SubmitField, HiddenField, TextAreaField, SelectField, PasswordField
+from wtforms.validators import InputRequired, Length, DataRequired, ValidationError, URL, Optional, Email
+
+
+class RegistrationForm(FlaskForm):
+    username = StringField('Username', validators=[InputRequired(), Length(min=2, max=15)])
+    fname = StringField('First Name', validators=[InputRequired(), Length(min=2, max=14)])
+    lname = StringField('Last Name', validators=[InputRequired(), Length(min=2, max=14)])
+    email = StringField('Email', validators=[InputRequired(), Email()])
+    password = PasswordField('Password', validators=[InputRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[InputRequired(), EqualTo('password')])
+    submit = SubmitField('Register')
+
+    def validate_username(self, username):
+        user = mongo.db.users.find_one({'username': username.data})
+        if user:
+            raise ValidationError('That username is taken. Please choose a different one.')
+    
+    def validate_email(self, email):
+        user = mongo.db.users.find_one({'email': self.email.data})
+        if user:
+            raise ValidationError('That email is taken. Please choose a different one.')
+
+
 
 class CreateLocationForm(FlaskForm):
     location = StringField('Location', validators=[InputRequired(), Length(min=2, max=25)])
