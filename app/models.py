@@ -4,7 +4,7 @@ from flask_login import LoginManager
 
 
 class User():
-    def __init__(self, _id, username, fname, lname, email):
+    def __init__(self, _id, username, email):
         self._id = _id
         self.username = username
         self.email = email
