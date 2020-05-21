@@ -64,3 +64,18 @@ def suggestion_list(city):
 
     suggestions=query['thingsToDo']
     return render_template('thingstodo.html', city=city, things=suggestions, title='Things to do')
+
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    users = mongo.db.users
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data)
+        users.insert({'username': form.username.data, 'fname': form.fname.data, 'lname': form.lname.data, 'email': form.email.data, 'password': hashed_password, 'picture' : "default.jpg"})
+        flash('You are now registered and can log in', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
