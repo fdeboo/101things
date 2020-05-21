@@ -13,8 +13,13 @@
                 </li>
             </ul>
             <ul class="navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link btn" href="#">Account</a></li>
+                <li class="nav-item"><a class="nav-link btn" href="/logout">Logout</a></li>
+                {% else %}
                 <li class="nav-item"><a class="nav-link btn" href="/login">Login</a></li>
                 <li class="nav-item"><a class="nav-link btn" href="/register">Register</a></li>
+                {% endif %}
             </ul>
         </div>
     </div>

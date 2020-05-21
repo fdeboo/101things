@@ -1,10 +1,10 @@
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-from werkzeug.security import generate_password_hash
-from flask_login import current_user, login_user
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import current_user, login_user, logout_user
 from app.models import User
-from app.forms import CreateLocationForm, CreateSuggestionForm, RegistrationForm
+from app.forms import CreateLocationForm, CreateSuggestionForm, RegistrationForm, LoginForm
 from app import app, mongo
 
 
@@ -84,6 +84,25 @@ def register():
 
 
 
-@app.route('/login')
+@app.route('/login', methods= ['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = mongo.db.users.find_one({'email': form.email.data})
+        if user and check_password_hash(user['password'], form.password.data):
+            user_data = User(user['_id'], user['username'], user['email'])
+            login_user(user_data, remember=form.remember.data)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('index'))
+        else:
+            flash('Login Unsuccessful, Please check email and password.', 'danger')
+    return render_template('login.html', form=form)
+
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
