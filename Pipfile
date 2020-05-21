@@ -12,6 +12,7 @@ flask-pymongo = "*"
 gunicorn = "*"
 wtforms = "*"
 flask-wtf = "*"
+flask-login = "*"
 
 [requires]
 python_version = "3.7"
