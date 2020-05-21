@@ -12,7 +12,7 @@ from app import app, mongo
 @app.route('/home')
 def index():
     query = mongo.db.cities.find({})
-    return render_template('home.html', locations=query)
+    return render_template('home.html', locations=query, title="Home")
 
 
 
@@ -29,7 +29,7 @@ def add_location():
         flash("Location created", "success")
         location = form.location.data
         return redirect(url_for('add_suggestion', location=location))
-    return render_template('addlocation.html', form=form)
+    return render_template('addlocation.html', form=form, title="Add Location")
 
 
 
@@ -53,7 +53,7 @@ def add_suggestion(location):
             
         flash(location + 'added', 'success')
         return redirect(url_for('index'))
-    return render_template('addsuggestion.html', location=location, form=form)
+    return render_template('addsuggestion.html', location=location, form=form, title="Add Suggestion")
 
 
 
@@ -80,7 +80,7 @@ def register():
         users.insert({'username': form.username.data, 'fname': form.fname.data, 'lname': form.lname.data, 'email': form.email.data, 'password': hashed_password, 'picture' : "default.jpg"})
         flash('You are now registered and can log in', 'success')
         return redirect(url_for('login'))
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, title="Register")
 
 
 
@@ -98,7 +98,7 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for('index'))
         else:
             flash('Login Unsuccessful, Please check email and password.', 'danger')
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, title="Login")
 
 
 
