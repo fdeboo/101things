@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, HiddenField, TextAreaField, SelectField, PasswordField
+from wtforms import StringField, SubmitField, HiddenField, TextAreaField, SelectField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Length, DataRequired, ValidationError, URL, Optional, Email, EqualTo
 from app import mongo
 
@@ -22,6 +22,14 @@ class RegistrationForm(FlaskForm):
         user = mongo.db.users.find_one({'email': self.email.data})
         if user:
             raise ValidationError('That email is taken. Please choose a different one.')
+
+
+
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[InputRequired(), Email()])
+    password = PasswordField('Password', validators=[InputRequired()])
+    remember = BooleanField('Remember Me')
+    submit = SubmitField('Login')
 
 
 
