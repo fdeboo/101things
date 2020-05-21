@@ -26,7 +26,6 @@ def add_location():
                 'location':form.location.data
             }
         )
-
         flash("Location created", "success")
         location = form.location.data
         return redirect(url_for('add_suggestion', location=location))
@@ -52,9 +51,10 @@ def add_suggestion(location):
             }
             })
             
-        flash(location + " added", "success")
+        flash(location + 'added', 'success')
         return redirect(url_for('index'))
     return render_template('addsuggestion.html', location=location, form=form)
+
 
 
 @app.route('/thingstodo/<city>', methods=['GET', 'POST'])
@@ -64,7 +64,6 @@ def suggestion_list(city):
         {'location': city},
         {'_id':0, 'thingsToDo':1} 
     )
-
     suggestions=query['thingsToDo']
     return render_template('thingstodo.html', city=city, things=suggestions, title='Things to do')
 
@@ -82,3 +81,9 @@ def register():
         flash('You are now registered and can log in', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
+
+
+
+@app.route('/login')
+def login():
+    return render_template('login.html')

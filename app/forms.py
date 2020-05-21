@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, HiddenField, TextAreaField, SelectField, PasswordField
-from wtforms.validators import InputRequired, Length, DataRequired, ValidationError, URL, Optional, Email
+from wtforms.validators import InputRequired, Length, DataRequired, ValidationError, URL, Optional, Email, EqualTo
+from app import mongo
 
 
 class RegistrationForm(FlaskForm):
