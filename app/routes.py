@@ -1,7 +1,10 @@
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-from app.forms import CreateLocationForm, CreateSuggestionForm
+from werkzeug.security import generate_password_hash
+from flask_login import current_user, login_user
+from app.models import User
+from app.forms import CreateLocationForm, CreateSuggestionForm, RegistrationForm
 from app import app, mongo
 
 
