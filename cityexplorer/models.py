@@ -4,9 +4,11 @@ from flask_login import LoginManager
 
 
 class User():
-    def __init__(self, _id, username, email):
+    def __init__(self, _id, username, fname, lname, email):
         self._id = _id
         self.username = username
+        self.fname = fname
+        self.lname = lname
         self.email = email
 
     def is_authenticated(self):
@@ -31,4 +33,4 @@ def load_user(email):
     user = mongo.db.users.find_one({'email': email})
     if not user:
         return None
-    return User(user['_id'], user['username'], user['email'])
+    return User(user['_id'], user['username'], user['fname'], user['lname'], user['email'])

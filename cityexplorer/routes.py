@@ -108,19 +108,20 @@ def logout():
     return redirect(url_for('index'))
 
 
+
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     form = UpdateAccountForm()
     users = mongo.db.users
-    user 
+
     if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.email = form.email.data
-        users.update_one({'username' : user }, { '$set' : {'username' : current_user.username, 'email' : current_user.email}})
+        users.update_one({'username' : current_user.username }, { '$set' : {'username' : form.username.data, 'email' : form.email.data}})
         flash('Your account has been updated!', 'success')
         return redirect(url_for('account'))
     elif request.method == 'GET':
         form.username.data = current_user.username
+        form.fname.data = current_user.fname
+        form.lname.data = current_user.lname
         form.email.data = current_user.email
     return render_template('account.html', form=form, title='Account')
