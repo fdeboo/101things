@@ -1,5 +1,5 @@
 from werkzeug.security import check_password_hash
-from app import login_manager, mongo, app
+from cityexplorer import login_manager, mongo, app
 from flask_login import LoginManager
 
 

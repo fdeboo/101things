@@ -2,10 +2,10 @@ from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import current_user, login_user, logout_user
-from app.models import User
-from app.forms import CreateLocationForm, CreateSuggestionForm, RegistrationForm, LoginForm
-from app import app, mongo
+from flask_login import current_user, login_user, logout_user, login_required
+from cityexplorer.models import User
+from cityexplorer.forms import CreateLocationForm, CreateSuggestionForm, RegistrationForm, LoginForm, UpdateAccountForm
+from cityexplorer import app, mongo
 
 
 @app.route('/')
@@ -106,3 +106,21 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    form = UpdateAccountForm()
+    users = mongo.db.users
+    user 
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        users.update_one({'username' : user }, { '$set' : {'username' : current_user.username, 'email' : current_user.email}})
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    return render_template('account.html', form=form, title='Account')
