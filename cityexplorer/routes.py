@@ -82,7 +82,7 @@ def register():
     users = mongo.db.users
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data)
-        users.insert({'username': form.username.data, 'fname': form.fname.data, 'lname': form.lname.data, 'email': form.email.data, 'password': hashed_password, 'picture' : 'default.jpg'})
+        users.insert({'username': form.username.data, 'fname': form.fname.data, 'lname': form.lname.data, 'email': form.email.data, 'password': hashed_password, 'picture' : 'https://res.cloudinary.com/fdeboo/image/upload/v1590514314/profile_pics/default.jpg'})
         flash('You are now registered and can log in', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form, title="Register")
@@ -121,18 +121,13 @@ def account():
     users = mongo.db.users
     user = users.find_one({'username': current_user.username})
     if form.validate_on_submit():
-        if form.picture.data:
-            file = upload(form.picture.data)
-            picture_url, options = cloudinary_url(
-                file['public_id'],
-                format=file['format'],
-                width=200,
-                height=200,
-                crop="fill")
-            print(picture_url)
+        if form.picture.data: #cloudinary.uploader.upload(file, **options)
+            uploaded_image = upload(form.picture.data, folder='profile_pics', format='jpg', width=150, height=150, crop='fill')
+            image_url, options = cloudinary_url(uploaded_image['public_id'])
         else:
-            picture_url = user['picture']           
-        users.update_one({'username' : current_user.username }, { '$set' : {'username' : form.username.data, 'fname' : form.fname.data, 'lname' : form.lname.data,  'email' : form.email.data, 'picture': picture_url}})
+            image_url = user['picture']           
+        users.update_one({'username' : current_user.username }, { '$set' : {'username' : form.username.data, 'fname' : form.fname.data, 'lname' : form.lname.data,  'email' : form.email.data, 'picture': image_url}})
+        
         flash('Your account has been updated!', 'success')
         return redirect(url_for('account'))
     elif request.method == 'GET':
