@@ -1,11 +1,14 @@
 import os
 import secrets
-from PIL import Image
+from PIL import Image # not used anymore
 from flask import Flask, render_template, redirect, url_for, flash, request, current_app
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import current_user, login_user, logout_user, login_required
+from cloudinary.api import delete_resources_by_tag, resources_by_tag
+from cloudinary.uploader import upload
+from cloudinary.utils import cloudinary_url
 from cityexplorer.models import User
 from cityexplorer.forms import CreateLocationForm, CreateSuggestionForm, RegistrationForm, LoginForm, UpdateAccountForm
 from cityexplorer import app, mongo
@@ -16,7 +19,7 @@ from cityexplorer import app, mongo
 def index():
     query = mongo.db.cities.find({})
     return render_template('home.html', locations=query, title="Home")
-
+    
 
 
 @app.route('/addlocation', methods=['GET', 'POST'])
@@ -117,14 +120,11 @@ def save_picture(form_picture):
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(current_app.root_path, 'static/profile_pics', picture_fn)
-    i = Image.open(form_picture)
-  
+    i = Image.open(form_picture) 
     i.thumbnail((200,200))
     i.save(picture_path)
     print(i.size)
     return picture_fn
-
-
 
 
 
@@ -136,10 +136,17 @@ def account():
     user = users.find_one({'username': current_user.username})
     if form.validate_on_submit():
         if form.picture.data:
-            picture_file = save_picture(form.picture.data)
+            file = upload(form.picture.data)
+            picture_url, options = cloudinary_url(
+                file['public_id'],
+                format=file['format'],
+                width=200,
+                height=200,
+                crop="fill")
+            print(picture_url)
         else:
-            picture_file = user['picture']           
-        users.update_one({'username' : current_user.username }, { '$set' : {'username' : form.username.data, 'fname' : form.fname.data, 'lname' : form.lname.data,  'email' : form.email.data, 'picture': picture_file}})
+            picture_url = user['picture']           
+        users.update_one({'username' : current_user.username }, { '$set' : {'username' : form.username.data, 'fname' : form.fname.data, 'lname' : form.lname.data,  'email' : form.email.data, 'picture': picture_url}})
         flash('Your account has been updated!', 'success')
         return redirect(url_for('account'))
     elif request.method == 'GET':
@@ -147,6 +154,6 @@ def account():
         form.fname.data = current_user.fname
         form.lname.data = current_user.lname
         form.email.data = current_user.email
-    image_file = url_for('static', filename = f'profile_pics/' + user['picture'])
-    return render_template('account.html', form=form, image_file=image_file, title='Account')
+    image_file = user['picture']
+    return render_template('account.html', image_file= image_file, form=form, title='Account')
 

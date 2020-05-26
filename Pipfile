@@ -15,6 +15,7 @@ flask-wtf = "*"
 flask-login = "*"
 email-validator = "*"
 pillow = "*"
+cloudinary = "*"
 
 [requires]
 python_version = "3.7"
