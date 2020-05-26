@@ -126,12 +126,11 @@ def account():
             image_url, options = cloudinary_url(uploaded_image['public_id'])
         else:
             image_url = user['picture']           
-        users.update_one({'username' : current_user.username }, { '$set' : {'username' : form.username.data, 'fname' : form.fname.data, 'lname' : form.lname.data,  'email' : form.email.data, 'picture': image_url}})
+        users.update_one({'username' : current_user.username }, { '$set' : {'fname' : form.fname.data, 'lname' : form.lname.data,  'email' : form.email.data, 'picture': image_url}})
         
         flash('Your account has been updated!', 'success')
         return redirect(url_for('account'))
     elif request.method == 'GET':
-        form.username.data = current_user.username
         form.fname.data = current_user.fname
         form.lname.data = current_user.lname
         form.email.data = current_user.email

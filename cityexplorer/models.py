@@ -21,7 +21,7 @@ class User():
         return False
     
     def get_id(self):
-        return self.email
+        return self.username
 
     @staticmethod
     def check_password(hashed_password, password):
@@ -29,8 +29,8 @@ class User():
 
 
 @login_manager.user_loader
-def load_user(email):
-    user = mongo.db.users.find_one({'email': email})
+def load_user(username):
+    user = mongo.db.users.find_one({'username': username})
     if not user:
         return None
     return User(user['_id'], user['username'], user['fname'], user['lname'], user['email'])
