@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, SubmitField, HiddenField, TextAreaField, SelectField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Length, DataRequired, ValidationError, URL, Optional, Email, EqualTo
-from app import mongo
+from cityexplorer import mongo
 
 
 class RegistrationForm(FlaskForm):
@@ -30,6 +31,16 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[InputRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+
+
+class UpdateAccountForm(FlaskForm):
+    username = StringField('Username', validators=[InputRequired(), Length(min=2, max=15)])
+    fname = StringField('First Name', validators=[InputRequired(), Length(min=2, max=14)])
+    lname = StringField('Last Name', validators=[InputRequired(), Length(min=2, max=14)])
+    email = StringField('Email', validators=[InputRequired(), Email()])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+    submit = SubmitField('Update')
 
 
 
