@@ -1,6 +1,5 @@
 import os
 import secrets
-from PIL import Image # not used anymore
 from flask import Flask, render_template, redirect, url_for, flash, request, current_app
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -112,19 +111,6 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
-
-
-
-def save_picture(form_picture):
-    random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(current_app.root_path, 'static/profile_pics', picture_fn)
-    i = Image.open(form_picture) 
-    i.thumbnail((200,200))
-    i.save(picture_path)
-    print(i.size)
-    return picture_fn
 
 
 
