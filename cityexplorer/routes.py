@@ -9,7 +9,7 @@ from cloudinary.api import delete_resources_by_tag, resources_by_tag
 from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
 from cityexplorer.models import User
-from cityexplorer.forms import CreateLocationForm, CreateSuggestionForm, RegistrationForm, LoginForm, UpdateAccountForm
+from cityexplorer.forms import CreateLocationForm, CreateSuggestionForm, RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm
 from cityexplorer import app, mongo
 from cityexplorer.utils import send_reset_email
 
@@ -137,4 +137,17 @@ def account():
         form.email.data = current_user.email
     image_file = user['picture']
     return render_template('account.html', image_file= image_file, form=form, title='Account')
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = mongo.db.users.find_one({'email' : form.email.data})
+        send_reset_email(user)
+        flash('An email has been sent with instructions to reset your password.', 'info')
+        return redirect(url_for('login'))
+    return render_template('reset_request.html', title='Reset Password', form=form)
 
