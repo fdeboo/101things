@@ -62,3 +62,14 @@ class CreateSuggestionForm(FlaskForm):
     url = StringField('Website', validators=[URL(require_tld=True), Length(min=5, max=200), Optional()])
     comment = TextAreaField('Comment', validators=[Length(min=5, max=500)])
     submit = SubmitField('Add')
+
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+    def validate_email(self, email):
+        user = mongo.db.users.find_one({'email' : email.data })
+        if user is None:
+            raise ValidationError('There is no accaount with that email. You must register first.')
