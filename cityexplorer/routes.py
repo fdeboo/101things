@@ -11,6 +11,7 @@ from cloudinary.utils import cloudinary_url
 from cityexplorer.models import User
 from cityexplorer.forms import CreateLocationForm, CreateSuggestionForm, RegistrationForm, LoginForm, UpdateAccountForm
 from cityexplorer import app, mongo
+from cityexplorer.utils import send_reset_email
 
 
 @app.route('/')
