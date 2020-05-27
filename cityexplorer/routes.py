@@ -165,7 +165,7 @@ def reset_token(token):
     form = ResetPasswordForm()
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data)
-        mongo.db.users.update_one({'email' :  }, { '$set' : {'password': hashed_password}})
+        mongo.db.users.update_one({'email' : user['email'] }, { '$set' : {'password': hashed_password}})
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html', title='Reset Password', form=form)

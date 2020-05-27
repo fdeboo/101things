@@ -11,7 +11,6 @@ class User():
         self.fname = fname
         self.lname = lname
         self.email = email
-        self.picture = picture
 
     def is_authenticated(self):
         return True
@@ -44,7 +43,8 @@ class User():
             email = s.loads(token)['email']
         except:
             return None
-        return mongo.db.users.find_one({'email':})
+        return mongo.db.users.find_one({'email': email})
+
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}',)"
