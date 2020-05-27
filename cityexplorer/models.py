@@ -1,4 +1,6 @@
 from werkzeug.security import check_password_hash
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import current_app
 from cityexplorer import login_manager, mongo, app
 from flask_login import LoginManager
 
@@ -26,6 +28,11 @@ class User():
     @staticmethod
     def check_password(hashed_password, password):
         return check_password_hash(hashed_password, password)
+
+
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
+        return s.dumps({'email': self.email})
 
 
 @login_manager.user_loader
