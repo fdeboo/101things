@@ -4,7 +4,8 @@ from cityexplorer import mail
 
 
 def send_reset_email(user):
-    token = user.get_reset_token()
+    this_user = User( user['_id'], user['username'], user['fname'], user['lname'], user['email'])
+    token = this_user.get_reset_token()
     msg = Message('Password Reset Request',
     sender='noreply@demo.com',
     recipients= user['email'])
