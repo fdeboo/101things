@@ -35,7 +35,6 @@ class LoginForm(FlaskForm):
 
 
 class UpdateAccountForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(), Length(min=2, max=15)])
     fname = StringField('First Name', validators=[InputRequired(), Length(min=2, max=14)])
     lname = StringField('Last Name', validators=[InputRequired(), Length(min=2, max=14)])
     email = StringField('Email', validators=[InputRequired(), Email()])
