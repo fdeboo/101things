@@ -1,41 +1,47 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+<div class="row justify-content-center content-section">
+    <div class="col-12">
+        <h1 class="dark-gold">101 Things to do in {{ city }}</h1>
+        <ol>
+            {% for thing in things %}
+            <div class="accordion thingtodo" id="accordionExample">
 
-<h1>101 Things To do in {{ city }}</h1>
-
-
-<ol>
-    {% for thing in things %}
-    <div class="accordion" id="accordionExample">
-        <div class="card">
-            <div class="card-header" id="heading{{ loop.index }}">
-                <h2 class="mb-0">
-                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                <div id='heading{{ loop.index }}'>
+                    <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse"
                         data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
                         <li>{{ thing['suggestion'] }}</li>
                     </button>
-                </h2>
-            </div>
-
-            <div id="collapse{{ loop.index }}" class="collapse show" aria-labelledby="heading{{ loop.index }}"
-                data-parent="#accordionExample">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">{{ thing['comment'] }}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 d-flex">
-                            <div class="mr-auto"><i class="fas fa-tag palepink"></i> {{ thing['category'] }}</div>
-                            <div class="mr-auto"><i class="fas fa-money-bill-wave palepink"></i> {{ thing['cost'] }}</div>
-                            <div class="mr-auto"><i class="fas fa-link palepink"></i> {{ thing['website'] }}</div>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
-        </div>
-        {% endfor %}
-</ol>
 
+                <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}"
+                    data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">{{ thing['comment'] }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 d-flex">
+                                <div class="mr-auto"><i class="fas fa-tag palepink"></i> {{ thing['category'] }}
+                                </div>
+                                <div class="mr-auto"><i class="fas fa-money-bill-wave palepink"></i>
+                                    {{ thing['cost'] }}
+                                </div>
+                                <div class="mr-auto"><i class="fas fa-link palepink"></i> {{ thing['website'] }}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        </ol>
+        <button class="btn btn-outline-info"> <a href="{{ url_for('add_suggestion', location=city) }}">Add a Suggestion
+            </a>
+        </button>
+    </div>
+</div>
 {% endblock content %}

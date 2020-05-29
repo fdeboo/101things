@@ -1,18 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Patua+One&display=swap');
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+.hero{
+    background-image: url('https://res.cloudinary.com/fdeboo/image/upload/v1590666462/layout/bokeh-night-lights-city-9044_nxmprf.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 400px;
+}
+
+.logo {
+    font-family: 'Patua One', cursive;
+    font-size: 2em;
+}
+
+h1, h2 {
+    font-family: 'Patua One', cursive;
+}
+
+/* Font colours */
+
 .palepink {
     color: #f2D8Ce;
 }
 
-.content-section {
-    background: #ffffff;
-    padding: 10px 20px;
-    border: 1px solid #dddddd;
-    border-radius: 3px;
-    margin-bottom: 20px;
+.dark-gold {
+    color: #594E16;
 }
 
-.account-img {
-    height: 125px;
-    width: 125px;
-    margin-right: 20px;
-    margin-bottom: 16px;
+.light-gold {
+    color: #8C7811;;
+}
+
+.dark-blue {
+    color: #184759;;
+}
+
+.light-blue {
+    color: #608BA6;
+}
+
+.content-section {
+    margin-top: 50px;
+}
+
+.location-card {
+    width: 220px;
+    height: 220px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+}
+
+
+/* ThingsToDo */
+
+.thingtodo {
+    position: relative;
+    left: -40px;
+}
+
+.thingtodo li {
+    font-size: 1.3em;
+    font-weight: 300;
 }
