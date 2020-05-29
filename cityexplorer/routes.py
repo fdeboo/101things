@@ -58,7 +58,7 @@ def add_suggestion(location):
             })
             
         flash(location + ' added', 'success')
-        return redirect(url_for('index'))
+        return redirect(url_for('suggestion_list', city=location))
     return render_template('addsuggestion.html', location=location, form=form, title="Add Suggestion")
 
 
