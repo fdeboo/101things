@@ -122,7 +122,7 @@ def account():
     users = mongo.db.users
     user = users.find_one({'username': current_user.username})
     if form.validate_on_submit():
-        if form.picture.data: #cloudinary.uploader.upload(file, **options)
+        if form.picture.data: 
             uploaded_image = upload(form.picture.data, folder='profile_pics', format='jpg', width=150, height=150, crop='fill')
             image_url, options = cloudinary_url(uploaded_image['public_id'])
         else:

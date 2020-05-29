@@ -1,22 +1,24 @@
 {% extends 'layout.html' %}
 {% block content %}
+<div class="d-flex justify-content-center content-section">
     <div class="d-flex flex-wrap">
         {% for location in locations %}
-        <a href="{{ url_for('suggestion_list', city=location['location']) }}">
-            <div class="card border border-secondary m-4" style="width: 18rem;">
-                <div class="card-body">
-                    <h2>101 Things to do in {{ location['location'] }}</h2>
+        <a class="m-4 dark-gold" href="{{ url_for('suggestion_list', city=location['location']) }}">
+            <div class="card location-card">
+                <div class="card-body d-flex justify-content-center">
+                    <h2 class="align-self-center">101 Things to do in {{ location['location'] }}</h2>
                 </div>
             </div>
             {% endfor %}
         </a>
 
-        <div class="card border border-secondary m-4" style="width: 18rem;">
-            <div class="card-body">
-                <a href="{{ url_for('add_location') }}">
-                    <h2>Add a City</h2>
-                </a>
+        <a class="m-4 dark-gold" href="{{ url_for('add_location') }}">
+            <div class="card location-card">
+                <div class="card-body d-flex justify-content-center">
+                    <h2 class="align-self-center">Add a City</h2>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
+</div>
 {% endblock content %}
