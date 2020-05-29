@@ -3,7 +3,7 @@ body {
     font-family: 'Lato', sans-serif;
 }
 
-.hero{
+.hero {
     background-image: url('https://res.cloudinary.com/fdeboo/image/upload/v1590666462/layout/bokeh-night-lights-city-9044_nxmprf.jpg');
     background-position: center;
     background-repeat: no-repeat;
@@ -49,7 +49,7 @@ h1, h2 {
 .location-card {
     width: 220px;
     height: 220px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
 }
 
@@ -59,9 +59,24 @@ h1, h2 {
 .thingtodo {
     position: relative;
     left: -40px;
+    font-weight: 300;
 }
 
 .thingtodo li {
     font-size: 1.3em;
-    font-weight: 300;
+    
+}
+
+
+.submit-btn {
+    background-color: #184759;
+}
+
+.submit-btn a {
+    color: #fff;
+}
+
+.btn.focus, .btn:focus {
+    outline: 0;
+    box-shadow: none!important;
 }
