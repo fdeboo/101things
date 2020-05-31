@@ -17,12 +17,18 @@ from cityexplorer.utils import send_reset_email
 @app.route('/')
 @app.route('/home')
 def index():
-    query = mongo.db.cities.find({})
-    return render_template('home.html', locations=query, title="Home")
-    
+    cities = mongo.db.cities
+    query = cities.find({})
+    if cities.find({'thingsToDo': {'$exists': False}}):
+        cities.delete_many({'thingsToDo': {'$exists': False}})
+        return render_template('home.html', locations=query, title="Home")
+    else:
+        return render_template('home.html', locations=query, title="Home")
+
 
 
 @app.route('/addlocation', methods=['GET', 'POST'])
+@login_required
 def add_location():
     form = CreateLocationForm()
     cities = mongo.db.cities
@@ -40,6 +46,7 @@ def add_location():
 
 
 @app.route('/addsuggestion/<location>', methods=['GET', 'POST'])
+@login_required
 def add_suggestion(location):
     form = CreateSuggestionForm()
     cities = mongo.db.cities
