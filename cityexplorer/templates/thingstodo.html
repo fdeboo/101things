@@ -2,35 +2,42 @@
 
 {% block content %}
 <div class="row justify-content-center content-section">
-    <div class="col-md-6">
+    <div class="col-md-8">
         <h1 class="dark-gold">101 Things to do in {{ city }}</h1>
-        <ol>
+        <ol class="pl-0 pos-inside">
             {% for thing in things %}
             <div class="accordion thingtodo" id="accordionExample">
-
-                <div id='heading{{ loop.index }}'>
-                    <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse"
+                <div id="heading{{ loop.index }}">
+                    <div class="text-left collapsed" type="button" data-toggle="collapse"
                         data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
                         <li>{{ thing['suggestion'] }}</li>
-                    </button>
+                    </div>     
                 </div>
 
-                <div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="heading{{ loop.index }}"
+                <div id="collapse{{ loop.index }}" class="collapse pl-4" aria-labelledby="heading{{ loop.index }}"
                     data-parent="#accordionExample">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">{{ thing['comment'] }}</div>
-                        </div>
-                        <div class="row">
+                    <div class="item-detail">
+                        <div class="row py-2 border-bottom">
                             <div class="col-12 d-flex">
                                 <div class="mr-auto"><i class="fas fa-tag palepink"></i> {{ thing['category'] }}
                                 </div>
                                 <div class="mr-auto"><i class="fas fa-money-bill-wave palepink"></i>
                                     {{ thing['cost'] }}
                                 </div>
-                                <div class="mr-auto"><i class="fas fa-link palepink"></i> {{ thing['website'] }}
+                                <div class="mr-auto">
+                                    <i class="fas fa-link palepink"></i>
+                                    <a href="{{ thing['url'] }}" target="_blank"> {{ thing['url'] }}</a> 
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="row py-2 border-bottom">
+                            <div class="col-12 py-2">{{ thing['comment'] }}</div>
+                        </div>
+
+                        <div class="row py-2 border-bottom">
+                            <div class="col-md-3">TRue</div>
+                            <div class="col-md-4">That</div>
                         </div>
 
                     </div>
