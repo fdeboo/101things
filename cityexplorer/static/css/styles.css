@@ -20,6 +20,8 @@ h1, h2 {
     font-family: 'Patua One', cursive;
 }
 
+
+
 /* Font colours */
 
 .palepink {
@@ -42,6 +44,9 @@ h1, h2 {
     color: #608BA6;
 }
 
+a {
+    color: inherit;
+}
 
 /* Universal layout */
 
@@ -79,6 +84,14 @@ h1, h2 {
     font-weight: 400;
 }
 
+.thingtodo i {
+    padding-right: 5px;
+}
+
+#thing-comment {
+    font-size: 1.3em;
+}
+
 
 .submit-btn {
     background-color: #184759;
@@ -93,7 +106,7 @@ h1, h2 {
     box-shadow: none!important;
 }
 
-.item-detail {
+.item-details {
     flex: 1 1 auto;
     min-height: 1px;
 }
