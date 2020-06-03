@@ -20,6 +20,8 @@ h1, h2 {
     font-family: 'Patua One', cursive;
 }
 
+
+
 /* Font colours */
 
 .palepink {
@@ -42,29 +44,52 @@ h1, h2 {
     color: #608BA6;
 }
 
+a {
+    color: inherit;
+}
+
+/* Universal layout */
+
 .content-section {
     margin-top: 50px;
 }
 
+
+/* Home page */
+
 .location-card {
-    width: 220px;
     height: 220px;
+    width: 220px;
     box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
 }
 
 
 /* ThingsToDo */
+.search-bar {
+    border-bottom: 2px solid #594E16;
+    width: 100%;
+}
+
+.pos-inside {
+    list-style-position: inside;
+}
 
 .thingtodo {
-    position: relative;
-    left: -40px;
     font-weight: 300;
 }
 
 .thingtodo li {
     font-size: 1.3em;
-    
+    font-weight: 400;
+}
+
+.thingtodo i {
+    padding-right: 5px;
+}
+
+#thing-comment {
+    font-size: 1.3em;
 }
 
 
@@ -79,4 +104,9 @@ h1, h2 {
 .btn.focus, .btn:focus {
     outline: 0;
     box-shadow: none!important;
+}
+
+.item-details {
+    flex: 1 1 auto;
+    min-height: 1px;
 }

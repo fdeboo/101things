@@ -1,19 +1,26 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div class="d-flex justify-content-center content-section">
-    <div class="d-flex flex-wrap justify-content-center">
+<div class="">
+    <div class="row p-4 d-flex justify-content-end">
+        <div class="col-sm-6 col-md-4 col-lg-3 pl-0 dark-gold search-bar">
+            <i class="fas fa-search d-inline"></i>
+            <form class="d-inline" action=""><input type="text" name="" id="" class="border-0"></form>
+        </div>
+    </div>
+
+
+    <div class="d-flex flex-wrap justify-content-between">
         {% for location in locations %}
-            <a class="m-4 dark-gold" href="{{ url_for('suggestion_list', city=location['location']) }}">
-                <div class="card location-card">
-                    <div class="card-body d-flex">
-                        <h2 class="align-self-center">101 Things to do in {{ location['location'] }}</h2>
-                    </div>
+        <a class="mr-2 my-3 dark-gold" href="{{ url_for('suggestion_list', city=location['location']) }}">
+            <div class="card location-card">
+                <div class="card-body d-flex">
+                    <h2 class="align-self-center">101 Things to do in {{ location['location'] }}</h2>
                 </div>
-                {% endfor %}
-            </a>
+            </div>
+        </a>
+        {% endfor %}
 
-
-        <a class="m-4 dark-gold" href="{{ url_for('add_location') }}">
+        <a class="mr-2 my-3 dark-gold" href="{{ url_for('add_location') }}">
             <div class="card location-card">
                 <div class="card-body d-flex justify-content-center">
                     <h2 class="align-self-center">Add a City</h2>
@@ -21,5 +28,6 @@
             </div>
         </a>
     </div>
+
 </div>
 {% endblock content %}
