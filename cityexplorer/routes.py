@@ -38,7 +38,6 @@ def add_location():
                 'location':form.location.data
             }
         )
-        flash("Location created", "success")
         location = form.location.data
         return redirect(url_for('add_suggestion', location=location))
     return render_template('addlocation.html', form=form, title="Add Location")
@@ -59,7 +58,8 @@ def add_suggestion(location):
                     'category' : form.category.data,
                     'cost' : form.cost.data,
                     'url' : form.url.data,
-                    'comment' : form.comment.data
+                    'comment' : form.comment.data,
+                    'author' : current_user.username
                 }
             }
             })
@@ -73,11 +73,31 @@ def add_suggestion(location):
 @app.route('/thingstodo/<city>', methods=['GET', 'POST'])
 def suggestion_list(city):
     cities = mongo.db.cities   
-    query =  cities.find_one(
-        {'location': city},
-        {'_id':0, 'thingsToDo':1} 
+    suggestions =  cities.aggregate(
+        [ 
+            {"$match": { "location" : city }},
+            {"$unwind": "$thingsToDo"},
+            {"$lookup": {
+                "from": "users",
+                "localField": "thingsToDo.author",
+                "foreignField": "username",
+                "as": "user_profile"
+            }},
+
+            {"$unwind": "$user_profile"},
+
+            {"$project": {
+                "suggestion": "$thingsToDo.suggestion",
+                "cost": "$thingsToDo.cost",
+                "category": "$thingsToDo.category",
+                "url": "$thingsToDo.url",
+                "comment": "$thingsToDo.comment",
+                "author": "$user_profile.username",
+                "profile": "$user_profile.picture"
+
+                }
+            }]
     )
-    suggestions=query['thingsToDo']
     return render_template('thingstodo.html', city=city, things=suggestions, title='Things to do')
 
 
@@ -176,7 +196,4 @@ def reset_token(token):
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
-
-
-
 
