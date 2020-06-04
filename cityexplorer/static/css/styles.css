@@ -95,10 +95,7 @@ a {
 
 .submit-btn {
     background-color: #184759;
-}
-
-.submit-btn a {
-    color: #fff;
+    color : #fff;
 }
 
 .btn.focus, .btn:focus {
@@ -109,4 +106,8 @@ a {
 .item-details {
     flex: 1 1 auto;
     min-height: 1px;
+}
+
+.account-img {
+    width: 50px;
 }
