@@ -50,7 +50,7 @@
             {% endfor %}
         </ol>
         {% if current_user.is_authenticated %}
-        <button class="btn submit-btn"> <a href="{{ url_for('add_suggestion', location=city) }}">Add Suggestion
+        <button class="btn submit-btn"> <a href="{{ url_for('places.add_suggestion', location=city) }}">Add Suggestion
             </a>
         </button>
         {% endif %}

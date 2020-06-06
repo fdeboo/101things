@@ -11,7 +11,7 @@
 
     <div class="d-flex flex-wrap justify-content-between">
         {% for location in locations %}
-        <a class="mr-2 my-3 dark-gold" href="{{ url_for('suggestion_list', city=location['location']) }}">
+        <a class="mr-2 my-3 dark-gold" href="{{ url_for('places.suggestion_list', city=location['location']) }}">
             <div class="card location-card">
                 <div class="card-body d-flex">
                     <h2 class="align-self-center">101 Things to do in {{ location['location'] }}</h2>
@@ -20,7 +20,7 @@
         </a>
         {% endfor %}
 
-        <a class="mr-2 my-3 dark-gold" href="{{ url_for('add_location') }}">
+        <a class="mr-2 my-3 dark-gold" href="{{ url_for('places.add_location') }}">
             <div class="card location-card">
                 <div class="card-body d-flex justify-content-center">
                     <h2 class="align-self-center">Add a City</h2>
