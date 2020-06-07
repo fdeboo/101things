@@ -22,7 +22,7 @@ def register():
     users = mongo.db.users
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data)
-        users.insert({'username': form.username.data, 'fname': form.fname.data, 'lname': form.lname.data, 'email': form.email.data, 'password': hashed_password, 'picture' : 'https://res.cloudinary.com/fdeboo/image/upload/v1590514314/profile_pics/default.jpg'})
+        users.insert({'username': form.username.data.lower(), 'fname': form.fname.data, 'lname': form.lname.data, 'email': form.email.data.lower(), 'password': hashed_password, 'picture' : 'https://res.cloudinary.com/fdeboo/image/upload/v1590514314/profile_pics/default.jpg'})
         flash('You are now registered and can log in', 'success')
         return redirect(url_for('users.login'))
     return render_template('register.html', form=form, title="Register")
@@ -35,7 +35,7 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = mongo.db.users.find_one({'email': form.email.data})
+        user = mongo.db.users.find_one({'email': form.email.data.lower()})
         if user and check_password_hash(user['password'], form.password.data):
             user_data = User(user['_id'], user['username'], user['fname'], user['lname'], user['email'])
             login_user(user_data, remember=form.remember.data)
