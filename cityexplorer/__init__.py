@@ -8,15 +8,10 @@ app = Flask(__name__)
 
 app.config.from_object(Config)
 login_manager = LoginManager(app)
-login_manager.login_view = 'users.login'
+login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 app.config['MONGO_URI'] = Config.MONGO_URI
 mail = Mail(app)
 mongo = PyMongo(app)
-
-from cityexplorer.places.routes import places
-from cityexplorer.users.routes import users
-app.register_blueprint(places)
-app.register_blueprint(users)
 
 from cityexplorer import routes

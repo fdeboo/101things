@@ -9,11 +9,11 @@
             </button>
             <ul class="collapse navbar-collapse navbar-nav" id="navbarSupportedContent">
                 {% if current_user.is_authenticated %}
-                <li class=""><a class="btn" href="{{url_for('users.account') }}">Account</a></li>
-                <li class=""><a class="btn" href="{{url_for('users.logout') }}">Logout</a></li>
+                <li class=""><a class="btn" href="{{url_for('account') }}">Account</a></li>
+                <li class=""><a class="btn" href="{{url_for('logout') }}">Logout</a></li>
                 {% else %}
-                <li class=""><a class="btn" href="{{ url_for('users.login') }}">Login</a></li>
-                <li class=""><a class="btn" href="{{url_for('users.register') }}">Register</a></li>
+                <li class=""><a class="btn" href="{{ url_for('login') }}">Login</a></li>
+                <li class=""><a class="btn" href="{{url_for('register') }}">Register</a></li>
                 {% endif %}
             </ul>
         </div>

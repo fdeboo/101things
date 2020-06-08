@@ -166,6 +166,8 @@ The following services were used to check the web code:
 + Javascript
     + [Javascript Lint](https://jshint.com/)
 + Python
+    + [Pylint]()  
+    The init.py file 
 
 
 #### Manual
