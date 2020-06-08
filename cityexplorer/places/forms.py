@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, HiddenField, TextAreaField, SelectField
-from wtforms.validators import InputRequired, Length, DataRequired, ValidationError, URL, Optional, Email, EqualTo
+from wtforms.validators import InputRequired, Length, DataRequired, ValidationError, URL, Optional
 from cityexplorer import mongo
 
 
@@ -12,7 +12,6 @@ class CreateLocationForm(FlaskForm):
         place_name = mongo.db.cities.find_one({'location': location.data})
         if place_name:
             raise ValidationError('This location has already been created.')
-
 
 
 class CreateSuggestionForm(FlaskForm):

@@ -1,5 +1,6 @@
 import os
 
+
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY')
     MONGO_URI = os.environ.get('MONGO_URI')
@@ -8,5 +9,5 @@ class Config(object):
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.getenv('EMAIL_USER')
-    MAIL_PASSWORD = os.getenv('EMAIL_PASS') 
+    MAIL_PASSWORD = os.getenv('EMAIL_PASS')
     DEBUG = True
