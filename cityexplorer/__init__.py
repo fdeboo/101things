@@ -2,7 +2,7 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_pymongo import PyMongo
 from flask_mail import Mail
-from config import Config
+from cityexplorer.config import Config
 
 app = Flask(__name__)
 

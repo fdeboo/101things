@@ -18,12 +18,11 @@ class RegistrationForm(FlaskForm):
         user = mongo.db.users.find_one({'username': username.data.lower()})
         if user:
             raise ValidationError('That username is taken. Please choose a different one.')
-    
+
     def validate_email(self, email):
         user = mongo.db.users.find_one({'email': self.email.data.lower()})
         if user:
             raise ValidationError('That email is taken. Please choose a different one.')
-
 
 
 class LoginForm(FlaskForm):
@@ -31,7 +30,6 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[InputRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
-
 
 
 class UpdateAccountForm(FlaskForm):
@@ -42,13 +40,12 @@ class UpdateAccountForm(FlaskForm):
     submit = SubmitField('Update')
 
 
-
 class RequestResetForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(), Email()])
     submit = SubmitField('Request Password Reset')
 
     def validate_email(self, email):
-        user = mongo.db.users.find_one({'email' : email.data })
+        user = mongo.db.users.find_one({'email': email.data})
         if user is None:
             raise ValidationError('There is no account with that email. You must register first.')
 

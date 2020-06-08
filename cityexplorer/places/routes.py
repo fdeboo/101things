@@ -1,6 +1,5 @@
 from flask import render_template, redirect, url_for, flash, Blueprint
 from flask_login import current_user, login_required
-from cityexplorer.models import User
 from cityexplorer.places.forms import CreateLocationForm, CreateSuggestionForm
 from cityexplorer import mongo
 
