@@ -48,15 +48,26 @@ a {
     color: inherit;
 }
 
-/* Universal layout */
+a:hover {
+    text-decoration: none;
+    color: inherit;
+}
 
+/* Universal elements */
 .content-section {
     margin-top: 50px;
 }
 
+.submit-btn {
+    background-color: #184759;
+    color : #fff;
+}
+
+.submit-btn:hover {
+    color : #fff;
+}
 
 /* Home page */
-
 .location-card {
     height: 220px;
     width: 220px;
@@ -68,7 +79,41 @@ a {
 /* ThingsToDo */
 .search-bar {
     border-bottom: 3px solid #594E16;
-    width: 100%;
+}
+
+.search-input {
+    width: 130px;
+    box-sizing: border-box;
+    background-color: #fff;
+    background-image: url('../images/searchicon.png');
+    background-position: 10px 0px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 30px;
+    transition: width 0.4s ease-in-out;
+}
+
+.search-input:focus {
+    outline: 0;
+    box-shadow: none;
+    background-image: url('../images/searchicon.png');
+    background-color: #fff;
+    width: 100%; 
+}
+
+.search-input:visited {
+    outline: 0;
+    box-shadow: none;
+    background-image: url('../images/searchicon.png');
+    background-color: #fff;
+    width: 100%; 
+}
+
+.search-input:active {
+    outline: 0;
+    box-shadow: none;
+    background-image: url('../images/searchicon.png');
+    background-color: #fff;
+    width: 100%; 
 }
 
 .pos-inside {
@@ -93,10 +138,7 @@ a {
 }
 
 
-.submit-btn {
-    background-color: #184759;
-    color : #fff;
-}
+
 
 .btn.focus, .btn:focus {
     outline: 0;
