@@ -2,9 +2,21 @@
 {% block content %}
 <div class="">
     <div class="row p-4 d-flex justify-content-end">
-        <div class="col-sm-6 col-md-4 col-lg-3 pl-0 dark-gold search-bar">
-            <i class="fas fa-search d-inline"></i>
-            <form class="d-inline" action=""><input type="text" name="" id="" class="border-0"></form>
+        <div class="col-sm-6 col-md-4 col-lg-3 p-0 dark-gold search-bar">
+            <form method="POST" action="" class="d-flex align-items-center">
+            <i class="fas fa-search"></i>
+                {{ form.hidden_tag() }}
+                {% if form.search.errors %}
+                {{ form.search(class="form-control form-control-lg is-invalid border-0 flex-grow-1", placeholder="search location") }}
+                <div class="invalid-feedback">
+                    {% for error in form.search.errors %}
+                    <span> {{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.search(class="form-control form-control-lg border-0 w-100", placeholder="search location") }}
+                {% endif %}
+            </form>
         </div>
     </div>
 
