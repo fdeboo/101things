@@ -167,11 +167,12 @@ The following services were used to check the web code:
     + [Javascript Lint](https://jshint.com/)
 + Python
     + [Pylint]()  
-    The init.py file 
+    In the \_\_init__.py file,  the following line of code is placed at the bottom of the file and therefore flags as an error:  <pre><code>from cityexplorer import routes</code></pre>
+    This deliberate action was taken because the line is not necessary to the views in \_\_init__.py and is just to ensure that module is imported. The routes.py file depends on \_\_init__.py and so it is a circular import.
 
 
 #### Manual
-    These were the manual tests performed and passed:
+These were the manual tests performed and passed:
 
 
 
@@ -180,7 +181,7 @@ The following services were used to check the web code:
 
 ## Deployment <a name="deployment"></a>
 #### Remote
-The following steps were taken to deploy the project to GitHub Pages where the Simon Game is hosted:
+The following steps were taken to deploy the project to Heroku where <b>101 things</b> is hosted:
 
 1. From within Github, navigate to fdeboo/simon
 2. Select the Settings tab from the menu, found beneath the repository name 
