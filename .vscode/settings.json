@@ -1,5 +1,8 @@
 {
-    "json.schemas": [],
+    "python.pythonPath": "/Users/frandeboo/.local/share/virtualenvs/101things-55foz0cZ/bin/python",
+    "json.schemas": [
+        
+    ],
     "[css]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
@@ -27,9 +30,13 @@
         "venv": true,
         ".pytest_cache": true
     },
-    "python.formatting.blackArgs": ["--line-length=80"],
+    "python.formatting.blackArgs": [
+        "--line-length=80"
+    ],
     "python.formatting.provider": "black",
-    "python.linting.flake8Args": ["--ignore=E501,W503"],
+    "python.linting.flake8Args": [
+        "--ignore=E501,W503"
+    ],
     "python.linting.flake8Enabled": true,
     "python.linting.pylintEnabled": true
 }

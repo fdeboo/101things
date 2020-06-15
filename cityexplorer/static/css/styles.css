@@ -3,7 +3,11 @@ body {
     font-family: 'Lato', sans-serif;
 }
 
-.hero {
+.border {
+    border: 1px solid red;
+}
+
+.hero-image {
     background-image: url('https://res.cloudinary.com/fdeboo/image/upload/v1590666462/layout/bokeh-night-lights-city-9044_nxmprf.jpg');
     background-position: center;
     background-repeat: no-repeat;
@@ -19,7 +23,6 @@ body {
 h1, h2 {
     font-family: 'Patua One', cursive;
 }
-
 
 
 /* Font colours */
@@ -54,6 +57,7 @@ a:hover {
 }
 
 /* Universal elements */
+
 .content-section {
     margin-top: 50px;
 }
@@ -67,7 +71,48 @@ a:hover {
     color : #fff;
 }
 
+button {
+    background-color: #fff;
+    border: none;
+    outline: 0;
+    box-shadow: none;
+    display: block;
+    padding: 0;
+}
+
+
 /* Home page */
+
+.search-false {
+    font-size: 2em;
+    color: #594E16;
+}
+
+.search-bar {
+    border:0;
+    border-bottom: 3px solid #594E16;
+    padding: 5px 0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    box-shadow: 0 0 0 30px white inset !important;
+}
+
+.search-input {
+    width: 130px;
+    transition: width 0.4s ease-in-out;
+}
+
+.search-input:focus-within, 
+.search-input:valid {
+    outline: 0;
+    width: 100%;
+}
+
 .location-card {
     height: 220px;
     width: 220px;
@@ -77,44 +122,6 @@ a:hover {
 
 
 /* ThingsToDo */
-.search-bar {
-    border-bottom: 3px solid #594E16;
-}
-
-.search-input {
-    width: 130px;
-    box-sizing: border-box;
-    background-color: #fff;
-    background-image: url('../images/searchicon.png');
-    background-position: 10px 0px; 
-    background-repeat: no-repeat;
-    padding: 12px 20px 12px 30px;
-    transition: width 0.4s ease-in-out;
-}
-
-.search-input:focus {
-    outline: 0;
-    box-shadow: none;
-    background-image: url('../images/searchicon.png');
-    background-color: #fff;
-    width: 100%; 
-}
-
-.search-input:visited {
-    outline: 0;
-    box-shadow: none;
-    background-image: url('../images/searchicon.png');
-    background-color: #fff;
-    width: 100%; 
-}
-
-.search-input:active {
-    outline: 0;
-    box-shadow: none;
-    background-image: url('../images/searchicon.png');
-    background-color: #fff;
-    width: 100%; 
-}
 
 .pos-inside {
     list-style-position: inside;
@@ -122,6 +129,7 @@ a:hover {
 
 .thingtodo {
     font-weight: 300;
+    background-color: #fff;
 }
 
 .thingtodo li {
@@ -137,9 +145,6 @@ a:hover {
     font-size: 1.3em;
 }
 
-
-
-
 .btn.focus, .btn:focus {
     outline: 0;
     box-shadow: none!important;
@@ -152,4 +157,5 @@ a:hover {
 
 .account-img {
     width: 50px;
+    height: 50px;
 }

@@ -7,7 +7,7 @@ from cityexplorer import mongo
 
 
 class SearchLocationForm(FlaskForm):
-    search = SearchField('Search', validators=[Length(max=50)])
+    search = SearchField('Search', validators=[InputRequired(), Length(max=50)])
     submit = SubmitField('Search')
 
 

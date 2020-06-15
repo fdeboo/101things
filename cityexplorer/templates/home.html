@@ -1,25 +1,26 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div class="">
+<div>
     <div class="row p-4 d-flex justify-content-end">
-        <div class="col-sm-6 col-md-4 col-lg-3 p-0 dark-gold search-bar">
-            <form method="POST" action="" class="d-flex align-items-center">
-                {{ form.hidden_tag() }}
-                {% if form.search.errors %}
-                {{ form.search(class="form-control is-invalid border-0 flex-grow-1 search-input", placeholder="search location") }}
-                <div class="invalid-feedback">
-                    {% for error in form.search.errors %}
-                    <span> {{ error }}</span>
-                    {% endfor %}
-                </div>
-                {% else %}
-                {{ form.search(class="form-control border-0 flex-grow-1 search-input", placeholder="search location") }}
-                {% endif %}
-            </form>
-        </div>
+        <form method="POST" action="" class="col-sm-6 col-md-4 col-lg-3 p-0 dark-gold d-flex justify-content-end align-items-end">
+            <div class="search-bar">
+                <img class="" src="{{ url_for('static', filename='images/searchicon.png') }}">
+            </div>
+            {{ form.hidden_tag() }}
+            {% if form.search.errors %}
+            {{ form.search(class="is-invalid search-input search-bar pl-3", placeholder="search...", autocomplete="off") }}
+            <div class="invalid-feedback">
+                {% for error in form.search.errors %}
+                <span> {{ error }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+                {{ form.search(class="search-input search-bar pl-3", placeholder="search...") }}
+            {% endif %}
+        </form>
     </div>
 
-
+    {% if locations %}  
     <div class="d-flex flex-wrap justify-content-between">
         {% for location in locations %}
         <a class="mr-2 my-3 dark-gold" href="{{ url_for('suggestion_list', city=location['location']) }}">
@@ -30,7 +31,6 @@
             </div>
         </a>
         {% endfor %}
-
         <a class="mr-2 my-3 dark-gold" href="{{ url_for('add_location') }}">
             <div class="card location-card">
                 <div class="card-body d-flex justify-content-center">
@@ -39,6 +39,12 @@
             </div>
         </a>
     </div>
+    {% else %}
+    <div class="text-center p-4 search-false">
+    <img src="{{ url_for('static', filename='images/searchicon_lg.png')}}" /><p> <span style='font-style:italic'>{{searched}}</span> not found.</p><p> Do you want to add this location?</p>
+    <a class="mr-2 my-3 dark-gold" href="{{ url_for('add_location') }}">ADD </a
+    </div>
+    {% endif %}  
 
 </div>
 {% endblock content %}

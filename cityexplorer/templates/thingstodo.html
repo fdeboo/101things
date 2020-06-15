@@ -8,10 +8,10 @@
             {% for thing in things %}
             <div class="accordion thingtodo" id="accordionExample">
                 <div id="heading{{ loop.index }}">
-                    <div class="text-left collapsed" type="button" data-toggle="collapse"
+                    <button class="text-left collapsed" type="button" data-toggle="collapse"
                         data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
                         <li>{{ thing['suggestion'] }}</li>
-                    </div>     
+                    </button>     
                 </div>
 
                 <div id="collapse{{ loop.index }}" class="collapse pl-4" aria-labelledby="heading{{ loop.index }}"

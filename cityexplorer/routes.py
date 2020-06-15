@@ -14,15 +14,20 @@ from cityexplorer.utils import send_reset_email
 def index():
     form = SearchLocationForm()
     cities = mongo.db.cities
+    searched = form.search.data
     if form.validate_on_submit():
-        query = cities.find({'location': form.search.data.capitalize()})
+        query = cities.find({'location': searched.title()})
+        if query.count() == 0:
+            return render_template('home.html', form=form, searched=searched, title="Home")
+        else:
+            return render_template('home.html', locations=query, form=form, title="Home")
     else:
         query = cities.find({})
-    if cities.find({'thingsToDo': {'$exists': False}}):
-        cities.delete_many({'thingsToDo': {'$exists': False}})
-        return render_template('home.html', locations=query, form=form, title="Home")
-    else:
-        return render_template('home.html', locations=query, form=form, title="Home")
+        if cities.find({'thingsToDo': {'$exists': False}}):
+            cities.delete_many({'thingsToDo': {'$exists': False}})
+            return render_template('home.html', locations=query, form=form, title="Home")
+        else:
+            return render_template('home.html', locations=query, form=form, title="Home")
 
 
 # Users routes

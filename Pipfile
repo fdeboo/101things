@@ -17,11 +17,11 @@ flask-pymongo = "*"
 gunicorn = "*"
 wtforms = "*"
 flask-wtf = "*"
-flask-login = "*"
 email-validator = "*"
 pillow = "*"
 cloudinary = "*"
 flask-mail = "*"
+flask-login = "*"
 
 [requires]
 python_version = "3.7"
