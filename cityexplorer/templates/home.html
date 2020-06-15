@@ -20,7 +20,7 @@
         </form>
     </div>
 
-    {% if locations %}  
+    {% if locations.count() > 0 %}
     <div class="d-flex flex-wrap justify-content-between">
         {% for location in locations %}
         <a class="mr-2 my-3 dark-gold" href="{{ url_for('suggestion_list', city=location['location']) }}">
