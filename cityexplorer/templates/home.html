@@ -40,9 +40,9 @@
         </a>
     </div>
     {% else %}
-    <div class="text-center p-4 search-false light-gold">
+    <div class="text-center p-4 search-false dark-gold">
         <img src="{{ url_for('static', filename='images/searchicon_lg.png')}}" />
-            <p> <span style='font-style:italic'>{{searched}}</span> not found.</p>
+            <p> <span style='font-style:italic'>{{searched}}</span> not found.<br /> Do you want to add this location?</p>
         <button class="btn submit-btn">
             <a href="{{ url_for('add_suggestion', location=searched) }}">Add Location</a>
         </button>

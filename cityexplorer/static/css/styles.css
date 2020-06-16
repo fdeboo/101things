@@ -3,10 +3,6 @@ body {
     font-family: 'Lato', sans-serif;
 }
 
-.border {
-    border: 1px solid red;
-}
-
 .hero-image {
     background-image: url('https://res.cloudinary.com/fdeboo/image/upload/v1590666462/layout/bokeh-night-lights-city-9044_nxmprf.jpg');
     background-position: center;
@@ -49,6 +45,9 @@ h1, h2 {
 
 
 /* Universal elements */
+aside {
+    height: 200px;
+}
 
 a {
     color: inherit;
@@ -113,7 +112,7 @@ input:-webkit-autofill:active  {
 }
 
 .search-input {
-    width: 130px;
+    width: 100px;
     transition: width 0.4s ease-in-out;
 }
 
@@ -141,7 +140,6 @@ input:-webkit-autofill:active  {
 
 
 /* ThingsToDo */
-
 .pos-inside {
     list-style-position: inside;
 }
@@ -154,13 +152,34 @@ input:-webkit-autofill:active  {
     background-color: #f2D8Ce;
 }
 
-.thingtodo li {
+.suggestion-item {
     font-size: 1.3em;
     font-weight: 400;
 }
 
-.thingtodo li:hover {
-    background-color: #608ba61f;
+.suggestion-item:hover,
+.suggestion-item:focus {
+    background-color:#608ba61f
+}
+
+.thing-grid {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    grid-template-rows: auto;
+}
+
+.thing-icons {
+    grid-column: 1/2;
+    grid-row: 1/3;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.thing-comment {
+    grid-column: 2/3;
+    grid-row: 1/3;
+    font-size: 1.3em;
+    border-left: 1px solid #dee2e6;
 }
 
 .thingtodo i {
