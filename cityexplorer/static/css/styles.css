@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Patua+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,500&family=Lato:wght@300;400;700&family=Patua+One&display=swap');
 body {
     font-family: 'Lato', sans-serif;
 }
@@ -27,7 +27,7 @@ h1, h2 {
 
 /* Font colours */
 
-.palepink {
+.pale-pink {
     color: #f2D8Ce;
 }
 
@@ -36,7 +36,7 @@ h1, h2 {
 }
 
 .light-gold {
-    color: #8C7811;;
+    color: #8C7811;
 }
 
 .dark-blue {
@@ -47,6 +47,9 @@ h1, h2 {
     color: #608BA6;
 }
 
+
+/* Universal elements */
+
 a {
     color: inherit;
 }
@@ -55,8 +58,6 @@ a:hover {
     text-decoration: none;
     color: inherit;
 }
-
-/* Universal elements */
 
 .content-section {
     margin-top: 50px;
@@ -71,22 +72,31 @@ a:hover {
     color : #fff;
 }
 
+.cancel-btn {
+    background-color: #A6A6A6;
+}
+
 button {
     background-color: #fff;
     border: none;
     outline: 0;
     box-shadow: none;
-    display: block;
-    padding: 0;
+    color: inherit;
+    display: inline;
 }
 
+button:focus {
+    outline: 1px solid #fff;
+    outline-offset: -4px;
+}
+
+
+.btn.focus, .btn:focus {
+    outline: 0;
+    box-shadow: none!important;
+}
 
 /* Home page */
-
-.search-false {
-    font-size: 2em;
-    color: #594E16;
-}
 
 .search-bar {
     border:0;
@@ -113,6 +123,15 @@ input:-webkit-autofill:active  {
     width: 100%;
 }
 
+.search-false {
+    font-size: 2em;
+}
+
+.search-false span {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.2em;
+}
+
 .location-card {
     height: 220px;
     width: 220px;
@@ -129,12 +148,19 @@ input:-webkit-autofill:active  {
 
 .thingtodo {
     font-weight: 300;
-    background-color: #fff;
+}
+
+.thingtodo a:hover {
+    background-color: #f2D8Ce;
 }
 
 .thingtodo li {
     font-size: 1.3em;
     font-weight: 400;
+}
+
+.thingtodo li:hover {
+    background-color: #608ba61f;
 }
 
 .thingtodo i {
@@ -145,12 +171,7 @@ input:-webkit-autofill:active  {
     font-size: 1.3em;
 }
 
-.btn.focus, .btn:focus {
-    outline: 0;
-    box-shadow: none!important;
-}
-
-.item-details {
+.item-icons {
     flex: 1 1 auto;
     min-height: 1px;
 }
