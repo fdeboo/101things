@@ -1,7 +1,8 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div class="content-section">
+<div class="row justify-content-center content-section">
+    <div class="col-md-6 col-md-offset-6">
     <form method="POST" action="">
         {{ form.hidden_tag() }}
         
@@ -39,9 +40,10 @@
         </fieldset>
 
         <div class="form-group">
-            {{ form.submit(class="btn btn-outline-info") }}
+            {{ form.submit(class="btn submit-btn") }}
         </div>
     </form>
+    </div>
 </div>
 
 {% endblock content %}

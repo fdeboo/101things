@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="row justify-content-center content-section">
-    <div class="col-md-6 col-md-offset-6">
-        <div class="media">
-            <img class="rounded-circle" src="{{ image_file }}" alt="user profile">
+    <aside class="col-md-3 border">
+    <div class="media">
+            <img class="rounded-circle profile-img" src="{{ image_file }}" alt="user profile">
             <div class="media-body">
                 <h2 class="account-heading">{{ current_user.username}}</h2>
                 <p class="text-secondary">{{ current_user.email }}</p>
@@ -68,11 +68,12 @@
                 </div>
 
                 <div class="form-group">
-                    {{ form.submit(class="btn btn-outline-info") }}
+                    {{ form.submit(class="btn submit-btn") }}
                 </div>
         </form>
-        <br>
-
+        </aside>
+    <div class="col-md-9 col-md-offset-9">
+        <main class="ml-4 border"></main>
     </div>
 </div>
 {% endblock content %}

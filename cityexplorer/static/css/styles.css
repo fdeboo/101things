@@ -46,7 +46,7 @@ h1, h2 {
 
 /* Universal elements */
 aside {
-    height: 200px;
+    min-height: 200px;
 }
 
 a {
@@ -139,6 +139,13 @@ input:-webkit-autofill:active  {
 }
 
 
+/* Account page */
+
+.profile-img {
+    width: 80px;
+    height: 80px;
+}
+
 /* ThingsToDo */
 .pos-inside {
     list-style-position: inside;
@@ -148,54 +155,73 @@ input:-webkit-autofill:active  {
     font-weight: 300;
 }
 
-.thingtodo a:hover {
-    background-color: #f2D8Ce;
-}
-
 .suggestion-item {
     font-size: 1.3em;
     font-weight: 400;
 }
 
-.suggestion-item:hover,
-.suggestion-item:focus {
+.thingtodo li:hover,
+.thingtodo li:focus {
     background-color:#608ba61f
 }
 
-.thing-grid {
+div.thing-grid {
     display: grid;
     grid-template-columns: 150px 1fr;
-    grid-template-rows: auto;
+    grid-template-rows: auto auto;
+    grid-row-gap: 10px;
 }
 
-.thing-icons {
+ul.thing-icons {
     grid-column: 1/2;
-    grid-row: 1/3;
     list-style-type: none;
     padding-left: 0;
 }
 
 .thing-comment {
     grid-column: 2/3;
-    grid-row: 1/3;
-    font-size: 1.3em;
+    grid-row: 1/2;
+    font-size: 1.2em;
     border-left: 1px solid #dee2e6;
 }
 
-.thingtodo i {
-    padding-right: 5px;
+ul.thing-icons li {
+    display:grid;
+    grid-template-columns: 20px 1fr;
+    grid-column-gap: 10px;
+    padding: 3px 0;
 }
 
-#thing-comment {
-    font-size: 1.3em;
+ul.thing-icons li i {
+    grid-column: 1/2;
+    align-self: center;
 }
 
-.item-icons {
-    flex: 1 1 auto;
-    min-height: 1px;
+ul.thing-icons li p {
+    grid-column: 2/3;
+    margin-bottom: 0;
+    line-height: 1.0;
+    font-size: small;
 }
 
-.account-img {
-    width: 50px;
-    height: 50px;
+.author {
+    grid-column: 1/3;
+    grid-row: 2/3;
+    display: grid;
+    grid-template-columns: auto 40px;
+    grid-column-gap: 5px;
+    text-align: right;
+    border-bottom: 1px solid #dee2e6;
 }
+
+.author img {
+    width: 40px;
+    height: 40px;
+    grid-column: 2/3;
+}
+
+.author small {
+    grid-column: 1/2;
+    align-self: end
+}
+
