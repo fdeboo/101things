@@ -3,14 +3,6 @@ body {
     font-family: 'Lato', sans-serif;
 }
 
-.hero-image {
-    background-image: url('https://res.cloudinary.com/fdeboo/image/upload/v1590666462/layout/bokeh-night-lights-city-9044_nxmprf.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 400px;
-}
-
 .logo {
     font-family: 'Patua One', cursive;
     font-size: 2em;
@@ -19,7 +11,6 @@ body {
 h1, h2 {
     font-family: 'Patua One', cursive;
 }
-
 
 /* Font colours */
 
@@ -36,7 +27,7 @@ h1, h2 {
 }
 
 .dark-blue {
-    color: #184759;;
+    color: #184759;
 }
 
 .light-blue {
@@ -89,18 +80,30 @@ button:focus {
     outline-offset: -4px;
 }
 
-
 .btn.focus, .btn:focus {
     outline: 0;
     box-shadow: none!important;
 }
 
 /* Home page */
+.hero-content {
+    background-image: linear-gradient(to right, rgba(96,139,165,0.2), rgba(24,70,89,0.4)), 
+    url('https://res.cloudinary.com/fdeboo/image/upload/v1590666462/layout/bokeh-night-lights-city-9044_nxmprf.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.search-form {
+    width: auto;
+    display: inline-block;
+    background-color: rgba(255,255,255);
+    border-radius: 30px;
+    padding: 10px;
+}
 
 .search-bar {
-    border:0;
-    border-bottom: 3px solid #594E16;
-    padding: 5px 0;
+    border: 0px;
 }
 
 input:-webkit-autofill,
@@ -112,14 +115,14 @@ input:-webkit-autofill:active  {
 }
 
 .search-input {
-    width: 100px;
+    width: 180px;
     transition: width 0.4s ease-in-out;
 }
 
 .search-input:focus-within, 
 .search-input:valid {
     outline: 0;
-    width: 100%;
+    width: 300px;
 }
 
 .search-false {

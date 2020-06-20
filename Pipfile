@@ -9,6 +9,7 @@ pylint = "*"
 flake8 = "*"
 autopep8 = "*"
 pep8 = "*"
+black = "*"
 
 [packages]
 flask = "*"
@@ -25,3 +26,6 @@ flask-login = "*"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true
