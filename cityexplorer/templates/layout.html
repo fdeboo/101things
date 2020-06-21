@@ -19,11 +19,21 @@
 </head>
 
 <body>
-    {% include 'includes/_navbar.html' %}
+    <div class="content">
+        {% include 'includes/_navbar.html' %}
 
         {% include 'includes/_messages.html' %}
 
-    {% block content %}{% endblock content %}
+        {% block content %}{% endblock content %}
+    </div>
+    <footer class="container pt-7">
+        <div class="row justify-content-center">
+            <a href="https://github.com/fdeboo" target="_blank"><i class="fab fa-github fa-lg"></i></a>
+            <a href="https://linkedin.com/in/frandeboo" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a>
+        </div>
+    </footer>
+
+
 
 
 

@@ -1,56 +1,58 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div class="row justify-content-center content-section">
-    <div class="col-md-9">
-        <main class="mr-4">
-            <h1 class="dark-gold">101 Things to do in {{ city }}</h1>
+<div class="container">
+    <div class="row justify-content-center content-section">
+        <div class="col-md-9">
+            <main class="mr-4">
+                <h1 class="dark-gold">101 Things to do in {{ city }}</h1>
 
-            <ol class="pl-0 py-3 pos-inside">
-                {% for thing in things %}
-                <div class="accordion thingtodo" id="thingtodo">
-                    <a href="#" id="heading{{ loop.index }}" class="text-left collapsed" data-toggle="collapse"
-                        data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
-                        <li class="suggestion-item">{{ thing['suggestion'] }}</li>
-                    </a>
+                <ol class="pl-0 py-3 pos-inside">
+                    {% for thing in things %}
+                    <div class="accordion thingtodo" id="thingtodo">
+                        <a href="#" id="heading{{ loop.index }}" class="text-left collapsed" data-toggle="collapse"
+                            data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
+                            <li class="suggestion-item">{{ thing['suggestion'] }}</li>
+                        </a>
 
-                    <div id="collapse{{ loop.index }}" class="collapse pl-4 py-2 mb-4 thing-grid"
-                        aria-labelledby="heading{{ loop.index }}" data-parent="#thingtodo">
-                        <ul class="thing-icons pr-3">
-                            <li>
-                                <i class="fas fa-tag light-gold"></i>
-                                <p>{{ thing['category'] }}</p>
-                            </li>
-                            <li>
-                                <i class="fas fa-money-bill-wave light-gold"></i>
-                                <p>{{ thing['cost'] }}</p>
-                            </li>
-                            <li>
-                                <i id="icon-url" class="fas fa-link light-gold"></i>
-                                <p><a href="{{ thing['url'] }}" target="_blank"> Visit website</a></p>
-                            </li>
-                        </ul>
-                        <div class="thing-comment">
-                            <div class="col-12">{{ thing['comment'] }}</div>
+                        <div id="collapse{{ loop.index }}" class="collapse pl-4 py-2 mb-4 thing-grid"
+                            aria-labelledby="heading{{ loop.index }}" data-parent="#thingtodo">
+                            <ul class="thing-icons pr-3">
+                                <li>
+                                    <i class="fas fa-tag light-gold"></i>
+                                    <p>{{ thing['category'] }}</p>
+                                </li>
+                                <li>
+                                    <i class="fas fa-money-bill-wave light-gold"></i>
+                                    <p>{{ thing['cost'] }}</p>
+                                </li>
+                                <li>
+                                    <i id="icon-url" class="fas fa-link light-gold"></i>
+                                    <p><a href="{{ thing['url'] }}" target="_blank"> Visit website</a></p>
+                                </li>
+                            </ul>
+                            <div class="thing-comment">
+                                <div class="col-12">{{ thing['comment'] }}</div>
+                            </div>
+                            <div class="author">
+                                <img class="rounded-circle" src="{{ thing['profile'] }}">
+                                <small>Suggested by <b>{{ thing['author'] }}</b></small>
+                            </div>
                         </div>
-                        <div class="author">
-                            <small>Suggested by <b>{{ thing['author'] }}</b></small>
-                            <img class="rounded-circle" src="{{ thing['profile'] }}">
-                        </div>
+
                     </div>
-
-                </div>
-                {% endfor %}
-            </ol>
+                    {% endfor %}
+                </ol>
 
 
-            {% if current_user.is_authenticated %}
-            <button class="btn submit-btn"> <a href="{{ url_for('add_suggestion', location=city) }}">Add Suggestion
-                </a>
-            </button>
-            {% endif %}
-            <main>
+                {% if current_user.is_authenticated %}
+                <button class="btn submit-btn"> <a href="{{ url_for('add_suggestion', location=city) }}">Add Suggestion
+                    </a>
+                </button>
+                {% endif %}
+                <main>
+        </div>
+        <aside class="col-md-3 border"></aside>
     </div>
-    <aside class="col-md-3 border"></aside>
 </div>
 {% endblock content %}
