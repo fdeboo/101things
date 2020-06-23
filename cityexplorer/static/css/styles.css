@@ -58,7 +58,9 @@ footer i {
     color: #608BA6;
 }
 
-
+.white {
+    color: #fff;
+}
 /* Universal elements */
 aside {
     min-height: 200px;
