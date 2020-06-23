@@ -26,9 +26,9 @@
         {% if locations.count() > 0 %}
         <div class="row flex-wrap justify-content-between align-items-center">
             <a href=""><i class="pale-pink fas fa-arrow-circle-left fa-3x"></i></a>
-            <div class="d-none justify-content">
+            <div class="d-flex justify-content-center">
             {% for location in locations %}
-            <a class="mr-2 my-3 dark-gold" href="{{ url_for('suggestion_list', city=location['location']) }}">
+            <a class="my-3 px-2 dark-gold" href="{{ url_for('suggestion_list', city=location['location']) }}">
                 <div class="card location-card" style="background-image:url('{{location['bg_img']}}')">
                     <div class="card-body d-flex">
                         <h2 class="align-self-center">101 Things to do in {{ location['location'] }}</h2>
@@ -37,7 +37,7 @@
             </a>
             {% endfor %}
             </div>
-            <a href=""><i class="pale-pink fas fa-arrow-circle-right fa-3x"></i></a>
+            <a href="{{url_for('index', )}}"><i class="pale-pink fas fa-arrow-circle-right fa-3x"></i></a>
         </div>
         {% else %}
         <div class="row flex-column align-items-center text-center search-false">
@@ -48,7 +48,6 @@
         {% endif %}
     </div>
 </div>
-
 
 <div class="text-center p-5" style>
     <button class="btn submit-btn p-3">

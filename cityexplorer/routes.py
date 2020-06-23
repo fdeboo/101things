@@ -22,7 +22,6 @@ from cityexplorer.utils import send_reset_email
 @app.route("/home", methods=["GET", "POST"])
 def index():
     form = SearchLocationForm()
-    page = request.args.get('page', 1, type=int)
     cities = mongo.db.cities
     searched = form.search.data
     if form.validate_on_submit():
@@ -37,22 +36,10 @@ def index():
     query = cities.find({})
     if cities.find({"thingsToDo": {"$exists": False}}):
         cities.delete_many({"thingsToDo": {"$exists": False}})
+    cur = query.sort("location").skip(page_num).limit(3)
     return render_template(
-        "home.html", locations=query, form=form, title="Home"
+        "home.html", locations=cur, form=form, title="Home"
     )
-
-    def skiplimit(page_size, page_num):
-        """returns a set of documents belonging to page number `page_num`
-        where size of each page is `page_size`.
-        """
-        # Calculate number of documents to skip
-        skips = page_size * (page_num - 1)
-
-        # Skip and limit
-        cursor = db['students'].find().skip(skips).limit(page_size)
-
-        # Return documents
-        return [x for x in cursor]
 
 
 # Users routes
@@ -71,8 +58,10 @@ def register():
                 "lname": form.lname.data,
                 "email": form.email.data.lower(),
                 "password": hashed_password,
-                "picture": ("https://res.cloudinary.com/fdeboo/"
-                            "image/upload/v1590514314/profile_pics/default.jpg")
+                "picture": (
+                    "https://res.cloudinary.com/fdeboo/"
+                    "image/upload/v1590514314/profile_pics/default.jpg"
+                ),
             }
         )
         flash("You are now registered and can log in", "success")

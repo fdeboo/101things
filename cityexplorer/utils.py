@@ -1,7 +1,7 @@
 import os
 from flask import url_for, render_template
 from flask_mail import Message
-from cityexplorer import mail
+from cityexplorer import mail, mongo
 from cityexplorer.models import User
 
 
@@ -23,11 +23,16 @@ def send_reset_email(user):
 {url_for('reset_token', token=token, _external=True)}
 
 If you did not make this request then simply ignore this email and no changes
- will be made.
+will be made.
 """
-
     msg.html = render_template(
         "reset_email.html", username=this_user, token=token
     )
 
     mail.send(msg)
+
+
+def skiplimit(page_size, page_num):
+    skips = page_size * (page_num - 1)
+    cursor = mongo.cities.find({}).skip(skips).limit(page_size)
+    return [x for x in cursor]
