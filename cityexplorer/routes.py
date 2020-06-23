@@ -36,8 +36,9 @@ def index():
     query = cities.find({})
     if cities.find({"thingsToDo": {"$exists": False}}):
         cities.delete_many({"thingsToDo": {"$exists": False}})
+    cur = query.sort("location").skip(page_num).limit(3)
     return render_template(
-        "home.html", locations=query, form=form, title="Home"
+        "home.html", locations=cur, form=form, title="Home"
     )
 
 
@@ -57,8 +58,10 @@ def register():
                 "lname": form.lname.data,
                 "email": form.email.data.lower(),
                 "password": hashed_password,
-                "picture": ("https://res.cloudinary.com/fdeboo/"
-                            "image/upload/v1590514314/profile_pics/default.jpg")
+                "picture": (
+                    "https://res.cloudinary.com/fdeboo/"
+                    "image/upload/v1590514314/profile_pics/default.jpg"
+                ),
             }
         )
         flash("You are now registered and can log in", "success")

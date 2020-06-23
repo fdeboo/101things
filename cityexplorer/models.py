@@ -49,4 +49,5 @@ def load_user(username):
     user = mongo.db.users.find_one({'username': username})
     if not user:
         return None
-    return User(user['_id'], user['username'], user['fname'], user['lname'], user['email'])
+    return User(user['_id'], user['username'], user['fname'], user['lname'],
+                user['email'])
