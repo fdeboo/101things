@@ -27,7 +27,7 @@ def index():
     page_num = request.args.get("page_num", default=1, type=int)
     next_num = page_num + 1
     prev_num = page_num - 1
-    limit = 2
+    limit = 3
     if prev_num < 1:
         prev_num = 1
     if form.validate_on_submit():
