@@ -20,26 +20,46 @@ from cityexplorer.utils import send_reset_email, skiplimit
 
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
-def index(page_num=1):
+def index():
     form = SearchLocationForm()
     cities = mongo.db.cities
     searched = form.search.data
+    page_num = request.args.get("page_num", default=1, type=int)
+    next_num = page_num + 1
+    prev_num = page_num - 1
+    limit = 2
+    if prev_num < 1:
+        prev_num = 1
     if form.validate_on_submit():
-        query = cities.find({"location": form.search.data.title()})
+        search = cities.find({"location": form.search.data.title()})
+        page_num = 1
+        pages = search.count() / limit
+        cur = skiplimit(page_num, search, limit)
         return render_template(
             "home.html",
-            locations=query,
+            locations=cur,
             searched=searched,
             form=form,
+            prev_num=prev_num,
+            next_num=prev_num,
+            page_num=page_num,
+            pages=pages,
             title="Home",
         )
     query = cities.find({})
     if cities.find({"thingsToDo": {"$exists": False}}):
         cities.delete_many({"thingsToDo": {"$exists": False}})
-    cur = skiplimit(page_num)
-    print(cur)
+    cur = skiplimit(page_num, query, limit)
+    pages = query.count() / limit
     return render_template(
-        "home.html", locations=cur, form=form, title="Home"
+        "home.html",
+        locations=cur,
+        prev_num=prev_num,
+        next_num=next_num,
+        pages=pages,
+        page_num=page_num,
+        form=form,
+        title="Home",
     )
 
 

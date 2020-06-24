@@ -118,7 +118,6 @@ button:focus {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    min-height: 400px;
 }
 
 .search-form {
@@ -263,5 +262,19 @@ ul.thing-icons li p {
 ul.navbar-nav li {
     border-right: 1px solid #8C7811;
     padding: 0 12px;
+}
+
+.arrow {
+    font-size: 50px;
+    top: 50%;
+    margin-top: -25px;
+}
+
+#arrow-l {
+    left: 0;
+}
+
+#arrow-r {
+    right: 0;
 }
 

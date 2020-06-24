@@ -1,7 +1,7 @@
 import os
 from flask import url_for, render_template
 from flask_mail import Message
-from cityexplorer import mail, mongo
+from cityexplorer import mail
 from cityexplorer.models import User
 
 
@@ -32,7 +32,7 @@ will be made.
     mail.send(msg)
 
 
-def skiplimit(page_num):
-    skips = 3 * (page_num - 1)
-    cursor = mongo.db.cities.find({}).sort('location').skip(skips).limit(3)
+def skiplimit(page_num, query, limit):
+    skips = limit * (page_num - 1)
+    cursor = query.sort('location').skip(skips).limit(limit)
     return cursor

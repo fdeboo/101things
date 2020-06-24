@@ -23,25 +23,35 @@
                 {% endif %}
             </form>
         </div>
+        
         {% if locations.count() > 0 %}
-        <div class="row flex-wrap justify-content-between align-items-center">
-            <a href=""><i class="pale-pink fas fa-arrow-circle-left fa-3x"></i></a>
-            <div class="d-flex justify-content-center">
-            {% for location in locations %}
-            <a class="my-3 px-2 dark-gold" href="{{ url_for('suggestion_list', city=location['location']) }}">
-                <div class="card location-card" style="background-image:url('{{location['bg_img']}}')">
-                    <div class="card-body d-flex">
-                        <h2 class="align-self-center">101 Things to do in {{ location['location'] }}</h2>
-                    </div>
-                </div>
+        <div class="row flex-nowrap justify-content-center align-items-center position-relative">
+            {% if page_num > 1 %}
+            <a href="{{url_for('index', page_num=prev_num)}}" id="arrow-l" class="position-absolute arrow">
+                <i class="pale-pink fas fa-arrow-circle-left"></i>
             </a>
-            {% endfor %}
+            {% endif %}
+            <div class="d-flex flex-wrap justify-content-center">
+                {% for location in locations %}
+                <a class="my-3 px-2 dark-gold" href="{{ url_for('suggestion_list', city=location['location']) }}">
+                    <div class="card location-card" style="background-image:url('{{location['bg_img']}}')">
+                        <div class="card-body d-flex">
+                            <h2 class="align-self-center">101 Things to do in {{ location['location'] }}</h2>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
             </div>
-            <a href="{{url_for('index')}}"><i class="pale-pink fas fa-arrow-circle-right fa-3x"></i></a>
+            {% if page_num < pages %}
+            <a href="{{url_for('index', page_num=next_num)}}" id="arrow-r" class="position-absolute arrow">
+                <i class="pale-pink fas fa-arrow-circle-right"></i>
+            </a>
+            {% endif %}
         </div>
         {% else %}
         <div class="row flex-column align-items-center text-center search-false">
-            <img class="my-3" src="{{ url_for('static', filename='images/searchicon_lg.png')}}" style="width:50px;height:50px;" />
+            <img class="my-3" src="{{ url_for('static', filename='images/searchicon_lg.png')}}"
+                style="width:50px;height:50px;" />
             <p> <span>{{searched}}</span> not found.<br /> Do you want to add this location?
             </p>
         </div>
