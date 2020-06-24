@@ -118,6 +118,7 @@ button:focus {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    min-height: 200px;
 }
 
 .search-form {
@@ -153,8 +154,6 @@ input:-webkit-autofill:active  {
 
 .search-false {
     font-size: 2em;
-    color: #fff;
-    text-shadow: 1px 1px 5px #000;
 }
 
 .search-false span {
@@ -264,17 +263,7 @@ ul.navbar-nav li {
     padding: 0 12px;
 }
 
-.arrow {
-    font-size: 50px;
-    top: 50%;
-    margin-top: -25px;
-}
-
-#arrow-l {
-    left: 0;
-}
-
-#arrow-r {
-    right: 0;
+.disabled {
+    opacity: 0.4;
 }
 
