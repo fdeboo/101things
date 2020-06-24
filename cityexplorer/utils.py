@@ -32,7 +32,7 @@ will be made.
     mail.send(msg)
 
 
-def skiplimit(page_size, page_num):
-    skips = page_size * (page_num - 1)
-    cursor = mongo.cities.find({}).skip(skips).limit(page_size)
-    return [x for x in cursor]
+def skiplimit(page_num):
+    skips = 3 * (page_num - 1)
+    cursor = mongo.db.cities.find({}).sort('location').skip(skips).limit(3)
+    return cursor

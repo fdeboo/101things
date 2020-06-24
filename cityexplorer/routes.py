@@ -15,12 +15,12 @@ from cityexplorer.forms import (
     SearchLocationForm,
 )
 from cityexplorer import app, mongo
-from cityexplorer.utils import send_reset_email
+from cityexplorer.utils import send_reset_email, skiplimit
 
 
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
-def index():
+def index(page_num=1):
     form = SearchLocationForm()
     cities = mongo.db.cities
     searched = form.search.data
@@ -36,7 +36,8 @@ def index():
     query = cities.find({})
     if cities.find({"thingsToDo": {"$exists": False}}):
         cities.delete_many({"thingsToDo": {"$exists": False}})
-    cur = query.sort("location").skip(page_num).limit(3)
+    cur = skiplimit(page_num)
+    print(cur)
     return render_template(
         "home.html", locations=cur, form=form, title="Home"
     )
