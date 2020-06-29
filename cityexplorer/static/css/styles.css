@@ -192,6 +192,7 @@ input:-webkit-autofill:active  {
 .suggestion-item {
     font-size: 1.3em;
     font-weight: 400;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .thingtodo li:hover,

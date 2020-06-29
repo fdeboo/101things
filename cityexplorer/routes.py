@@ -267,9 +267,8 @@ def suggestion_list(city):
         page_parameter="page", per_page_parameter="per_page"
     )
     per_page = 3
-    offset = page * per_page
-    page = request.args.get("page", type=int, default=1)
-    suggestions = cities.aggregate(
+    offset = (page-1) * per_page
+    query = cities.aggregate(
         [
             {"$match": {"location": city}},
             {"$unwind": "$thingsToDo"},
@@ -296,16 +295,19 @@ def suggestion_list(city):
         ]
     )
 
-    array = list(suggestions)
+    array = list(query)
     total = len(array)
-    posts = array[offset: offset + per_page]
+    suggestions = array[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
+    print(page)
+    print(per_page)
+    print(offset)
     return render_template(
         "thingstodo.html",
         city=city,
-        things=posts,
+        things=suggestions,
         page=page,
         per_page=per_page,
         pagination=pagination,

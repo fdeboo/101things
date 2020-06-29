@@ -6,14 +6,15 @@
         <div class="col-md-9">
             <main class="mr-4">
                 <h1 class="dark-gold">101 Things to do in {{ city }}</h1>
-                {{ pagination.links }}
-
-                <ol class="pl-0 py-3 pos-inside">
+                <div class="pl-0 py-3">
                     {% for thing in things %}
                     <div class="accordion thingtodo" id="thingtodo">
                         <a href="#" id="heading{{ loop.index }}" class="text-left collapsed" data-toggle="collapse"
                             data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
-                            <li class="suggestion-item">{{ thing['suggestion'] }}</li>
+                            <div class="suggestion-item py-2">
+                                <div class="d-inline pr-2">{{ loop.index + (page - 1) * per_page }}</div>
+                                <div class="d-inline">{{ thing['suggestion'] }}</div>
+                            </div>
                         </a>
 
                         <div id="collapse{{ loop.index }}" class="collapse pl-4 py-2 mb-4 thing-grid"
@@ -43,27 +44,17 @@
 
                     </div>
                     {% endfor %}
-                </ol>
-                {{ pagination.links }}
-                {% if current_user.is_authenticated %}
-                <button class="btn submit-btn"> <a href="{{ url_for('add_suggestion', location=city) }}">Add Suggestion
-                    </a>
-                </button>
-                {% endif %}
+                    </ol>
+                    {{ pagination.links }}
+                    {% if current_user.is_authenticated %}
+                    <button class="btn submit-btn"> <a href="{{ url_for('add_suggestion', location=city) }}">Add
+                            Suggestion
+                        </a>
+                    </button>
+                    {% endif %}
             </main>
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <tbody>
-                        {% for thing in things %}
-                        <tr>
-                            <td>{{ loop.index + (page - 1) * per_page }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
         </div>
-    <aside class="col-md-3 border"></aside>
+        <aside class="col-md-3 border"></aside>
     </div>
 </div>
 
