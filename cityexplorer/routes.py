@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import current_user, login_user, logout_user, login_required
+from flask_paginate import Pagination, get_page_args
 from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
 from cityexplorer.models import User
@@ -31,10 +32,13 @@ def index():
     if prev_num < 1:
         prev_num = 1
     if form.validate_on_submit():
-        search = cities.find({"location": form.search.data.title()})
+        search = form.search.data
+        results = cities.find(
+            {"location": {"$regex": search, "$options": "i"}}
+        )
         page_num = 1
-        pages = search.count() / limit
-        cur = skiplimit(page_num, search, limit)
+        pages = results.count() / limit
+        cur = skiplimit(page_num, results, limit)
         return render_template(
             "home.html",
             locations=cur,
@@ -259,6 +263,12 @@ def add_suggestion(location):
 @app.route("/thingstodo/<city>", methods=["GET", "POST"])
 def suggestion_list(city):
     cities = mongo.db.cities
+    page, per_page, offset = get_page_args(
+        page_parameter="page", per_page_parameter="per_page"
+    )
+    per_page = 3
+    offset = page * per_page
+    page = request.args.get("page", type=int, default=1)
     suggestions = cities.aggregate(
         [
             {"$match": {"location": city}},
@@ -285,6 +295,19 @@ def suggestion_list(city):
             },
         ]
     )
+
+    array = list(suggestions)
+    total = len(array)
+    posts = array[offset: offset + per_page]
+    pagination = Pagination(
+        page=page, per_page=per_page, total=total, css_framework="bootstrap4"
+    )
     return render_template(
-        "thingstodo.html", city=city, things=suggestions, title="Things to do"
+        "thingstodo.html",
+        city=city,
+        things=posts,
+        page=page,
+        per_page=per_page,
+        pagination=pagination,
+        title="Things to do",
     )

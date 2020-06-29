@@ -23,6 +23,8 @@ pillow = "*"
 cloudinary = "*"
 flask-mail = "*"
 flask-login = "*"
+flask-paginater = "*"
+flask-paginate = "*"
 
 [requires]
 python_version = "3.7"

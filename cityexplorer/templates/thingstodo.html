@@ -6,6 +6,7 @@
         <div class="col-md-9">
             <main class="mr-4">
                 <h1 class="dark-gold">101 Things to do in {{ city }}</h1>
+                {{ pagination.links }}
 
                 <ol class="pl-0 py-3 pos-inside">
                     {% for thing in things %}
@@ -43,16 +44,28 @@
                     </div>
                     {% endfor %}
                 </ol>
-
-
+                {{ pagination.links }}
                 {% if current_user.is_authenticated %}
                 <button class="btn submit-btn"> <a href="{{ url_for('add_suggestion', location=city) }}">Add Suggestion
                     </a>
                 </button>
                 {% endif %}
-                <main>
+            </main>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tbody>
+                        {% for thing in things %}
+                        <tr>
+                            <td>{{ loop.index + (page - 1) * per_page }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <aside class="col-md-3 border"></aside>
+    <aside class="col-md-3 border"></aside>
     </div>
 </div>
+
+
 {% endblock content %}
