@@ -30,9 +30,3 @@ will be made.
     )
 
     mail.send(msg)
-
-
-def skiplimit(page_num, query, limit):
-    skips = limit * (page_num - 1)
-    cursor = query.sort('location').skip(skips).limit(limit)
-    return cursor

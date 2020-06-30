@@ -195,8 +195,8 @@ input:-webkit-autofill:active  {
     border-bottom: 1px solid #dee2e6;
 }
 
-.thingtodo li:hover,
-.thingtodo li:focus {
+.suggestion-item:hover,
+.suggestion-item:focus {
     background-color:#608ba61f
 }
 
@@ -245,7 +245,6 @@ ul.thing-icons li p {
     display: grid;
     grid-template-columns: 40px auto;
     grid-column-gap: 5px;
-    border-bottom: 1px solid #dee2e6;
 }
 
 .author img {
@@ -266,5 +265,30 @@ ul.navbar-nav li {
 
 .disabled {
     opacity: 0.4;
+}
+
+.page-link {
+    border: none;
+    color: #8C7811;
+}
+
+.page-item.active .page-link {
+    background-color: #8C7811;
+    color:#fff;
+}
+
+.pagination-page-info {
+    padding: .6em;
+    padding-left: 0;
+    width: 40em;
+    margin: .5em 0;
+    font-size: 12px;
+    text-align: center;
+}
+.pagination-page-info b {
+    color: #8C7811;
+    padding-left: 2px;
+    padding: .1em .25em;
+    font-size: 150%;
 }
 

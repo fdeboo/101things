@@ -41,29 +41,8 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        {% if page_num > 1 %}
-        <a href="{{url_for('index', page_num=prev_num)}}" id="arrow-l" class="m-2">
-            <i class="light-gold fas fa-arrow-circle-left fa-3x"></i>
-        </a>
-        {% else %}
-        <a href="#" id="arrow-l" class="m-2">
-            <i class="light-gold disabled fas fa-arrow-circle-left fa-3x"></i>
-        </a>
-        {% endif %}
-
-
-
-
-        {% if page_num < pages %}
-        <a href="{{url_for('index', page_num=next_num)}}" id="arrow-r" class="m-2">
-            <i class="light-gold fas fa-arrow-circle-right fa-3x"></i>
-        </a>
-        {% else %}
-        <a href="#" id="arrow-r" class="m-2">
-            <i class="light-gold disabled fas fa-arrow-circle-right fa-3x"></i>
-        </a>
-        {% endif %}
-        </a>
+        {{ pagination.info }}
+        {{ pagination.links }}
     </div>
     {% else %}
     <div class="row flex-column align-items-center text-center search-false">

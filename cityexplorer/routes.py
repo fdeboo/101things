@@ -16,7 +16,7 @@ from cityexplorer.forms import (
     SearchLocationForm,
 )
 from cityexplorer import app, mongo
-from cityexplorer.utils import send_reset_email, skiplimit
+from cityexplorer.utils import send_reset_email
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -24,44 +24,37 @@ from cityexplorer.utils import send_reset_email, skiplimit
 def index():
     form = SearchLocationForm()
     cities = mongo.db.cities
-    searched = form.search.data
-    page_num = request.args.get("page_num", default=1, type=int)
-    next_num = page_num + 1
-    prev_num = page_num - 1
-    limit = 3
-    if prev_num < 1:
-        prev_num = 1
+    searched = ''
+    page, per_page, offset = get_page_args(
+        page_parameter="page", per_page_parameter="per_page"
+    )
+    per_page = 4
+    offset = (page-1) * per_page
     if form.validate_on_submit():
-        search = form.search.data
-        results = cities.find(
-            {"location": {"$regex": search, "$options": "i"}}
+        searched = form.search.data
+        query = cities.find(
+            {"location": {"$regex": searched, "$options": "i"}}
         )
-        page_num = 1
-        pages = results.count() / limit
-        cur = skiplimit(page_num, results, limit)
-        return render_template(
-            "home.html",
-            locations=cur,
-            searched=searched,
-            form=form,
-            prev_num=prev_num,
-            next_num=prev_num,
-            page_num=page_num,
-            pages=pages,
-            title="Home",
+    else:
+        query = cities.find({})
+        if cities.find({"thingsToDo": {"$exists": False}}):
+            cities.delete_many({"thingsToDo": {"$exists": False}})
+    total = query.count()
+    locations = query[offset: offset + per_page]
+    print(query)
+    pagination = Pagination(
+        page=page,
+        per_page=per_page,
+        total=total,
+        css_framework="bootstrap4"
         )
-    query = cities.find({})
-    if cities.find({"thingsToDo": {"$exists": False}}):
-        cities.delete_many({"thingsToDo": {"$exists": False}})
-    cur = skiplimit(page_num, query, limit)
-    pages = query.count() / limit
     return render_template(
         "home.html",
-        locations=cur,
-        prev_num=prev_num,
-        next_num=next_num,
-        pages=pages,
-        page_num=page_num,
+        locations=locations,
+        searched=searched,
+        page=page,
+        per_page=per_page,
+        pagination=pagination,
         form=form,
         title="Home",
     )
@@ -301,9 +294,6 @@ def suggestion_list(city):
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
-    print(page)
-    print(per_page)
-    print(offset)
     return render_template(
         "thingstodo.html",
         city=city,

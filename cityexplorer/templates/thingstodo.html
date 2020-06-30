@@ -12,7 +12,7 @@
                         <a href="#" id="heading{{ loop.index }}" class="text-left collapsed" data-toggle="collapse"
                             data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
                             <div class="suggestion-item py-2">
-                                <div class="d-inline pr-2">{{ loop.index + (page - 1) * per_page }}</div>
+                                <div class="d-inline pr-2">{{ loop.index + (page - 1) * per_page }}.</div>
                                 <div class="d-inline">{{ thing['suggestion'] }}</div>
                             </div>
                         </a>
@@ -44,7 +44,8 @@
 
                     </div>
                     {% endfor %}
-                    </ol>
+                    </div>
+                    {{ pagination.info }}
                     {{ pagination.links }}
                     {% if current_user.is_authenticated %}
                     <button class="btn submit-btn"> <a href="{{ url_for('add_suggestion', location=city) }}">Add
