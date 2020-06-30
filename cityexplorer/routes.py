@@ -14,6 +14,7 @@ from cityexplorer.forms import (
     CreateLocationForm,
     CreateSuggestionForm,
     SearchLocationForm,
+    FilterResultsForm
 )
 from cityexplorer import app, mongo
 from cityexplorer.utils import send_reset_email
@@ -255,6 +256,7 @@ def add_suggestion(location):
 
 @app.route("/thingstodo/<city>", methods=["GET", "POST"])
 def suggestion_list(city):
+    form = FilterResultsForm()
     cities = mongo.db.cities
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
@@ -301,5 +303,6 @@ def suggestion_list(city):
         page=page,
         per_page=per_page,
         pagination=pagination,
+        form=form,
         title="Things to do",
     )

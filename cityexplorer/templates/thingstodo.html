@@ -55,7 +55,45 @@
                     {% endif %}
             </main>
         </div>
-        <aside class="col-md-3 border"></aside>
+        <aside class="col-md-3 border">
+        <form method="POST" action=""> 
+            <fieldset class="form-group">
+                <div class="form-group">
+                    {{ form.category.label(class="form-control-label") }}
+                    {% if form.category.errors %}
+                    {{ form.category(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.category.errors %}
+                        <span> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.category(class="") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.cost.label(class="form-control-label") }}
+                    {% if form.cost.errors %}
+                    {{ form.cost(class="is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.category.errors %}
+                        <span> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.cost(class="") }}
+                    {% endif %}
+                </div>
+
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn submit-btn") }}
+                <a href="{{ url_for('suggestion_list', city=city) }}" class="btn submit-btn cancel-btn">Cancel</a>
+            </div>
+
+        </form>
+        </aside>
     </div>
 </div>
 
