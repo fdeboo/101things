@@ -42,7 +42,6 @@ def index():
             cities.delete_many({"thingsToDo": {"$exists": False}})
     total = query.count()
     locations = query[offset: offset + per_page]
-    print(query)
     pagination = Pagination(
         page=page,
         per_page=per_page,
@@ -257,7 +256,11 @@ def add_suggestion(location):
 @app.route("/thingstodo/<city>", methods=["GET", "POST"])
 def suggestion_list(city):
     form = FilterResultsForm()
+    if form.validate_on_submit():
+        print(str(form.cost.data))
+        print(str(form.category.data))
     cities = mongo.db.cities
+    print(form.errors)
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
     )

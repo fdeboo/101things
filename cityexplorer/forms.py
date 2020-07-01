@@ -8,7 +8,8 @@ from wtforms import (
     PasswordField,
     BooleanField,
     SelectField,
-    RadioField,
+    SelectMultipleField,
+    widgets
 )
 from wtforms.fields.html5 import SearchField
 from wtforms.validators import (
@@ -164,8 +165,13 @@ class CreateSuggestionForm(FlaskForm):
     submit = SubmitField("Add")
 
 
+class MultiCheckboxField(SelectMultipleField):
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
+
+
 class FilterResultsForm(FlaskForm):
-    category = RadioField(
+    category = MultiCheckboxField(
         "Category",
         choices=[
             ("Museums", "Museums"),
@@ -186,7 +192,7 @@ class FilterResultsForm(FlaskForm):
             ("Tour Groups", "Tour Groups")
         ],
     )
-    cost = RadioField(
+    cost = MultiCheckboxField(
         "Cost Per Person",
         choices=[
             ("", "Select"),
@@ -197,4 +203,4 @@ class FilterResultsForm(FlaskForm):
             ("More than £50", "Over £50"),
         ],
     )
-    submit = SubmitField("Filter")
+    submit = SubmitField("Apply")
