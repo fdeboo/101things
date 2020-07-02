@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_paginate import Pagination, get_page_args
@@ -23,6 +23,7 @@ from cityexplorer.utils import send_reset_email
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def index():
+    session.clear()
     form = SearchLocationForm()
     cities = mongo.db.cities
     searched = ""
@@ -41,7 +42,7 @@ def index():
         if cities.find({"thingsToDo": {"$exists": False}}):
             cities.delete_many({"thingsToDo": {"$exists": False}})
     total = query.count()
-    locations = query[offset : offset + per_page]
+    locations = query[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
@@ -60,6 +61,7 @@ def index():
 # Users routes
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    session.clear()
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = RegistrationForm()
@@ -86,6 +88,7 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    session.clear()
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = LoginForm()
@@ -123,6 +126,7 @@ def logout():
 @app.route("/account", methods=["GET", "POST"])
 @login_required
 def account():
+    session.clear()
     form = UpdateAccountForm()
     users = mongo.db.users
     user = users.find_one({"username": current_user.username})
@@ -260,8 +264,14 @@ def suggestion_list(city):
     per_page = 3
     offset = (page - 1) * per_page
     query = ""
-    if form.validate_on_submit():
-        filters = form.category.data
+    if form.validate_on_submit() or "filters" in session:
+        if form.validate_on_submit() or "filters" in session:
+            filters = (
+                form.category.data
+                if form.category.data
+                else session["filters"]
+            )
+        session["filters"] = filters
         array = []
         for filter in filters:
             newdict = {}
@@ -292,7 +302,7 @@ def suggestion_list(city):
                         "author": "$user_profile.username",
                         "profile": "$user_profile.picture",
                     }
-                }
+                },
             ]
         )
     else:
@@ -324,7 +334,7 @@ def suggestion_list(city):
         )
     results = list(query)
     total = len(results)
-    suggestions = results.skip(offset).limit(per_page)
+    suggestions = results[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )

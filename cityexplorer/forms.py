@@ -9,7 +9,7 @@ from wtforms import (
     BooleanField,
     SelectField,
     SelectMultipleField,
-    widgets
+    widgets,
 )
 from wtforms.fields.html5 import SearchField
 from wtforms.validators import (
@@ -190,7 +190,7 @@ class FilterResultsForm(FlaskForm):
             ("Attractions", "Attractions"),
             ("PLaces of Worship", "Places of Worship"),
             ("Plazas", "Plazas"),
-            ("Tour Groups", "Tour Groups")
+            ("Tour Groups", "Tour Groups"),
         ],
     )
     cost = MultiCheckboxField(
