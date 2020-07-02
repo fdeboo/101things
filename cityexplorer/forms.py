@@ -171,6 +171,7 @@ class MultiCheckboxField(SelectMultipleField):
 
 
 class FilterResultsForm(FlaskForm):
+    location = HiddenField("Location")
     category = MultiCheckboxField(
         "Category",
         choices=[
@@ -195,7 +196,6 @@ class FilterResultsForm(FlaskForm):
     cost = MultiCheckboxField(
         "Cost Per Person",
         choices=[
-            ("", "Select"),
             ("Free", "Free"),
             ("Less than £10", "Less than £10"),
             ("£10-20", "£10-£20"),
