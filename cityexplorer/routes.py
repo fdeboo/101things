@@ -14,6 +14,7 @@ from cityexplorer.forms import (
     CreateLocationForm,
     CreateSuggestionForm,
     SearchLocationForm,
+    FilterResultsForm,
 )
 from cityexplorer import app, mongo
 from cityexplorer.utils import send_reset_email
@@ -24,12 +25,12 @@ from cityexplorer.utils import send_reset_email
 def index():
     form = SearchLocationForm()
     cities = mongo.db.cities
-    searched = ''
+    searched = ""
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
     )
     per_page = 4
-    offset = (page-1) * per_page
+    offset = (page - 1) * per_page
     if form.validate_on_submit():
         searched = form.search.data
         query = cities.find(
@@ -40,14 +41,10 @@ def index():
         if cities.find({"thingsToDo": {"$exists": False}}):
             cities.delete_many({"thingsToDo": {"$exists": False}})
     total = query.count()
-    locations = query[offset: offset + per_page]
-    print(query)
+    locations = query[offset : offset + per_page]
     pagination = Pagination(
-        page=page,
-        per_page=per_page,
-        total=total,
-        css_framework="bootstrap4"
-        )
+        page=page, per_page=per_page, total=total, css_framework="bootstrap4"
+    )
     return render_template(
         "home.html",
         locations=locations,
@@ -255,42 +252,79 @@ def add_suggestion(location):
 
 @app.route("/thingstodo/<city>", methods=["GET", "POST"])
 def suggestion_list(city):
+    form = FilterResultsForm()
     cities = mongo.db.cities
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
     )
     per_page = 3
-    offset = (page-1) * per_page
-    query = cities.aggregate(
-        [
-            {"$match": {"location": city}},
-            {"$unwind": "$thingsToDo"},
-            {
-                "$lookup": {
-                    "from": "users",
-                    "localField": "thingsToDo.author",
-                    "foreignField": "username",
-                    "as": "user_profile",
+    offset = (page - 1) * per_page
+    query = ""
+    if form.validate_on_submit():
+        filters = form.category.data
+        array = []
+        for filter in filters:
+            newdict = {}
+            newdict["thingsToDo.category"] = filter
+            array.append(newdict)
+        print(type(array))
+        print(array)
+        query = cities.aggregate(
+            [
+                {"$unwind": "$thingsToDo"},
+                {"$match": {"location": city, "$or": array}},
+                {
+                    "$lookup": {
+                        "from": "users",
+                        "localField": "thingsToDo.author",
+                        "foreignField": "username",
+                        "as": "user_profile",
+                    }
+                },
+                {"$unwind": "$user_profile"},
+                {
+                    "$project": {
+                        "suggestion": "$thingsToDo.suggestion",
+                        "cost": "$thingsToDo.cost",
+                        "category": "$thingsToDo.category",
+                        "url": "$thingsToDo.url",
+                        "comment": "$thingsToDo.comment",
+                        "author": "$user_profile.username",
+                        "profile": "$user_profile.picture",
+                    }
                 }
-            },
-            {"$unwind": "$user_profile"},
-            {
-                "$project": {
-                    "suggestion": "$thingsToDo.suggestion",
-                    "cost": "$thingsToDo.cost",
-                    "category": "$thingsToDo.category",
-                    "url": "$thingsToDo.url",
-                    "comment": "$thingsToDo.comment",
-                    "author": "$user_profile.username",
-                    "profile": "$user_profile.picture",
-                }
-            },
-        ]
-    )
-
-    array = list(query)
-    total = len(array)
-    suggestions = array[offset: offset + per_page]
+            ]
+        )
+    else:
+        query = cities.aggregate(
+            [
+                {"$match": {"location": city}},
+                {"$unwind": "$thingsToDo"},
+                {
+                    "$lookup": {
+                        "from": "users",
+                        "localField": "thingsToDo.author",
+                        "foreignField": "username",
+                        "as": "user_profile",
+                    }
+                },
+                {"$unwind": "$user_profile"},
+                {
+                    "$project": {
+                        "suggestion": "$thingsToDo.suggestion",
+                        "cost": "$thingsToDo.cost",
+                        "category": "$thingsToDo.category",
+                        "url": "$thingsToDo.url",
+                        "comment": "$thingsToDo.comment",
+                        "author": "$user_profile.username",
+                        "profile": "$user_profile.picture",
+                    }
+                },
+            ]
+        )
+    results = list(query)
+    total = len(results)
+    suggestions = results.skip(offset).limit(per_page)
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
@@ -301,5 +335,6 @@ def suggestion_list(city):
         page=page,
         per_page=per_page,
         pagination=pagination,
+        form=form,
         title="Things to do",
     )

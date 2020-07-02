@@ -8,6 +8,8 @@ from wtforms import (
     PasswordField,
     BooleanField,
     SelectField,
+    SelectMultipleField,
+    widgets
 )
 from wtforms.fields.html5 import SearchField
 from wtforms.validators import (
@@ -24,7 +26,9 @@ from cityexplorer import mongo
 
 
 class SearchLocationForm(FlaskForm):
-    search = SearchField("Search", validators=[InputRequired(), Length(max=50)])
+    search = SearchField(
+        "Search", validators=[InputRequired(), Length(max=50)]
+    )
     submit = SubmitField("Search")
 
 
@@ -159,3 +163,44 @@ class CreateSuggestionForm(FlaskForm):
     )
     comment = TextAreaField("Comment", validators=[Length(min=5, max=500)])
     submit = SubmitField("Add")
+
+
+class MultiCheckboxField(SelectMultipleField):
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
+
+
+class FilterResultsForm(FlaskForm):
+    location = HiddenField("Location")
+    category = MultiCheckboxField(
+        "Category",
+        choices=[
+            ("Museums", "Museums"),
+            ("Nature & Parks", "Nature & Parks"),
+            ("Shopping", "Shopping"),
+            ("Foodie Hotspots", "Foodie Hotspots"),
+            ("Restaurants & Bars", "Restaurants & Bars"),
+            ("Tourist Landmarks", "Tourist Landmarks"),
+            ("Theme Parks", "Theme Parks"),
+            ("Accommodation", "Accommodation"),
+            ("Theatre & Shows", "Theatre & Shows"),
+            ("Skyscraper", "Skyscraper"),
+            ("Vineyards", "Vineyards"),
+            ("Zoo & Aquariums", "Zoos & Aquariums"),
+            ("Attractions", "Attractions"),
+            ("PLaces of Worship", "Places of Worship"),
+            ("Plazas", "Plazas"),
+            ("Tour Groups", "Tour Groups")
+        ],
+    )
+    cost = MultiCheckboxField(
+        "Cost Per Person",
+        choices=[
+            ("Free", "Free"),
+            ("Less than £10", "Less than £10"),
+            ("£10-20", "£10-£20"),
+            ("£20-50", "£20-£50"),
+            ("More than £50", "Over £50"),
+        ],
+    )
+    submit = SubmitField("Apply")

@@ -44,18 +44,52 @@
 
                     </div>
                     {% endfor %}
-                    </div>
-                    {{ pagination.info }}
-                    {{ pagination.links }}
-                    {% if current_user.is_authenticated %}
-                    <button class="btn submit-btn"> <a href="{{ url_for('add_suggestion', location=city) }}">Add
-                            Suggestion
-                        </a>
-                    </button>
-                    {% endif %}
+                </div>
+                {{ pagination.info }}
+                {{ pagination.links }}
+                {% if current_user.is_authenticated %}
+                <button class="btn submit-btn"> <a href="{{ url_for('add_suggestion', location=city) }}">Add
+                        Suggestion
+                    </a>
+                </button>
+                {% endif %}
             </main>
         </div>
-        <aside class="col-md-3 border"></aside>
+        <aside class="col-md-3 border">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <div class="form-group">
+                        {{ form.category.label(class="form-control-label") }}
+                        <table>
+                            {% for subfield in form.category %}
+                            <tr>
+                                <td>{{ subfield }}</td>
+                                <td>{{ subfield.label }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.location(value=city) }}
+                        {{ form.cost.label(class="form-control-label") }}
+                        <table>
+                            {% for subfield in form.cost %}
+                            <tr>
+                                <td>{{ subfield }}</td>
+                                <td>{{ subfield.label }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn submit-btn") }}
+                </div>
+
+            </form>
+        </aside>
     </div>
 </div>
 
