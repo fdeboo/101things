@@ -23,6 +23,7 @@ from cityexplorer.utils import send_reset_email
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def index():
+    ''' Description '''
     session.clear()
     form = SearchLocationForm()
     cities = mongo.db.cities
@@ -61,6 +62,7 @@ def index():
 # Users routes
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    ''' Description '''
     session.clear()
     if current_user.is_authenticated:
         return redirect(url_for("index"))
@@ -88,6 +90,7 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    ''' Description '''
     session.clear()
     if current_user.is_authenticated:
         return redirect(url_for("index"))
@@ -119,6 +122,7 @@ def login():
 
 @app.route("/logout")
 def logout():
+    ''' Description '''
     logout_user()
     return redirect(url_for("index"))
 
@@ -126,6 +130,7 @@ def logout():
 @app.route("/account", methods=["GET", "POST"])
 @login_required
 def account():
+    ''' Description '''
     session.clear()
     form = UpdateAccountForm()
     users = mongo.db.users
@@ -140,7 +145,7 @@ def account():
                 height=150,
                 crop="fill",
             )
-            image_url, options = cloudinary_url(uploaded_image["public_id"])
+            image_url = cloudinary_url(uploaded_image["public_id"])
         else:
             image_url = user["picture"]
         users.update_one(
@@ -169,6 +174,7 @@ def account():
 
 @app.route("/reset_password", methods=["GET", "POST"])
 def reset_request():
+    ''' Description '''
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = RequestResetForm()
@@ -187,6 +193,7 @@ def reset_request():
 
 @app.route("/reset_password/<token>", methods=["GET", "POST"])
 def reset_token(token):
+    ''' Description '''
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     user = User.verify_reset_token(token)
@@ -213,6 +220,7 @@ def reset_token(token):
 @app.route("/addlocation", methods=["GET", "POST"])
 @login_required
 def add_location():
+    ''' Description '''
     form = CreateLocationForm()
     cities = mongo.db.cities
     if form.validate_on_submit():
@@ -225,6 +233,7 @@ def add_location():
 @app.route("/addsuggestion/<location>", methods=["GET", "POST"])
 @login_required
 def add_suggestion(location):
+    ''' Description '''
     form = CreateSuggestionForm()
     cities = mongo.db.cities
     if form.validate_on_submit():
@@ -256,29 +265,28 @@ def add_suggestion(location):
 
 @app.route("/thingstodo/<city>", methods=["GET", "POST"])
 def suggestion_list(city):
+    ''' Description '''
     form = FilterResultsForm()
     cities = mongo.db.cities
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
     )
+    print(page)
+    if form.validate_on_submit():
+        page = 1
     per_page = 3
     offset = (page - 1) * per_page
     query = ""
     if form.validate_on_submit() or "filters" in session:
-        if form.validate_on_submit() or "filters" in session:
-            filters = (
-                form.category.data
-                if form.category.data
-                else session["filters"]
-            )
+        filters = (
+            form.category.data if form.category.data else session["filters"]
+        )
         session["filters"] = filters
         array = []
-        for filter in filters:
+        for filt in filters:
             newdict = {}
-            newdict["thingsToDo.category"] = filter
+            newdict["thingsToDo.category"] = filt
             array.append(newdict)
-        print(type(array))
-        print(array)
         query = cities.aggregate(
             [
                 {"$unwind": "$thingsToDo"},
