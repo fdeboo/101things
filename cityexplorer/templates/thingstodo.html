@@ -85,7 +85,9 @@
                     </div>
                 </fieldset>
                 <div class="form-group">
-                    {{ form.submit(class="btn submit-btn") }}
+                    {{ form.submit(class="btn submit-btn",
+                        href="url_for('suggestion_list', city=location, page=1")
+                    }}
                 </div>
 
             </form>

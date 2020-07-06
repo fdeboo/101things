@@ -1,3 +1,4 @@
+""" Document description """
 from flask import render_template, redirect, url_for, flash, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import current_user, login_user, logout_user, login_required
@@ -23,8 +24,8 @@ from cityexplorer.utils import send_reset_email
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def index():
-    ''' Description '''
-    session.clear()
+    """ Description """
+    session.pop('filters', None)
     form = SearchLocationForm()
     cities = mongo.db.cities
     searched = ""
@@ -62,8 +63,8 @@ def index():
 # Users routes
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    ''' Description '''
-    session.clear()
+    """ Description """
+    session.pop('filters', None)
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = RegistrationForm()
@@ -90,8 +91,8 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    ''' Description '''
-    session.clear()
+    """ Description """
+    session.pop('filters', None)
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = LoginForm()
@@ -122,7 +123,8 @@ def login():
 
 @app.route("/logout")
 def logout():
-    ''' Description '''
+    """ Description """
+    session.pop('filters', None)
     logout_user()
     return redirect(url_for("index"))
 
@@ -130,8 +132,8 @@ def logout():
 @app.route("/account", methods=["GET", "POST"])
 @login_required
 def account():
-    ''' Description '''
-    session.clear()
+    """ Description """
+    session.pop('filters', None)
     form = UpdateAccountForm()
     users = mongo.db.users
     user = users.find_one({"username": current_user.username})
@@ -174,7 +176,7 @@ def account():
 
 @app.route("/reset_password", methods=["GET", "POST"])
 def reset_request():
-    ''' Description '''
+    """ Description """
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = RequestResetForm()
@@ -193,7 +195,7 @@ def reset_request():
 
 @app.route("/reset_password/<token>", methods=["GET", "POST"])
 def reset_token(token):
-    ''' Description '''
+    """ Description """
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     user = User.verify_reset_token(token)
@@ -220,7 +222,7 @@ def reset_token(token):
 @app.route("/addlocation", methods=["GET", "POST"])
 @login_required
 def add_location():
-    ''' Description '''
+    """ Description """
     form = CreateLocationForm()
     cities = mongo.db.cities
     if form.validate_on_submit():
@@ -233,7 +235,7 @@ def add_location():
 @app.route("/addsuggestion/<location>", methods=["GET", "POST"])
 @login_required
 def add_suggestion(location):
-    ''' Description '''
+    """ Description """
     form = CreateSuggestionForm()
     cities = mongo.db.cities
     if form.validate_on_submit():
@@ -271,9 +273,6 @@ def suggestion_list(city):
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
     )
-    print(page)
-    if form.validate_on_submit():
-        page = 1
     per_page = 3
     offset = (page - 1) * per_page
     query = ""

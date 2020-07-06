@@ -1,3 +1,4 @@
+"""Document"""
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import (
@@ -26,6 +27,8 @@ from cityexplorer import mongo
 
 
 class SearchLocationForm(FlaskForm):
+    """ Class """
+
     search = SearchField(
         "Search", validators=[InputRequired(), Length(max=50)]
     )
@@ -33,6 +36,8 @@ class SearchLocationForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
+    """ Class """
+
     username = StringField(
         "Username", validators=[InputRequired(), Length(min=2, max=15)]
     )
@@ -50,6 +55,7 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField("Register")
 
     def validate_username(self, username):
+        """ Function """
         user = mongo.db.users.find_one({"username": username.data.lower()})
         if user:
             raise ValidationError(
@@ -57,6 +63,7 @@ class RegistrationForm(FlaskForm):
             )
 
     def validate_email(self, email):
+        """ Function """
         user = mongo.db.users.find_one({"email": self.email.data.lower()})
         if user:
             raise ValidationError(
@@ -65,6 +72,8 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
+    """ Class """
+
     email = StringField("Email", validators=[InputRequired(), Email()])
     password = PasswordField("Password", validators=[InputRequired()])
     remember = BooleanField("Remember Me")
@@ -72,6 +81,8 @@ class LoginForm(FlaskForm):
 
 
 class UpdateAccountForm(FlaskForm):
+    """ Class """
+
     fname = StringField(
         "First Name", validators=[InputRequired(), Length(min=2, max=14)]
     )
@@ -86,10 +97,13 @@ class UpdateAccountForm(FlaskForm):
 
 
 class RequestResetForm(FlaskForm):
+    """ Class """
+
     email = StringField("Email", validators=[InputRequired(), Email()])
     submit = SubmitField("Request Password Reset")
 
     def validate_email(self, email):
+        """ Function """
         user = mongo.db.users.find_one({"email": email.data})
         if user is None:
             raise ValidationError(
@@ -98,6 +112,8 @@ class RequestResetForm(FlaskForm):
 
 
 class ResetPasswordForm(FlaskForm):
+    """ Class """
+
     password = PasswordField("Password", validators=[InputRequired()])
     confirm_password = PasswordField(
         "Confirm Password", validators=[InputRequired(), EqualTo("password")]
@@ -106,18 +122,23 @@ class ResetPasswordForm(FlaskForm):
 
 
 class CreateLocationForm(FlaskForm):
+    """ Class """
+
     location = StringField(
         "Location", validators=[InputRequired(), Length(min=2, max=25)]
     )
     submit = SubmitField("Add Location")
 
     def validate_location(self, location):
+        """ Function """
         place_name = mongo.db.cities.find_one({"location": location.data})
         if place_name:
             raise ValidationError("This location has already been created.")
 
 
 class CreateSuggestionForm(FlaskForm):
+    """ Class """
+
     location = HiddenField("Location")
     suggestion = StringField(
         "Suggestion", validators=[InputRequired(), Length(min=2, max=70)]
@@ -166,14 +187,19 @@ class CreateSuggestionForm(FlaskForm):
 
 
 class MultiCheckboxField(SelectMultipleField):
+    """ Class """
+
     widget = widgets.ListWidget(prefix_label=False)
     option_widget = widgets.CheckboxInput()
 
 
 class FilterResultsForm(FlaskForm):
+    """ Class """
+
     location = HiddenField("Location")
     category = MultiCheckboxField(
         "Category",
+        validators=[InputRequired()],
         choices=[
             ("Museums", "Museums"),
             ("Nature & Parks", "Nature & Parks"),
