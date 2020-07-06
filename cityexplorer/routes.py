@@ -312,28 +312,7 @@ def suggestion_list(city):
                 },
             ]
         )
-        results = list(query)
-        total = len(results)
-        per_page = 3
-        offset = (page - 1) * per_page
-        print(offset)
-        suggestions = results[offset: offset + per_page]
-        pagination = Pagination(
-            page=page,
-            per_page=per_page,
-            total=total,
-            css_framework="bootstrap4",
-        )
-        return render_template(
-            "thingstodo.html",
-            city=city,
-            things=suggestions,
-            page=page,
-            per_page=per_page,
-            pagination=pagination,
-            form=form,
-            title="Things to do",
-        )
+
     else:
         query = cities.aggregate(
             [
@@ -365,7 +344,6 @@ def suggestion_list(city):
     total = len(results)
     per_page = 3
     offset = (page - 1) * per_page
-    print(offset)
     suggestions = results[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
