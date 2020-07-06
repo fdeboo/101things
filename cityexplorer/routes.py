@@ -270,12 +270,11 @@ def suggestion_list(city):
     ''' Description '''
     form = FilterResultsForm()
     cities = mongo.db.cities
-    page, per_page, offset = get_page_args(
-        page_parameter="page", per_page_parameter="per_page"
-    )
-    per_page = 3
-    offset = (page - 1) * per_page
     query = ""
+    if form.validate_on_submit():
+        page, per_page, offset = get_page_args(
+            page_parameter="1", per_page_parameter="per_page"
+        )
     if form.validate_on_submit() or "filters" in session:
         filters = (
             form.category.data if form.category.data else session["filters"]
@@ -313,6 +312,9 @@ def suggestion_list(city):
             ]
         )
     else:
+        page, per_page, offset = get_page_args(
+            page_parameter="page", per_page_parameter="per_page"
+        )
         query = cities.aggregate(
             [
                 {"$match": {"location": city}},
@@ -341,6 +343,8 @@ def suggestion_list(city):
         )
     results = list(query)
     total = len(results)
+    per_page = 3
+    offset = (page - 1) * per_page
     suggestions = results[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
