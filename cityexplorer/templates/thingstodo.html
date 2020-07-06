@@ -56,7 +56,7 @@
             </main>
         </div>
         <aside class="col-md-3 border">
-            <form method="POST" action="">
+            <form method="POST" action="" onsubmit="refreshPage(city)">
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group">
                     <div class="form-group">
@@ -85,13 +85,18 @@
                     </div>
                 </fieldset>
                 <div class="form-group">
-                    {{ form.submit(class="btn submit-btn")}}
+                    {{ form.submit(class="btn submit-btn") }}
                 </div>
 
             </form>
         </aside>
     </div>
 </div>
-
+<script>
+function refreshPage(city) {
+    var uri = "/thingstodo/" + city +"?page=1" 
+    window.location.replace(uri);
+}
+</script>
 
 {% endblock content %}

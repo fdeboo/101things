@@ -25,7 +25,7 @@ from cityexplorer.utils import send_reset_email
 @app.route("/home", methods=["GET", "POST"])
 def index():
     """ Description """
-    session.pop('filters', None)
+    session.pop("filters", None)
     form = SearchLocationForm()
     cities = mongo.db.cities
     searched = ""
@@ -64,7 +64,7 @@ def index():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """ Description """
-    session.pop('filters', None)
+    session.pop("filters", None)
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = RegistrationForm()
@@ -92,7 +92,7 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """ Description """
-    session.pop('filters', None)
+    session.pop("filters", None)
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = LoginForm()
@@ -124,7 +124,7 @@ def login():
 @app.route("/logout")
 def logout():
     """ Description """
-    session.pop('filters', None)
+    session.pop("filters", None)
     logout_user()
     return redirect(url_for("index"))
 
@@ -133,7 +133,7 @@ def logout():
 @login_required
 def account():
     """ Description """
-    session.pop('filters', None)
+    session.pop("filters", None)
     form = UpdateAccountForm()
     users = mongo.db.users
     user = users.find_one({"username": current_user.username})
@@ -267,14 +267,15 @@ def add_suggestion(location):
 
 @app.route("/thingstodo/<city>", methods=["GET", "POST"])
 def suggestion_list(city):
-    ''' Description '''
+    """ Description """
     form = FilterResultsForm()
     cities = mongo.db.cities
     query = ""
+    page, per_page, offset = get_page_args(
+        page_parameter="page", per_page_parameter="per_page"
+    )
     if form.validate_on_submit():
-        page, per_page, offset = get_page_args(
-            page_parameter="1", per_page_parameter="per_page"
-        )
+        page = 1
     if form.validate_on_submit() or "filters" in session:
         filters = (
             form.category.data if form.category.data else session["filters"]
@@ -311,10 +312,29 @@ def suggestion_list(city):
                 },
             ]
         )
-    else:
-        page, per_page, offset = get_page_args(
-            page_parameter="page", per_page_parameter="per_page"
+        results = list(query)
+        total = len(results)
+        per_page = 3
+        offset = (page - 1) * per_page
+        print(offset)
+        suggestions = results[offset: offset + per_page]
+        pagination = Pagination(
+            page=page,
+            per_page=per_page,
+            total=total,
+            css_framework="bootstrap4",
         )
+        return render_template(
+            "thingstodo.html",
+            city=city,
+            things=suggestions,
+            page=page,
+            per_page=per_page,
+            pagination=pagination,
+            form=form,
+            title="Things to do",
+        )
+    else:
         query = cities.aggregate(
             [
                 {"$match": {"location": city}},
@@ -345,6 +365,7 @@ def suggestion_list(city):
     total = len(results)
     per_page = 3
     offset = (page - 1) * per_page
+    print(offset)
     suggestions = results[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
