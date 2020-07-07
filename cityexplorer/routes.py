@@ -181,8 +181,57 @@ def account():
         form.lname.data = current_user.lname
         form.email.data = current_user.email
     image_file = user["picture"]
+    cities = mongo.db.cities
+    query = ""
+    page, per_page, offset = get_page_args(
+        page_parameter="page", per_page_parameter="per_page"
+    )
+    print(current_user.username)
+    query = cities.aggregate(
+        [
+            {"$unwind": "$thingsToDo"},
+            {"$match": {"thingsToDo.author": current_user.username}},
+            {
+                "$lookup": {
+                    "from": "users",
+                    "localField": "thingsToDo.author",
+                    "foreignField": "username",
+                    "as": "user_profile",
+                }
+            },
+            {"$unwind": "$user_profile"},
+            {
+                "$project": {
+                    "suggestion": "$thingsToDo.suggestion",
+                    "cost": "$thingsToDo.cost",
+                    "category": "$thingsToDo.category",
+                    "url": "$thingsToDo.url",
+                    "comment": "$thingsToDo.comment",
+                    "author": "$user_profile.username",
+                    "profile": "$user_profile.picture",
+                }
+            },
+        ]
+    )
+    results = list(query)
+
+    total = len(results)
+    per_page = 3
+    offset = (page - 1) * per_page
+    suggestions = results[offset: offset + per_page]
+    pagination = Pagination(
+        page=page, per_page=per_page, total=total, css_framework="bootstrap4"
+    )
+    print(str(suggestions))
     return render_template(
-        "account.html", image_file=image_file, form=form, title="Account"
+        "account.html",
+        image_file=image_file,
+        things=suggestions,
+        page=page,
+        per_page=per_page,
+        pagination=pagination,
+        form=form,
+        title="Account",
     )
 
 
@@ -286,8 +335,6 @@ def suggestion_list(city):
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
     )
-    if form.validate_on_submit():
-        page = 1
     if form.validate_on_submit() or "filters" in session:
         filters = (
             form.category.data if form.category.data else session["filters"]
