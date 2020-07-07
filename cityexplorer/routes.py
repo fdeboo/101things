@@ -34,6 +34,7 @@ def before_request_func():
     """ Description """
     g.search_form = SearchLocationForm()
 
+
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def index():

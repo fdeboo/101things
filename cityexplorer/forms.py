@@ -29,10 +29,9 @@ from cityexplorer import mongo
 class SearchLocationForm(FlaskForm):
     """ Class """
 
-    search = SearchField(
+    q = SearchField(
         "Search", validators=[InputRequired(), Length(max=50)]
     )
-    submit = SubmitField("Search")
 
 
 class RegistrationForm(FlaskForm):
