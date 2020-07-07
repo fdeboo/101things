@@ -29,6 +29,11 @@ from cityexplorer import app, mongo
 from cityexplorer.utils import send_reset_email
 
 
+@app.before_request
+def before_request_func():
+    """ Description """
+    g.search_form = SearchLocationForm()
+
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def index():
