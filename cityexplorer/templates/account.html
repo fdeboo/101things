@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="row justify-content-center content-section">
-    <aside class="col-md-3 border">
-    <div class="media">
-            <img class="rounded-circle profile-img" src="{{ image_file }}" alt="user profile">
+<div class="row justify-content-center content-section mx-2">
+    <aside class="col-md-4 border">
+    <div class="media pt-3">
+            <img class="rounded-circle profile-img mx-2" src="{{ image_file }}" alt="user profile">
             <div class="media-body">
-                <h2 class="account-heading">{{ current_user.username}}</h2>
+                <h2 class="account-heading mb-0">{{ current_user.username}}</h2>
                 <p class="text-secondary">{{ current_user.email }}</p>
             </div>
         </div>
@@ -13,47 +13,45 @@
         <form method='POST' action='' enctype='multipart/form-data'>
             {{ form.hidden_tag() }}
             <fieldset class='form-group'>
-                <legend class='border-bottom mb-4'>Account Info</legend>
-
                 <div class="form-group">
                     {{ form.fname.label(class="form-control-label") }}
                     {% if form.fname.errors %}
-                    {{ form.fname(class="form-control form-control-lg is-invalid") }}
+                    {{ form.fname(class="form-control is-invalid") }}
                     <div class="invalid-feedback">
                         {% for error in form.fname.errors %}
                         <span> {{ error }}</span>
                         {% endfor %}
                     </div>
                     {% else %}
-                    {{ form.fname(class="form-control form-control-lg") }}
+                    {{ form.fname(class="form-control") }}
                     {% endif %}
                 </div>
 
                 <div class="form-group">
                     {{ form.lname.label(class="form-control-label") }}
                     {% if form.lname.errors %}
-                    {{ form.lname(class="form-control form-control-lg is-invalid") }}
+                    {{ form.lname(class="form-control is-invalid") }}
                     <div class="invalid-feedback">
                         {% for error in form.lname.errors %}
                         <span> {{ error }}</span>
                         {% endfor %}
                     </div>
                     {% else %}
-                    {{ form.lname(class="form-control form-control-lg") }}
+                    {{ form.lname(class="form-control") }}
                     {% endif %}
                 </div>
 
                 <div class="form-group">
                     {{ form.email.label(class="form-control-label") }}
                     {% if form.email.errors %}
-                    {{ form.email(class="form-control form-control-lg is-invalid") }}
+                    {{ form.email(class="form-control is-invalid") }}
                     <div class="invalid-feedback">
                         {% for error in form.email.errors %}
                         <span> {{ error }}</span>
                         {% endfor %}
                     </div>
                     {% else %}
-                    {{ form.email(class="form-control form-control-lg") }}
+                    {{ form.email(class="form-control") }}
                     {% endif %}
                 </div>
 
@@ -72,7 +70,7 @@
                 </div>
         </form>
         </aside>
-    <div class="col-md-9 col-md-offset-9">
+    <div class="col-md-8 col-md-offset-8">
         <main class="ml-4 border"></main>
     </div>
 </div>

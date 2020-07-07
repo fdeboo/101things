@@ -16,6 +16,8 @@ body {
 .content {
     flex: 1 auto;
     background-color: #fff;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 
 .logo {
@@ -180,8 +182,12 @@ input:-webkit-autofill:active  {
 /* Account page */
 
 .profile-img {
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
+}
+
+.account-heading {
+    font-size: 1.5em;
 }
 
 /* ThingsToDo */
@@ -287,8 +293,8 @@ ul.navbar-nav li {
     width: 40em;
     margin: .5em 0;
     font-size: 12px;
-    text-align: center;
 }
+
 .pagination-page-info b {
     color: #8C7811;
     padding-left: 2px;

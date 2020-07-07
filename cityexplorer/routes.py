@@ -356,7 +356,7 @@ def suggestion_list(city):
     total = len(results)
     per_page = 3
     offset = (page - 1) * per_page
-    suggestions = results[offset : offset + per_page]
+    suggestions = results[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
