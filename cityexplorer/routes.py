@@ -47,8 +47,8 @@ def index():
     )
     per_page = 4
     offset = (page - 1) * per_page
-    if g.searh_form.validate_on_submit():
-        searched = g.search_form.search.data
+    if g.search_form.validate_on_submit():
+        searched = g.search_form.q.data
         query = cities.find(
             {"location": {"$regex": searched, "$options": "i"}}
         )
