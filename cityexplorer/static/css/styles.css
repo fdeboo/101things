@@ -8,10 +8,14 @@ body {
     min-height: 100%;
     display: flex;
     flex-direction: column;
+    background-color: whitesmoke;
+    /*background-image: linear-gradient(rgb(24,70,89), rgb(96,139,165));*/
+
 }
 
 .content {
     flex: 1 auto;
+    background-color: #fff;
 }
 
 .logo {
@@ -113,7 +117,7 @@ button:focus {
 
 /* Home page */
 .hero-content {
-    background-image: linear-gradient(to right, rgba(96,139,165,0.2), rgba(24,70,89,0.4)), 
+    background-image: linear-gradient(to right, rgba(96,139,165,0.3), rgba(24,70,89,0.5)), 
     url('https://res.cloudinary.com/fdeboo/image/upload/v1590666462/layout/bokeh-night-lights-city-9044_nxmprf.jpg');
     background-position: center;
     background-repeat: no-repeat;
