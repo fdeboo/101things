@@ -1,5 +1,13 @@
 """ Document description """
-from flask import render_template, redirect, url_for, flash, request, session
+from flask import (
+    render_template,
+    redirect,
+    url_for,
+    flash,
+    request,
+    session,
+    g,
+)
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_paginate import Pagination, get_page_args
@@ -21,12 +29,17 @@ from cityexplorer import app, mongo
 from cityexplorer.utils import send_reset_email
 
 
+@app.before_request
+def before_request_func():
+    """ Description """
+    g.search_form = SearchLocationForm()
+
+
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def index():
     """ Description """
     session.pop("filters", None)
-    form = SearchLocationForm()
     cities = mongo.db.cities
     searched = ""
     page, per_page, offset = get_page_args(
@@ -34,8 +47,8 @@ def index():
     )
     per_page = 4
     offset = (page - 1) * per_page
-    if form.validate_on_submit():
-        searched = form.search.data
+    if g.search_form.validate_on_submit():
+        searched = g.search_form.q.data
         query = cities.find(
             {"location": {"$regex": searched, "$options": "i"}}
         )
@@ -55,7 +68,6 @@ def index():
         page=page,
         per_page=per_page,
         pagination=pagination,
-        form=form,
         title="Home",
     )
 
@@ -344,7 +356,7 @@ def suggestion_list(city):
     total = len(results)
     per_page = 3
     offset = (page - 1) * per_page
-    suggestions = results[offset: offset + per_page]
+    suggestions = results[offset : offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
