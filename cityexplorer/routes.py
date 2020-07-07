@@ -1,5 +1,13 @@
 """ Document description """
-from flask import render_template, redirect, url_for, flash, request, session
+from flask import (
+    render_template,
+    redirect,
+    url_for,
+    flash,
+    request,
+    session,
+    g,
+)
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_paginate import Pagination, get_page_args
@@ -44,7 +52,7 @@ def index():
         if cities.find({"thingsToDo": {"$exists": False}}):
             cities.delete_many({"thingsToDo": {"$exists": False}})
     total = query.count()
-    locations = query[offset: offset + per_page]
+    locations = query[offset : offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
@@ -344,7 +352,7 @@ def suggestion_list(city):
     total = len(results)
     per_page = 3
     offset = (page - 1) * per_page
-    suggestions = results[offset: offset + per_page]
+    suggestions = results[offset : offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
