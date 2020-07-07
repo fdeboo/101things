@@ -39,7 +39,6 @@ def before_request_func():
 def index():
     """ Description """
     session.pop("filters", None)
-    form = SearchLocationForm()
     cities = mongo.db.cities
     searched = ""
     page, per_page, offset = get_page_args(
@@ -47,8 +46,8 @@ def index():
     )
     per_page = 4
     offset = (page - 1) * per_page
-    if form.validate_on_submit():
-        searched = form.search.data
+    if g.searh_form.validate_on_submit():
+        searched = g.search_form.search.data
         query = cities.find(
             {"location": {"$regex": searched, "$options": "i"}}
         )
@@ -57,7 +56,7 @@ def index():
         if cities.find({"thingsToDo": {"$exists": False}}):
             cities.delete_many({"thingsToDo": {"$exists": False}})
     total = query.count()
-    locations = query[offset : offset + per_page]
+    locations = query[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
@@ -68,7 +67,6 @@ def index():
         page=page,
         per_page=per_page,
         pagination=pagination,
-        form=form,
         title="Home",
     )
 
