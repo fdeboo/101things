@@ -56,8 +56,7 @@
             </main>
         </div>
         <aside class="col-md-3 border">
-            <form method="POST" action="{{ url_for('suggestion_list', city=city) }}">
-                {{ form.hidden_tag() }}
+            <form method="GET" action="{{ url_for('suggestion_list', city=city) }}">
                 <fieldset class="form-group">
                     <div class="form-group">
                         {{ form.category.label(class="form-control-label") }}

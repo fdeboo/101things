@@ -326,7 +326,7 @@ def add_suggestion(location):
     )
 
 
-@app.route("/thingstodo/<city>", methods=["GET", "POST"])
+@app.route("/thingstodo/<city>", methods=["GET"])
 def suggestion_list(city):
     """ Description """
     form = FilterResultsForm()
@@ -335,11 +335,8 @@ def suggestion_list(city):
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
     )
-    if form.validate_on_submit() or "filters" in session:
-        filters = (
-            form.category.data if form.category.data else session["filters"]
-        )
-        session["filters"] = filters
+    if request.args.get('submit'):
+        filters = request.args.getlist('category')
         array = []
         for filt in filters:
             newdict = {}

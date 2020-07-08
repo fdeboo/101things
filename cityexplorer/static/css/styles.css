@@ -207,7 +207,7 @@ input:-webkit-autofill:active  {
 
 .suggestion-item:hover,
 .suggestion-item:focus {
-    background-color:#608ba61f
+    background-color:#f2D8Ce;
 }
 
 div.thing-grid {
