@@ -62,7 +62,7 @@ a {
 
 a:hover {
   text-decoration: none;
-  color: inherit;
+  color: #8c7811;
 }
 
 .content-section {
@@ -244,7 +244,7 @@ footer i {
 }
 
 .suggestion-item p:hover {
-  color: #f2d8ce;
+  color: #8c7811;
   text-decoration: underline;
 }
 /*
@@ -317,12 +317,8 @@ ul.thing-icons li p {
   display: none;
 }
 
-#showLess,
-#loadMore {
-  cursor: pointer;
-}
-
 #showLess i,
-#loadMore i {
+#loadMore i,
+#clearFilter i {
   margin-right: 5px;
 }
