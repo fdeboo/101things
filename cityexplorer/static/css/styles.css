@@ -1,304 +1,328 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,500&family=Lato:wght@300;400;700&family=Patua+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,500&family=Lato:wght@300;400;700&family=Patua+One&display=swap");
+
+/* html set to 100% and .content set to flex:1 auto; so that the footer is always fixed to the bottom of the window */
 html {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    font-family: 'Lato', sans-serif;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    background-color: whitesmoke;
-    /*background-image: linear-gradient(rgb(24,70,89), rgb(96,139,165));*/
-
+  display: flex;
+  flex-direction: column;
+  font-family: "Lato", sans-serif;
+  min-height: 100%;
+  background-color: whitesmoke;
 }
 
 .content {
-    flex: 1 auto;
-    background-color: #fff;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-}
-
-.logo {
-    font-family: 'Patua One', cursive;
-    font-size: 2em;
-}
-
-h1, h2 {
-    font-family: 'Patua One', cursive;
-}
-
-h3 {
-    font-size: 0.8em;
-}
-
-footer {
-    flex-shrink: 0;
-    height: 50px;
-}
-
-footer i {
-    padding: 0 5px;
+  flex: 1 auto;
+  background-color: #fff;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 /* Font colours */
-
 .pale-pink {
-    color: #f2D8Ce;
+  color: #f2d8ce;
 }
 
 .dark-gold {
-    color: #594E16;
+  color: #594e16;
 }
 
 .light-gold {
-    color: #8C7811;
+  color: #8c7811;
 }
 
 .dark-blue {
-    color: #184759;
+  color: #184759;
 }
 
 .light-blue {
-    color: #608BA6;
+  color: #608ba6;
 }
 
 .white {
-    color: #fff;
+  color: #fff;
 }
+
 /* Universal elements */
-aside {
-    min-height: 200px;
+h1,
+h2 {
+  font-family: "Patua One", cursive;
+}
+
+h3 {
+  font-size: 1.1em;
+  font-weight: 400;
 }
 
 a {
-    color: inherit;
+  color: inherit;
 }
 
 a:hover {
-    text-decoration: none;
-    color: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 .content-section {
-    margin-top: 50px;
+  margin-top: 50px;
 }
 
 .submit-btn {
-    background-color: #184759;
-    color : #fff;
+  background-color: #184759;
+  color: #fff;
 }
 
 .submit-btn:hover {
-    color : #fff;
+  color: #fff;
 }
 
 .cancel-btn {
-    background-color: #A6A6A6;
+  background-color: #a6a6a6;
 }
 
 button {
-    background-color: #fff;
-    border: none;
-    outline: 0;
-    box-shadow: none;
-    color: inherit;
-    display: inline;
+  background-color: #fff;
+  border: none;
+  outline: 0;
+  box-shadow: none;
+  color: inherit;
+  display: inline;
 }
 
 button:focus {
-    outline: 1px solid #fff;
-    outline-offset: -4px;
+  outline: 1px solid #fff;
+  outline-offset: -4px;
 }
 
-.btn.focus, .btn:focus {
-    outline: 0;
-    box-shadow: none!important;
+.btn.focus,
+.btn:focus {
+  outline: 0;
+  box-shadow: none !important;
 }
 
-/* Home page */
-.hero-content {
-    background-image: linear-gradient(to right, rgba(96,139,165,0.3), rgba(24,70,89,0.5)), 
-    url('https://res.cloudinary.com/fdeboo/image/upload/v1590666462/layout/bokeh-night-lights-city-9044_nxmprf.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    min-height: 200px;
-}
-
-.search-form {
-    width: auto;
-    display: inline-block;
-    background-color: rgba(255,255,255);
-    border-radius: 30px;
-    padding: 10px;
-}
-
-.search-bar {
-    border: 0px;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active  {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
-    box-shadow: 0 0 0 30px white inset !important;
-}
-
-.search-input {
-    width: 180px;
-    transition: width 0.4s ease-in-out;
-}
-
-.search-input:focus-within, 
-.search-input:valid {
-    outline: 0;
-    width: 300px;
-}
-
-.search-false {
-    font-size: 2em;
-}
-
-.search-false span {
-    font-family: 'EB Garamond', serif;
-    font-size: 1.2em;
-    font-style: italic;
-}
-
-.location-card {
-    height: 220px;
-    width: 220px;
-    box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
-    text-align: center;
-    background-size:cover;
-    border-radius: 15px;
-    border: 1px solid #fff
-}
-
-
-/* Account page */
-
-.profile-img {
-    width: 50px;
-    height: 50px;
-}
-
-.account-heading {
-    font-size: 1.5em;
-}
-
-/* ThingsToDo */
-.pos-inside {
-    list-style-position: inside;
-}
-
-.thingtodo {
-    font-weight: 300;
-}
-
-.suggestion-item {
-    font-size: 1.3em;
-    font-weight: 400;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.suggestion-item:hover,
-.suggestion-item:focus {
-    background-color:#f2D8Ce;
-}
-
-div.thing-grid {
-    display: grid;
-    grid-template-columns: 150px 1fr;
-    grid-template-rows: auto auto;
-    grid-row-gap: 10px;
-}
-
-ul.thing-icons {
-    grid-column: 1/2;
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.thing-comment {
-    grid-column: 2/3;
-    grid-row: 1/2;
-    font-size: 1.2em;
-    border-left: 1px solid #dee2e6;
-}
-
-ul.thing-icons li {
-    display:grid;
-    grid-template-columns: 20px 1fr;
-    grid-column-gap: 10px;
-    padding: 3px 0;
-}
-
-ul.thing-icons li i {
-    grid-column: 1/2;
-    align-self: center;
-}
-
-ul.thing-icons li p {
-    grid-column: 2/3;
-    margin-bottom: 0;
-    line-height: 1.0;
-    font-size: small;
-}
-
-.author {
-    grid-column: 1/3;
-    grid-row: 2/3;
-    display: grid;
-    grid-template-columns: 40px auto;
-    grid-column-gap: 5px;
-}
-
-.author img {
-    width: 40px;
-    height: 40px;
-    grid-column: 1/2;
-}
-
-.author small {
-    grid-column: 2/3;
-    align-self: end;
-}
-
-ul.navbar-nav li {
-    border-right: 1px solid #8C7811;
-    padding: 0 12px;
-}
-
+/* Pagination */
 .disabled {
-    opacity: 0.4;
+  opacity: 0.4;
 }
 
 .page-link {
-    border: none;
-    color: #8C7811;
+  border: none;
+  color: #8c7811;
 }
 
 .page-item.active .page-link {
-    background-color: #8C7811;
-    color:#fff;
+  background-color: #8c7811;
+  color: #fff;
 }
 
 .pagination-page-info {
-    padding: .6em;
-    padding-left: 0;
-    width: 40em;
-    margin: .5em 0;
-    font-size: 12px;
+  padding: 0.6em;
+  padding-left: 0;
+  width: 40em;
+  margin: 0.5em 0;
+  font-size: 12px;
 }
 
 .pagination-page-info b {
-    color: #8C7811;
-    padding-left: 2px;
-    padding: .1em .25em;
-    font-size: 150%;
+  color: #8c7811;
+  padding-left: 2px;
+  padding: 0.1em 0.25em;
+  font-size: 150%;
 }
 
+/* Site Header */
+.hero-content {
+  background-image: linear-gradient(
+      to right,
+      rgba(96, 139, 165, 0.3),
+      rgba(24, 70, 89, 0.5)
+    ),
+    url("https://res.cloudinary.com/fdeboo/image/upload/v1590666462/layout/bokeh-night-lights-city-9044_nxmprf.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 200px;
+}
+
+ul.navbar-nav li {
+  border-right: 1px solid #8c7811;
+  padding: 0 12px;
+}
+
+.logo {
+  font-family: "Patua One", cursive;
+  font-size: 2em;
+}
+
+.search-form {
+  width: auto;
+  display: inline-block;
+  background-color: rgba(255, 255, 255);
+  border-radius: 30px;
+  padding: 10px;
+}
+
+.search-bar {
+  border: 0px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px white inset !important;
+}
+
+.search-input {
+  width: 180px;
+  transition: width 0.4s ease-in-out;
+}
+
+.search-input:focus-within,
+.search-input:valid {
+  outline: 0;
+  width: 300px;
+}
+
+.search-false {
+  font-size: 2em;
+}
+
+.search-false span {
+  font-family: "EB Garamond", serif;
+  font-size: 1.2em;
+  font-style: italic;
+}
+
+/* Site Footer */
+footer {
+  flex-shrink: 0;
+  height: 50px;
+}
+
+footer i {
+  padding: 0 5px;
+}
+
+/* Home page */
+.location-card {
+  height: 220px;
+  width: 220px;
+  box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+  background-size: cover;
+  border-radius: 15px;
+  border: 1px solid #fff;
+}
+
+/* Account page */
+.profile-img {
+  width: 50px;
+  height: 50px;
+}
+
+.account-heading {
+  font-size: 1.5em;
+}
+
+/* ThingsToDo List */
+.pos-inside {
+  list-style-position: inside;
+}
+
+.thingtodo {
+  font-weight: 300;
+}
+
+.suggestion-item {
+  font-size: 1.3em;
+  font-weight: 400;
+  /*border-bottom: 1px solid #dee2e6;*/
+}
+
+.suggestion-item p:hover {
+  color: #f2d8ce;
+  text-decoration: underline;
+}
+/*
+.suggestion-item:hover,
+.suggestion-item:focus {
+
+}*/
+
+div.thing-grid {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  grid-template-rows: auto auto;
+  grid-row-gap: 10px;
+}
+
+ul.thing-icons {
+  grid-column: 1/2;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.thing-comment {
+  grid-column: 2/3;
+  grid-row: 1/2;
+  font-size: 1.2em;
+  border-left: 1px solid #dee2e6;
+}
+
+ul.thing-icons li {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  grid-column-gap: 10px;
+  padding: 3px 0;
+}
+
+ul.thing-icons li i {
+  grid-column: 1/2;
+  align-self: center;
+}
+
+ul.thing-icons li p {
+  grid-column: 2/3;
+  margin-bottom: 0;
+  line-height: 1;
+  font-size: small;
+}
+
+.author {
+  grid-column: 1/3;
+  grid-row: 2/3;
+  display: grid;
+  grid-template-columns: 40px auto;
+  grid-column-gap: 5px;
+}
+
+.author img {
+  width: 40px;
+  height: 40px;
+  grid-column: 1/2;
+}
+
+.author small {
+  grid-column: 2/3;
+  align-self: end;
+}
+
+/* Filter Aside */
+#showLess,
+#filterOptions tr {
+  display: none;
+}
+
+#showLess,
+#loadMore {
+  cursor: pointer;
+}
+
+#showLess i,
+#loadMore i {
+  margin-right: 5px;
+}

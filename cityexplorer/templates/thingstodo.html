@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+
 <div class="container">
     <div class="row justify-content-center content-section">
         <div class="col-md-8">
@@ -13,7 +14,7 @@
                             data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
                             <div class="suggestion-item py-2">
                                 <div class="d-inline pr-2">{{ loop.index + (page - 1) * per_page }}.</div>
-                                <div class="d-inline">{{ thing['suggestion'] }}</div>
+                                <p class="d-inline">{{ thing['suggestion'] }}</p>
                             </div>
                         </a>
 
@@ -55,12 +56,24 @@
                 {% endif %}
             </main>
         </div>
-        <aside class="col-md-3 border">
+        <aside class="col-md-3 border p-3">
+        <h3>Filters</h3>
+        {% if filters|length > 0 %}
+        <ul>
+        {% for filt in filters %}
+        <li>{{ filt }}</li>
+        {% endfor %}
+        </ul>
+        <a href="{{url_for('suggestion_list', city=city)}}">Clear</a>
+        {% endif %}
+
+
+        
             <form method="GET" action="{{ url_for('suggestion_list', city=city) }}">
                 <fieldset class="form-group">
-                    <div class="form-group">
-                        {{ form.category.label(class="form-control-label") }}
-                        <table>
+                    <div class="form-group border p-3">
+                        <b>{{ form.category.label(class="form-control-label") }}</b>
+                        <table id="filterOptions">
                             {% for subfield in form.category %}
                             <tr>
                                 <td>{{ subfield }}</td>
@@ -68,11 +81,12 @@
                             </tr>
                             {% endfor %}
                         </table>
+                        <div id="loadMore" class="dark-gold"><i class="fas fa-arrow-circle-down"></i>Load more</div>
+                        <div id="showLess" class="dark-gold"><i class="fas fa-arrow-circle-up"></i>Show less</div>
                     </div>
 
-                    <div class="form-group">
-                        {{ form.location(value=city) }}
-                        {{ form.cost.label(class="form-control-label") }}
+                    <div class="form-group border p-3">
+                        <b>{{ form.cost.label(class="form-control-label") }}</b>
                         <table>
                             {% for subfield in form.cost %}
                             <tr>
@@ -92,4 +106,28 @@
     </div>
 </div>
 
+<script>
+// Loads more options with a
+    $(document).ready(function() {
+        total_tr = $("#filterOptions tr").length;
+        let x = 5;
+        $('#filterOptions tr:lt(' + x + ')').show();
+        $('#loadMore').click(function() {
+            // variablename = (condition) ? value1:value2
+            x = total_tr;
+            $('#filterOptions tr:lt(' + x + ')').slideDown(300, "swing", function() {
+                $('#showLess').show()
+                $('#loadMore').hide()
+            });
+        });
+
+        $('#showLess').click(function () {
+            x = 5;
+            $('#filterOptions tr').not(':lt(' + x + ')').slideUp(300, "swing", function() {
+                $('#showLess').hide()
+                $('#loadMore').show()
+            });
+        });
+    });
+</script>
 {% endblock content %}

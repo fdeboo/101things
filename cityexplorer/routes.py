@@ -332,42 +332,117 @@ def suggestion_list(city):
     form = FilterResultsForm()
     cities = mongo.db.cities
     query = ""
+    filters = []
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
     )
-    if request.args.get('submit'):
-        filters = request.args.getlist('category')
-        array = []
-        for filt in filters:
-            newdict = {}
-            newdict["thingsToDo.category"] = filt
-            array.append(newdict)
-        query = cities.aggregate(
-            [
-                {"$unwind": "$thingsToDo"},
-                {"$match": {"location": city, "$or": array}},
-                {
-                    "$lookup": {
-                        "from": "users",
-                        "localField": "thingsToDo.author",
-                        "foreignField": "username",
-                        "as": "user_profile",
-                    }
-                },
-                {"$unwind": "$user_profile"},
-                {
-                    "$project": {
-                        "suggestion": "$thingsToDo.suggestion",
-                        "cost": "$thingsToDo.cost",
-                        "category": "$thingsToDo.category",
-                        "url": "$thingsToDo.url",
-                        "comment": "$thingsToDo.comment",
-                        "author": "$user_profile.username",
-                        "profile": "$user_profile.picture",
-                    }
-                },
-            ]
-        )
+    if request.args.get("submit"):
+        condition_a = []
+        condition_b = []
+        if request.args.get("category"):
+            cat_filters = request.args.getlist("category")
+            for category in cat_filters:
+                cat_dict = {}
+                cat_dict["thingsToDo.category"] = category
+                condition_a.append(cat_dict)
+                filters.append(category)
+        if request.args.get("cost"):
+            cost_filters = request.args.getlist("cost")
+            for cost in cost_filters:
+                cost_dict = {}
+                cost_dict["thingsToDo.cost"] = cost
+                condition_b.append(cost_dict)
+                filters.append(cost)
+        if len(condition_b) == 0:
+            query = cities.aggregate(
+                [
+                    {"$unwind": "$thingsToDo"},
+                    {"$match": {"location": city, "$or": condition_a}},
+                    {
+                        "$lookup": {
+                            "from": "users",
+                            "localField": "thingsToDo.author",
+                            "foreignField": "username",
+                            "as": "user_profile",
+                        }
+                    },
+                    {"$unwind": "$user_profile"},
+                    {
+                        "$project": {
+                            "suggestion": "$thingsToDo.suggestion",
+                            "cost": "$thingsToDo.cost",
+                            "category": "$thingsToDo.category",
+                            "url": "$thingsToDo.url",
+                            "comment": "$thingsToDo.comment",
+                            "author": "$user_profile.username",
+                            "profile": "$user_profile.picture",
+                        }
+                    },
+                ]
+            )
+        elif len(condition_a) == 0:
+            query = cities.aggregate(
+                [
+                    {"$unwind": "$thingsToDo"},
+                    {"$match": {"location": city, "$or": condition_b}},
+                    {
+                        "$lookup": {
+                            "from": "users",
+                            "localField": "thingsToDo.author",
+                            "foreignField": "username",
+                            "as": "user_profile",
+                        }
+                    },
+                    {"$unwind": "$user_profile"},
+                    {
+                        "$project": {
+                            "suggestion": "$thingsToDo.suggestion",
+                            "cost": "$thingsToDo.cost",
+                            "category": "$thingsToDo.category",
+                            "url": "$thingsToDo.url",
+                            "comment": "$thingsToDo.comment",
+                            "author": "$user_profile.username",
+                            "profile": "$user_profile.picture",
+                        }
+                    },
+                ]
+            )
+
+        else:
+            query = cities.aggregate(
+                [
+                    {"$unwind": "$thingsToDo"},
+                    {
+                        "$match": {
+                            "location": city,
+                            "$and": [
+                                {"$or": condition_a},
+                                {"$or": condition_b}
+                            ],
+                        }
+                    },
+                    {
+                        "$lookup": {
+                            "from": "users",
+                            "localField": "thingsToDo.author",
+                            "foreignField": "username",
+                            "as": "user_profile",
+                        }
+                    },
+                    {"$unwind": "$user_profile"},
+                    {
+                        "$project": {
+                            "suggestion": "$thingsToDo.suggestion",
+                            "cost": "$thingsToDo.cost",
+                            "category": "$thingsToDo.category",
+                            "url": "$thingsToDo.url",
+                            "comment": "$thingsToDo.comment",
+                            "author": "$user_profile.username",
+                            "profile": "$user_profile.picture",
+                        }
+                    },
+                ]
+            )
 
     else:
         query = cities.aggregate(
@@ -398,7 +473,7 @@ def suggestion_list(city):
         )
     results = list(query)
     total = len(results)
-    per_page = 3
+    per_page = 10
     offset = (page - 1) * per_page
     suggestions = results[offset: offset + per_page]
     pagination = Pagination(
@@ -408,6 +483,7 @@ def suggestion_list(city):
         "thingstodo.html",
         city=city,
         things=suggestions,
+        filters=filters,
         page=page,
         per_page=per_page,
         pagination=pagination,
