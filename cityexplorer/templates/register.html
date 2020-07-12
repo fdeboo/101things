@@ -2,8 +2,9 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6 col-md-offset-6">
-        <a href="{{url_for('index')}}" class="dark-gold"><i class="fas fa-arrow-circle-left"></i>Back to Home</a>
-        <form method="POST" action="">
+        <a href="{{url_for('index')}}" class="dark-gold"><i class="fas fa-arrow-circle-left"></i>Return to Home</a>
+        <h1 class="dark-gold">Register</h1>
+        <form method="POST" action="" class="pt-4">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <div class="form-group">

@@ -5,7 +5,6 @@ from flask import (
     url_for,
     flash,
     request,
-    session,
     g,
 )
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -31,15 +30,15 @@ from cityexplorer.utils import send_reset_email
 
 @app.before_request
 def before_request_func():
-    """ Description """
+    """ Instantiates the SearchLocationForm so that it can be
+    accessed globally in the app """
     g.searchform = SearchLocationForm()
 
 
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def index():
-    """ Description """
-    session.pop("filters", None)
+    """ Displays results for all locations in the database """
     cities = mongo.db.cities
     searched = ""
     page, per_page, offset = get_page_args(
@@ -76,7 +75,6 @@ def index():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """ Description """
-    session.pop("filters", None)
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = RegistrationForm()
@@ -104,7 +102,6 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """ Description """
-    session.pop("filters", None)
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = LoginForm()
@@ -136,7 +133,6 @@ def login():
 @app.route("/logout")
 def logout():
     """ Description """
-    session.pop("filters", None)
     logout_user()
     return redirect(url_for("index"))
 
@@ -145,7 +141,6 @@ def logout():
 @login_required
 def account():
     """ Description """
-    session.pop("filters", None)
     form = UpdateAccountForm()
     users = mongo.db.users
     user = users.find_one({"username": current_user.username})
@@ -216,7 +211,7 @@ def account():
     results = list(query)
 
     total = len(results)
-    per_page = 3
+    per_page = 10
     offset = (page - 1) * per_page
     suggestions = results[offset: offset + per_page]
     pagination = Pagination(
@@ -417,7 +412,7 @@ def suggestion_list(city):
                             "location": city,
                             "$and": [
                                 {"$or": condition_a},
-                                {"$or": condition_b}
+                                {"$or": condition_b},
                             ],
                         }
                     },
