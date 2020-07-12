@@ -222,10 +222,10 @@ class FilterResultsForm(FlaskForm):
         "Cost Per Person",
         choices=[
             ("Free", "Free"),
-            ("Less than £10", "Less than £10"),
+            ("£1-£10", "£1-£10"),
             ("£10-20", "£10-£20"),
             ("£20-50", "£20-£50"),
             ("More than £50", "Over £50"),
         ],
     )
-    submit = SubmitField("Apply")
+    submit = SubmitField("Update")

@@ -8,6 +8,8 @@
     <title>{{ title }}</title>
     {% else %}
     <title>101 things</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     {% endif %}
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -16,13 +18,16 @@
         href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,500&family=Lato:wght@300;400;700&family=Patua+One&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='/css/styles.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
     <div class="content container-lg px-0 mt-lg-4">
         {% include 'includes/_header.html' %}
         {% include 'includes/_messages.html' %}
-        {% block content %}{% endblock content %}
+        <div class="container content-section">
+                {% block content %}{% endblock content %}
+        </div>
     </div>
     <footer class="container d-flex align-items-end">
         <div class="row">
@@ -30,15 +35,8 @@
             <a href="https://linkedin.com/in/frandeboo" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a>
         </div>
     </footer>
-
-
-
-
-
+    
     <script src="https://kit.fontawesome.com/d23270b885.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
     </script>
