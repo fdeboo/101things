@@ -324,12 +324,26 @@ ul.thing-icons li p {
 }
 
 /* Filter Aside */
+ul#filtersList {
+  list-style-position: outside;
+  margin-bottom: 8px;
+}
+
+a#clearFilter {
+  padding-left: 16px;
+}
+
+#filterForm {
+  margin-top: 16px;
+}
+
+table.filterOptions label {
+  margin: 0;
+  padding-left: 5px;
+}
+
 #showLess,
 #categories tr {
   display: none;
 }
 
-.filterOptions label {
-  margin: 0;
-  padding-left: 5px;;
-}

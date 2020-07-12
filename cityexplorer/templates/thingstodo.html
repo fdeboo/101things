@@ -57,7 +57,7 @@
     <aside class="col-md-3 border p-3">
         <h3>Filters:</h3>
         {% if filters|length > 0 %}
-        <ul>
+        <ul id="filtersList">
             {% for filt in filters %}
             <li>{{ filt }}</li>
             {% endfor %}
@@ -66,9 +66,7 @@
                 class="fas fa-times-circle"></i>Clear filters</a>
         {% endif %}
 
-
-
-        <form method="GET" action="{{ url_for('suggestion_list', city=city) }}">
+        <form method="GET" action="{{ url_for('suggestion_list', city=city) }}" id="filterForm">
             <fieldset class="form-group">
                 <div class="form-group border p-3">
                     <b>{{ form.category.label(class="form-control-label") }}</b>
