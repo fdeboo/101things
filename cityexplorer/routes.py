@@ -28,6 +28,23 @@ from cityexplorer import app, mongo
 from cityexplorer.utils import send_reset_email
 
 
+@app.context_processor
+def context_processor():
+    """ Descritpion """
+    query = mongo.db.cities.aggregate(
+        [
+            {"$unwind": "$thingsToDo"},
+            {
+                "$project": {
+                    "author": "$thingsToDo.author",
+                    "suggestion": "$thingsToDo.suggestion",
+                }
+            },
+        ]
+    )
+    return dict(suggestions=list(query))
+
+
 @app.before_request
 def before_request_func():
     """ Instantiates the SearchLocationForm so that it can be
