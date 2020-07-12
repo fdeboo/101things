@@ -10,11 +10,11 @@
             </button>
             <ul class="collapse navbar-collapse navbar-nav" id="navbarSupportedContent">
                 {% if current_user.is_authenticated %}
-                <li class=""><a class="btn py-0" href="{{url_for('account') }}">Account</a></li>
-                <li class=""><a class="btn py-0" href="{{url_for('logout') }}">Logout</a></li>
+                <li class="nav-li"><a class="btn py-0" href="{{url_for('account') }}">Account</a></li>
+                <li class="nav-li"><a class="btn py-0" href="{{url_for('logout') }}">Logout</a></li>
                 {% else %}
-                <li class=""><a class="btn py-0" href="{{ url_for('login') }}">Login</a></li>
-                <li class=""><a class="btn py-0" href="{{url_for('register') }}">Register</a></li>
+                <li class="nav-li"><a class="btn py-0" href="{{ url_for('login') }}">Login</a></li>
+                <li class="nav-li"><a class="btn py-0" href="{{url_for('register') }}">Register</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -27,17 +27,17 @@
                 <div class="search-bar">
                     <img class="" src="{{ url_for('static', filename='images/searchicon.png') }}">
                 </div>
-                {{ g.search_form.hidden_tag() }}
-                {% if g.search_form.q.errors %}
-                {{ g.search_form.q(class="is-invalid search-input search-bar pl-3", placeholder="search a location...", autocomplete="off") }}
+                {{ g.searchform.hidden_tag() }}
+                {% if g.searchform.q.errors %}
+                {{ g.searchform.q(class="is-invalid search-input search-bar pl-3", placeholder="search a location...", autocomplete="off") }}
                 <div class="invalid-feedback">
-                    {% for error in g.search_form.q.errors %}
+                    {% for error in g.searchform.q.errors %}
                     <span> {{ error }}</span>
                     {% endfor %}
                 </div>
 
                 {% else %}
-                {{ g.search_form.q(class="search-input search-bar pl-3", placeholder="search location...") }}
+                {{ g.searchform.q(class="search-input search-bar pl-3", placeholder="search location...") }}
                 {% endif %}
             </form>
         </div>

@@ -32,7 +32,7 @@ from cityexplorer.utils import send_reset_email
 @app.before_request
 def before_request_func():
     """ Description """
-    g.search_form = SearchLocationForm()
+    g.searchform = SearchLocationForm()
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -47,8 +47,8 @@ def index():
     )
     per_page = 4
     offset = (page - 1) * per_page
-    if g.search_form.validate_on_submit():
-        searched = g.search_form.q.data
+    if g.searchform.validate_on_submit():
+        searched = g.searchform.q.data
         query = cities.find(
             {"location": {"$regex": searched, "$options": "i"}}
         )

@@ -1,39 +1,34 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div class="container py-3">
-    {% if locations.count() > 0 %}
-    <div class="row flex-nowrap justify-content-center align-items-center">
-        <div class="d-flex flex-wrap justify-content-center">
-            {% for location in locations %}
-            <a class="my-3 px-2 dark-gold" href="{{ url_for('suggestion_list', city=location['location']) }}">
-                <div class="card location-card" style="background-image:url('{{location['bg_img']}}')">
-                    <div class="card-body d-flex">
-                        <h2 class="align-self-center">101 Things to do in {{ location['location'] }}</h2>
-                    </div>
+{% if locations.count() > 0 %}
+<div class="row flex-nowrap justify-content-center align-items-center">
+    <div class="d-flex flex-wrap justify-content-center">
+        {% for location in locations %}
+        <a class="my-3 px-2 dark-gold" href="{{ url_for('suggestion_list', city=location['location']) }}">
+            <div class="card location-card" style="background-image:url('{{location['bg_img']}}')">
+                <div class="card-body d-flex">
+                    <h2 class="align-self-center">101 Things to do in {{ location['location'] }}</h2>
                 </div>
-            </a>
-            {% endfor %}
-        </div>
+            </div>
+        </a>
+        {% endfor %}
     </div>
-    <div class="row justify-content-center">
-        {{ pagination.info }}
-        {{ pagination.links }}
-    </div>
-    {% else %}
-    <div class="row flex-column align-items-center text-center search-false">
-        <img class="my-3" src="{{ url_for('static', filename='images/searchicon_lg.png')}}"
-            style="width:50px;height:50px;" />
-        <p> <span>{{searched}}</span> not found.<br /> Do you want to add this location?
-        </p>
-    </div>
-    {% endif %}
-
-
-
-    <div class="text-center p-5" style>
-        <button class="btn submit-btn p-3">
-            <a href="{{ url_for('add_location') }}">Add Location</a>
-        </button>
-    </div>
+</div>
+<div class="row justify-content-center" id="home-page-links">
+    {{ pagination.info }}
+    {{ pagination.links }}
+</div>
+{% else %}
+<div class="row flex-column align-items-center text-center search-false">
+    <img class="my-3" src="{{ url_for('static', filename='images/searchicon_lg.png')}}"
+        style="width:50px;height:50px;" />
+    <p> <span>{{searched}}</span> not found.<br /> Do you want to add this location?
+    </p>
+</div>
+{% endif %}
+<div class="row justify-content-center mt-3">
+    <button class="btn submit-btn p-3">
+        <a href="{{ url_for('add_location') }}">Add Location</a>
+    </button>
 </div>
 {% endblock content %}
