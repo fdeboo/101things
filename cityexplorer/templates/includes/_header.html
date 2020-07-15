@@ -43,6 +43,10 @@
         </div>
     </div>
 </div>
-<h3 class="text-center m-0 p-2" style="background-color:#608BA6;">"{{ suggestions[0]['suggestion'] }}"
-    <small>-{{ suggestions[0]['author'] }}</small></h3>
+<div class="text-center m-0 p-3" id="banner-container" style="background-color:#608BA6;">
+{% for suggestion in suggestions %}
+<h3> "{{ suggestion['suggestion'] }}"
+    <small>-{{ suggestion['author'] }}</small></h3>
+    {% endfor %}
+</div>
 </header>
