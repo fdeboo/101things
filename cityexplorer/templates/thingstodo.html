@@ -65,8 +65,10 @@
 
         </main>
 
+        <!-- Feature to filter results  -->
         <aside class="col-md-3 p-4">
             <h3>Filters:</h3>
+            <!-- If there are filters in place, the filters are listed -->
             {% if filters|length > 0 %}
             <ul id="filtersList">
                 {% for filt in filters %}
@@ -106,9 +108,6 @@
                         </table>
                     </div>
                 </fieldset>
-                <div class="form-group">
-                    {{ form.submit(class="btn submit-btn") }}
-                </div>
 
             </form>
         </aside>
@@ -119,25 +118,48 @@
 
 <script>
     $(document).ready(function () {
+        // Takes the 'filters' variable passed from the view and converts it from a list type to a json array.
+        // Loops through the array and uses the value on each iteration in a jquery selector, to identify the checkbox (input) with matching value.
+        // Sets the identified input to 'checked'
+
+        let filterarray = {{ filters|tojson }};
+        $.each(filterarray, function(index, value) {
+            $("input[value='"+value+"']").attr("checked", "checked");
+        });
+
+        // Limits the number of table rows 'shown' to 5.
+        // When Load More link is clicked, the limit is extended to show full table
+        // Link is hidden and Show Less link is shownn
+
         total_tr = $("#categories tr").length;
-        let x = 5;
-        $('#categories tr:lt(' + x + ')').show();
+        let limit = 5;
+        $('#categories tr:lt(' + limit + ')').show();
         $('#loadMore').click(function () {
             // variablename = (condition) ? value1:value2
-            x = total_tr;
-            $('#categories tr:lt(' + x + ')').slideDown(300, "swing", function () {
+            limit = total_tr;
+            $('#categories tr:lt(' + limit + ')').slideDown(300, "swing", function () {
                 $('#showLess').show()
                 $('#loadMore').hide()
             });
         });
 
+        // When Show Less link is clicked, limit is returned to value of 5
+        // Any table rows excluded from the first 5 rows in the table are hidden
+
         $('#showLess').click(function () {
-            x = 5;
-            $('#categories tr').not(':lt(' + x + ')').slideUp(300, "swing", function () {
+            limit = 5;
+            $('#categories tr').not(':lt(' + limit + ')').slideUp(300, "swing", function () {
                 $('#showLess').hide()
                 $('#loadMore').show()
             });
         });
+    });
+
+
+    // Whenever a checkbox is checked (input provided), the form is submiited
+
+    $("form input").change(function() {
+        $(this).closest('form').submit(); 
     });
 </script>
 {% endblock content %}

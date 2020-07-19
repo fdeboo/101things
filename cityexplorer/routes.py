@@ -1,4 +1,5 @@
 """ Document description """
+import json
 from flask import (
     render_template,
     redirect,
@@ -30,7 +31,10 @@ from cityexplorer.utils import send_reset_email
 
 @app.context_processor
 def context_processor():
-    """ Descritpion """
+    """ Function can be called from any template in the app.
+    Processes the logic required to return a value to the template.
+    In this case, queries the database for all suggestions and their authors.
+    Returns the results to the template via a dictionary where the results are a list type """
     query = mongo.db.cities.aggregate(
         [
             {"$unwind": "$thingsToDo"},
@@ -352,7 +356,8 @@ def suggestion_list(city):
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
     )
-    if request.args.get("submit"):
+
+    if request.args.get("category") or request.args.get("cost"):
         condition_a = []
         condition_b = []
         if request.args.get("category"):
@@ -495,11 +500,13 @@ def suggestion_list(city):
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
+    jsfilters = json.dumps(filters)
     return render_template(
         "thingstodo.html",
         city=location,
         things=suggestions,
         filters=filters,
+        jsfilters=jsfilters,
         page=page,
         per_page=per_page,
         pagination=pagination,
