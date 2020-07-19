@@ -34,7 +34,9 @@ def context_processor():
     """ Function can be called from any template in the app.
     Processes the logic required to return a value to the template.
     In this case, queries the database for all suggestions and their authors.
-    Returns the results to the template via a dictionary where the results are a list type """
+    Returns the results to the template as a list, with the key name
+    'suggestions' """
+
     query = mongo.db.cities.aggregate(
         [
             {"$unwind": "$thingsToDo"},
@@ -59,7 +61,12 @@ def before_request_func():
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def index():
-    """ Displays results for all locations in the database """
+    """ If a search term is submitted, queries the database for case-
+    insensitive matches. Otherwise, queries the database for all documents.
+    Passes the results to the template in a limited batch so that large numbers
+    of results are divided over several pages and can be pagainated.
+    Displays results for all locations in the database """
+
     cities = mongo.db.cities
     searched = ""
     page, per_page, offset = get_page_args(
@@ -77,7 +84,7 @@ def index():
         if cities.find({"thingsToDo": {"$exists": False}}):
             cities.delete_many({"thingsToDo": {"$exists": False}})
     total = query.count()
-    locations = query[offset: offset + per_page]
+    locations = query[offset : offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
@@ -234,7 +241,7 @@ def account():
     total = len(results)
     per_page = 10
     offset = (page - 1) * per_page
-    suggestions = results[offset: offset + per_page]
+    suggestions = results[offset : offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
@@ -348,8 +355,7 @@ def suggestion_list(city):
     form = FilterResultsForm()
     cities = mongo.db.cities
     location = cities.find_one(
-        {"location": city},
-        {"_id": 0, "location": 1, "bg_img": 1}
+        {"location": city}, {"_id": 0, "location": 1, "bg_img": 1}
     )
     query = ""
     filters = []
@@ -496,7 +502,7 @@ def suggestion_list(city):
     total = len(results)
     per_page = 10
     offset = (page - 1) * per_page
-    suggestions = results[offset: offset + per_page]
+    suggestions = results[offset : offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )

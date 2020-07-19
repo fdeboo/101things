@@ -3,6 +3,7 @@
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
+
         <main class="col-md-8 mr-4 content-section container">
             <a href="{{url_for('index')}}" class="dark-gold"><i class="fas fa-arrow-circle-left"></i>Return to Home</a>
             <div class="d-flex align-items-end">
@@ -15,8 +16,9 @@
                 </button>
                 {% endif %}
             </div>
-            <img class="w-100" src="{{ city['bg_img'] }}">
+            <img class="w-100 title-img" src="{{ city['bg_img'] }}">
             <div class="pl-0 py-2">
+                <!-- Suggestion List  -->
                 {% for thing in things %}
                 <div class="accordion thingtodo" id="thingtodo">
                     <a href="#" id="heading{{ loop.index }}" class="text-left collapsed" data-toggle="collapse"
@@ -27,6 +29,7 @@
                         </div>
                     </a>
 
+                    <!-- Collapsed content  -->
                     <div id="collapse{{ loop.index }}" class="collapse pl-4 py-2 mb-4 thing-grid"
                         aria-labelledby="heading{{ loop.index }}" data-parent="#thingtodo">
                         <ul class="thing-icons pr-3">
@@ -54,6 +57,14 @@
                         <div class="author">
                             <img class="rounded-circle" src="{{ thing['profile'] }}">
                             <small>Suggested by <b>{{ thing['author'] }}</b></small>
+                            <div class="d-flex">
+                                
+                                    <a href="#"><i class="fas fa-edit"></i></i>Edit</a>
+                                
+                                
+                                    <a href="#"><i class="fas fa-trash-alt"></i>Delete</a>
+                                
+                            </div>
                         </div>
                     </div>
 
@@ -68,7 +79,7 @@
         <!-- Feature to filter results  -->
         <aside class="col-md-3 p-4">
             <h3>Filters:</h3>
-            <!-- If there are filters in place, the filters are listed -->
+            <!-- If filters in place, the filters are listed -->
             {% if filters|length > 0 %}
             <ul id="filtersList">
                 {% for filt in filters %}
@@ -79,6 +90,7 @@
                     class="fas fa-times-circle"></i>Clear filters</a>
             {% endif %}
 
+            <!-- Filter form -->
             <form method="GET" action="{{ url_for('suggestion_list', city=city['location']) }}" id="filterForm">
                 <fieldset class="form-group m-0">
                     <div class="form-group px-3 py-2">
@@ -122,9 +134,9 @@
         // Loops through the array and uses the value on each iteration in a jquery selector, to identify the checkbox (input) with matching value.
         // Sets the identified input to 'checked'
 
-        let filterarray = {{ filters|tojson }};
-        $.each(filterarray, function(index, value) {
-            $("input[value='"+value+"']").attr("checked", "checked");
+        let filterarray = {{ filters | tojson }};
+        $.each(filterarray, function (index, value) {
+            $("input[value='" + value + "']").attr("checked", "checked");
         });
 
         // Limits the number of table rows 'shown' to 5.
@@ -158,8 +170,8 @@
 
     // Whenever a checkbox is checked (input provided), the form is submiited
 
-    $("form input").change(function() {
-        $(this).closest('form').submit(); 
+    $("form input").change(function () {
+        $(this).closest('form').submit();
     });
 </script>
 {% endblock content %}

@@ -1,3 +1,4 @@
+""" Function """
 import os
 from flask import url_for, render_template
 from flask_mail import Message

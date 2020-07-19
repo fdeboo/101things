@@ -27,10 +27,10 @@
         {% include 'includes/_messages.html' %}
         {% block content %}{% endblock content %}
     </div>
-    <footer class="container d-flex align-items-end">
+    <footer class="container-lg d-flex align-items-end">
         <div class="row">
-            <a href="https://github.com/fdeboo" target="_blank"><i class="fab fa-github fa-lg"></i></a>
-            <a href="https://linkedin.com/in/frandeboo" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a>
+            <a href="https://github.com/fdeboo" target="_blank"><i class="fab fa-github fa-lg white"></i></a>
+            <a href="https://linkedin.com/in/frandeboo" target="_blank"><i class="fab fa-linkedin fa-lg white"></i></a>
         </div>
     </footer>
 
@@ -40,24 +40,6 @@
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
-    </script>
-
-    <script>
-        $(document).ready(function () {
-                $("#banner-container div").first().addClass("active")
-                let content = $("#banner-container").children();
-                var i = 0;
-
-                setInterval(() => {
-                    console.log(i)
-                    content.filter(".active").fadeOut(1000);
-                    setTimeout(() => {
-                        content.filter(".active").removeClass('active');
-                        content.eq(i).fadeIn(1000).addClass('active');
-                    }, 1000);
-                    i = (i + 1) % content.length; // Wraps around if it hits the end
-                }, 7000);
-        });
     </script>
 </body>
 
