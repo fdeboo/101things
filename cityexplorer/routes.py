@@ -343,6 +343,10 @@ def suggestion_list(city):
     """ Description """
     form = FilterResultsForm()
     cities = mongo.db.cities
+    location = cities.find_one(
+        {"location": city},
+        {"_id": 0, "location": 1, "bg_img": 1}
+    )
     query = ""
     filters = []
     page, per_page, offset = get_page_args(
@@ -493,7 +497,7 @@ def suggestion_list(city):
     )
     return render_template(
         "thingstodo.html",
-        city=city,
+        city=location,
         things=suggestions,
         filters=filters,
         page=page,

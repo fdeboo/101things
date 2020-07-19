@@ -1,26 +1,27 @@
 <header class="hero-content">
-<nav class="navbar navbar-expand-lg navbar-dark pb-2 w-100">
-    <div class="container">
-        <a class="navbar-brand logo" href="{{ url_for('index') }}"><i class="fas fa-map-marker-alt pale-pink"></i> 101
-            things</a>
-        <div class="d-flex justify-content-end">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <ul class="collapse navbar-collapse navbar-nav" id="navbarSupportedContent">
-                {% if current_user.is_authenticated %}
-                <li class="nav-li"><a class="btn py-0" href="{{url_for('account') }}">Account</a></li>
-                <li class="nav-li"><a class="btn py-0" href="{{url_for('logout') }}">Logout</a></li>
-                {% else %}
-                <li class="nav-li"><a class="btn py-0" href="{{ url_for('login') }}">Login</a></li>
-                <li class="nav-li"><a class="btn py-0" href="{{url_for('register') }}">Register</a></li>
-                {% endif %}
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark pb-2 w-100">
+        <div class="container">
+            <a class="navbar-brand logo" href="{{ url_for('index') }}"><i class="fas fa-map-marker-alt pale-pink"></i>
+                101
+                things</a>
+            <div class="d-flex justify-content-end">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <ul class="collapse navbar-collapse navbar-nav" id="navbarSupportedContent">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-li"><a class="btn py-0" href="{{url_for('account') }}">Account</a></li>
+                    <li class="nav-li"><a class="btn py-0" href="{{url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                    <li class="nav-li"><a class="btn py-0" href="{{ url_for('login') }}">Login</a></li>
+                    <li class="nav-li"><a class="btn py-0" href="{{url_for('register') }}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-<div class="d-flex align-items-center">
+    </nav>
     <div class="container pb-3">
         <div class="row p-4 d-flex justify-content-center text-center">
             <form method="POST" action="{{ url_for('index') }}" class="d-flex search-form">
@@ -41,12 +42,18 @@
                 {% endif %}
             </form>
         </div>
+        <div class="row justify-content-center text-center m-0 white" id="banner-container">
+            {% for suggestion in suggestions %}
+            <div class="justify-content-center align-items-center">
+                <i class="fas fa-quote-left light-blue fa-3x d-inline"></i>
+                <h3 class="d-inline mx-3"> {{ suggestion['suggestion'] }}
+                    <br /><small class="d-inline">-{{ suggestion['author'] }}</small>
+                </h3>
+                <i class="fas fa-quote-right light-blue fa-3x d-inline-block"></i>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-</div>
-<div class="text-center m-0 p-3" id="banner-container" style="background-color:#608BA6;">
-{% for suggestion in suggestions %}
-<h3> "{{ suggestion['suggestion'] }}"
-    <small>-{{ suggestion['author'] }}</small></h3>
-    {% endfor %}
-</div>
+
+
 </header>

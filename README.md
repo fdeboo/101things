@@ -1,12 +1,12 @@
  <div align="center">
 
-<img src="assets/images/simon_logo.png" alt="101 things Logo"/>
+<img src="" alt="101 things Logo"/>
  
  </div>
 <br />
 <div>
 
-An app that encourages city-based adventurers around the world to share ideas on what to do in their local city. The lists of '101' things, in turn provide a rich resource for anyone less familiar with the location, to feel assured that they are not missing out on anything. View the 101 things app [here](https://github.com/fdeboo/101things)
+An app that encourages adventurers around the world to share and advise others on what to do in their local area. The lists of '101' things, in turn provide a rich resource for any visitors who are less familiar with the location, to feel assured that they are not missing out on anything. View the 101 things app [here](https://github.com/fdeboo/101things)
 
 </div>
 
@@ -30,18 +30,19 @@ An app that encourages city-based adventurers around the world to share ideas on
 ## UX <a name="introduction"></a>
 
 #### Objective <a name="strategy"></a>
-+ The focus of this project is for users to offer suggestions that will be read by other users.
++ The focus of this project is to create a platform for adventurers to share their good experiences of their local area with other travellers in the community who would benefit from the local knowledge and advice. 
 + The app is designed for people who love to travel and explore. The colour themes will be inspired by the earth/globe.
 
 
 #### User Stories <a name="users"></a>
 "As a user, I would like to ___________"
-+ Add my city to the app
-+ Add an idea to the list
++ Add my location to the app
++ Add a suggestion to the list
 + Search for a city in the app
 + Find all free things to do in a city
 + View all my own suggestions
 + Edit my suggestion
++ Find all suggestions that are Museums
 
 
 

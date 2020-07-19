@@ -10,14 +10,12 @@ body {
   flex-direction: column;
   font-family: "Lato", sans-serif;
   min-height: 100%;
-  background-color: whitesmoke;
 }
 
 .content {
   flex: 1 auto;
   background-color: #fff;
   margin-bottom: 10px;
-  padding-bottom: 10px;
 }
 
 /* Site Footer */
@@ -63,7 +61,7 @@ h3 {
 }
 
 a {
-  color: inherit;
+  color: #594e16;
 }
 
 a:hover {
@@ -83,9 +81,10 @@ a i {
 .submit-btn {
   background-color: #184759;
   color: #fff;
+  margin-bottom: 8px;
 }
 
-.submit-btn:hover, .submit-btn a:hover {
+.submit-btn a, .submit-btn a:hover, .submit-btn:hover {
   color: #fff;
 }
 
@@ -112,7 +111,6 @@ button:focus {
   outline: 0;
   box-shadow: none !important;
 }
-
 
 /* Pagination */
 .disabled {
@@ -214,20 +212,15 @@ input:-webkit-autofill:active {
   font-style: italic;
 }
 
-#banner-container {
-  position: relative;
-  opacity: 0.5;
-}
-
-#banner-container h3 {
+#banner-container div {
   text-align: center;
-  display:none;
+  display: none;
   font-size: 1.3em;
   opacity: 1;
 }
 
 .active {
-  display:block;
+  display: flex!important;
 }
 
 /* Home page */
@@ -237,7 +230,7 @@ input:-webkit-autofill:active {
   box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
   text-align: center;
   background-size: cover;
-  border-radius: 15px;
+  /*border-radius: 15px;*/
   border: 1px solid #fff;
 }
 
@@ -340,6 +333,10 @@ ul.thing-icons li p {
 }
 
 /* Filter Aside */
+aside {
+  background-color: whitesmoke;
+}
+
 ul#filtersList {
   list-style-position: outside;
   margin-bottom: 8px;
@@ -362,4 +359,8 @@ table.filterOptions label {
 #categories tr {
   display: none;
 }
+
+
+
+
 

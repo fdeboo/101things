@@ -22,12 +22,10 @@
 </head>
 
 <body>
-    <div class="content container-lg px-0 mt-lg-4">
+    <div class="content container-lg px-0">
         {% include 'includes/_header.html' %}
         {% include 'includes/_messages.html' %}
-        <div class="container content-section">
-            {% block content %}{% endblock content %}
-        </div>
+        {% block content %}{% endblock content %}
     </div>
     <footer class="container d-flex align-items-end">
         <div class="row">
@@ -46,14 +44,15 @@
 
     <script>
         $(document).ready(function () {
-                $("#banner-container h3").first().addClass("active")
+                $("#banner-container div").first().addClass("active")
                 let content = $("#banner-container").children();
                 var i = 0;
 
                 setInterval(() => {
                     console.log(i)
-                    content.filter(".active").fadeOut(1000).removeClass('active');
+                    content.filter(".active").fadeOut(1000);
                     setTimeout(() => {
+                        content.filter(".active").removeClass('active');
                         content.eq(i).fadeIn(1000).addClass('active');
                     }, 1000);
                     i = (i + 1) % content.length; // Wraps around if it hits the end
