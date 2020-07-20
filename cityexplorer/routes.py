@@ -1,4 +1,4 @@
-""" Document description """
+""" Imports include json to convert a python list to json array,   """
 import json
 from flask import (
     render_template,
@@ -84,7 +84,7 @@ def index():
         if cities.find({"thingsToDo": {"$exists": False}}):
             cities.delete_many({"thingsToDo": {"$exists": False}})
     total = query.count()
-    locations = query[offset : offset + per_page]
+    locations = query[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
@@ -209,7 +209,6 @@ def account():
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
     )
-    print(current_user.username)
     query = cities.aggregate(
         [
             {"$unwind": "$thingsToDo"},
@@ -241,7 +240,7 @@ def account():
     total = len(results)
     per_page = 10
     offset = (page - 1) * per_page
-    suggestions = results[offset : offset + per_page]
+    suggestions = results[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
@@ -351,7 +350,10 @@ def add_suggestion(location):
 
 @app.route("/thingstodo/<city>", methods=["GET"])
 def suggestion_list(city):
-    """ Description """
+    """ Runs a search for all documents in the database. If there is a filter
+    applied in the FilterResultsForm, runs an aggregrate query on the database
+    to match the criteria in the query before looking up user profile from the
+    users collecttion """
     form = FilterResultsForm()
     cities = mongo.db.cities
     location = cities.find_one(
@@ -502,7 +504,7 @@ def suggestion_list(city):
     total = len(results)
     per_page = 10
     offset = (page - 1) * per_page
-    suggestions = results[offset : offset + per_page]
+    suggestions = results[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
@@ -519,3 +521,17 @@ def suggestion_list(city):
         form=form,
         title="Things to do",
     )
+
+
+@app.route("/delete/<city>/<suggestion>", methods=["GET", "POST"])
+@login_required
+def delete_suggestion(city, suggestion):
+    """ Deletes the suggestion """
+    cities = mongo.db.cities
+    print(city)
+    print(suggestion)
+    cities.update_one(
+        {"location": city}, {"$pull": {"thingsToDo": suggestion}}
+    )
+    flash("Suggestion deleted.", "success")
+    return redirect(url_for("suggestion_list", city=city))

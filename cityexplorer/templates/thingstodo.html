@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
 
-        <main class="col-md-8 mr-4 content-section container">
+        <main class="col-12 col-lg-8 mr-4 content-section container">
             <a href="{{url_for('index')}}" class="dark-gold"><i class="fas fa-arrow-circle-left"></i>Return to Home</a>
             <div class="d-flex align-items-end">
                 <h1 class="dark-gold">101 Things to do in {{ city['location'] }}</h1>
@@ -18,7 +18,7 @@
             </div>
             <img class="w-100 title-img" src="{{ city['bg_img'] }}">
             <div class="pl-0 py-2">
-                <!-- Suggestion List  -->
+                <!-- 'List' of Things To Do  -->
                 {% for thing in things %}
                 <div class="accordion thingtodo" id="thingtodo">
                     <a href="#" id="heading{{ loop.index }}" class="text-left collapsed" data-toggle="collapse"
@@ -57,18 +57,50 @@
                         <div class="author">
                             <img class="rounded-circle" src="{{ thing['profile'] }}">
                             <small>Suggested by <b>{{ thing['author'] }}</b></small>
-                            <div class="d-flex">
-                                
-                                    <a href="#"><i class="fas fa-edit"></i></i>Edit</a>
-                                
-                                
-                                    <a href="#"><i class="fas fa-trash-alt"></i>Delete</a>
-                                
+                            <div class="d-flex justify-content-end align-items-end">
+
+                                <button tyoe="button" class="mx-2" data-toggle="modal"
+                                    data-target="#editModal{{ loop.index }}"><i
+                                        class="fas fa-edit"></i></i>Edit</button>
+                                <button type="button" class="mx-2" data-toggle="modal"
+                                    data-target="#deleteModal{{ loop.index }}"><i
+                                        class="fas fa-trash-alt"></i>Delete</button>
+
                             </div>
                         </div>
                     </div>
-
                 </div>
+
+                <!-- Delete Suggestion Modal  -->
+                <div class="modal fade" id="deleteModal{{ loop.index }}" tabindex="-1" role="dialog"
+                    aria-labelledby="deleteModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Delete?</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete <span>"{{ thing['suggestion']}}"</span>?</p>
+                                <p>Deleting this suggestion can not be reversed.</p>
+                                <p>{{ thing['location']}}</p>
+                            </div>
+                            <div class="modal-footer">
+                            <form method="POST"
+                                action="{{ url_for('delete_suggestion', city=city['location'], suggestion=thing['suggestion']) }}">
+                                <button type="submit" class="btn submit-btn">Delete</button>
+                            </form>
+                                <button type="button" class="btn submit-btn cancel-btn" data-dismiss="modal" aria-label="Close">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 {% endfor %}
             </div>
             {{ pagination.info }}
@@ -77,7 +109,7 @@
         </main>
 
         <!-- Feature to filter results  -->
-        <aside class="col-md-3 p-4">
+        <aside class="col-12 col-lg-3 p-4">
             <h3>Filters:</h3>
             <!-- If filters in place, the filters are listed -->
             {% if filters|length > 0 %}
@@ -127,6 +159,7 @@
 
     </div>
 </div>
+
 
 <script>
     $(document).ready(function () {
