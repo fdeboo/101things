@@ -85,88 +85,88 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form method="POST" action="">
-                                    {{ edit_form.hidden_tag() }}
-                                    {{ edit_form.location(value=location) }}
+                                <form method="POST" action="{{url_for('edit_suggestion', city=city['location'])}}">
+                                    {{ g.editsuggestion.hidden_tag() }}
+                                    {{ g.editsuggestion.location(value=location) }}
                                     <fieldset class="form-group">
                                         <div class="form-group">
-                                            {{ edit_form.suggestion.label(class="form-control-label") }}
-                                            {% if edit_form.suggestion.errors %}
-                                            {{ edit_form.suggestion(class="form-control form-control is-invalid", value=thing['suggestion'], disabled=True) 
+                                            {{ g.editsuggestion.suggestion.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.suggestion.errors %}
+                                            {{ g.editsuggestion.suggestion(class="form-control form-control is-invalid", value=thing['suggestion'], disabled=True) 
                                             }}
                                             <div class="invalid-feedback">
-                                                {% for error in edit_form.suggestion.errors %}
+                                                {% for error in g.editsuggestion.suggestion.errors %}
                                                 <span> {{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                            {{ edit_form.suggestion(class="form-control form-control", value=thing['suggestion'], disabled=True)
+                                            {{ g.editsuggestion.suggestion(class="form-control form-control", value=thing['suggestion'], disabled=True)
                                             }}
                                             {% endif %}
                                         </div>
 
                                         <div class="form-group">
-                                            {{ edit_form.category.label(class="form-control-label") }}
-                                            {% if edit_form.category.errors %}
-                                            {{ edit_form.category(class="form-control form-control is-invalid") }}
+                                            {{ g.editsuggestion.category.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.category.errors %}
+                                            {{ g.editsuggestion.category(class="form-control form-control is-invalid") }}
                                             <div class="invalid-feedback">
-                                                {% for error in edit_form.category.errors %}
+                                                {% for error in g.editsuggestion.category.errors %}
                                                 <span> {{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                            {{ edit_form.category(class="form-control form-control") }}
+                                            {{ g.editsuggestion.category(class="form-control form-control") }}
                                             {% endif %}
                                         </div>
 
                                         <div class="form-group">
-                                            {{ edit_form.cost.label(class="form-control-label") }}
-                                            {% if edit_form.cost.errors %}
-                                            {{ edit_form.cost(class="form-control form-control is-invalid") }}
+                                            {{ g.editsuggestion.cost.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.cost.errors %}
+                                            {{ g.editsuggestion.cost(class="form-control form-control is-invalid") }}
                                             <div class="invalid-feedback">
-                                                {% for error in edit_form.category.errors %}
+                                                {% for error in g.editsuggestion.category.errors %}
                                                 <span> {{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                            {{ edit_form.cost(class="form-control form-control") }}
+                                            {{ g.editsuggestion.cost(class="form-control form-control") }}
                                             {% endif %}
                                         </div>
 
                                         <div class="form-group">
-                                            {{ edit_form.url.label(class="form-control-label") }}
-                                            {% if edit_form.url.errors %}
-                                            {{ edit_form.url(class="form-control form-control is-invalid", value=thing['url']) }}
+                                            {{ g.editsuggestion.url.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.url.errors %}
+                                            {{ g.editsuggestion.url(class="form-control form-control is-invalid", value=thing['url']) }}
                                             <div class="invalid-feedback">
-                                                {% for error in edit_form.url.errors %}
+                                                {% for error in g.editsuggestion.url.errors %}
                                                 <span> {{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                            {{ edit_form.url(class="form-control form-control", value=thing['url']) }}
+                                            {{ g.editsuggestion.url(class="form-control form-control", value=thing['url']) }}
                                             {% endif %}
                                         </div>
 
                                         <div class="form-group">
-                                            {{ edit_form.comment.label(class="form-control-label") }}
-                                            {% if edit_form.comment.errors %}
-                                            {{ edit_form.comment(class="form-control form-control is-invalid") }}
+                                            {{ g.editsuggestion.comment.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.comment.errors %}
+                                            {{ g.editsuggestion.comment(class="form-control form-control is-invalid") }}
                                             <div class="invalid-feedback">
-                                                {% for error in edit_form.comment.errors %}
+                                                {% for error in g.editsuggestion.comment.errors %}
                                                 <span> {{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                             {% else %}
-                                            {{ edit_form.comment(class="form-control form-control") }}
+                                            {{ g.editsuggestion.comment(class="form-control form-control") }}
                                             {% endif %}
                                         </div>
 
                                     </fieldset>
                             </div>
                             <div class="modal-footer">
-                                <!-- Submits the city name and suggestion title as arguements to the 'edit_suggeston' route  -->
+
                                 <div class="form-group">
-                                    {{ edit_form.submit(class="btn submit-btn") }}
+                                    {{ g.editsuggestion.submit(class="btn submit-btn") }}
                                     <button type="button" class="btn submit-btn cancel-btn" data-dismiss="modal"
                                         aria-label="Close">Cancel</button>
                                 </div>

@@ -185,7 +185,7 @@ class CreateSuggestionForm(FlaskForm):
     submit = SubmitField("Add")
 
 
-class UpdateSuggestionForm(FlaskForm):
+class EditSuggestionForm(FlaskForm):
     """ Class """
 
     location = HiddenField("Location")
@@ -232,7 +232,7 @@ class UpdateSuggestionForm(FlaskForm):
         validators=[URL(require_tld=True), Length(min=5, max=200), Optional()],
     )
     comment = TextAreaField("Comment", validators=[Length(min=5, max=500)])
-    submit = SubmitField("Update") 
+    submit = SubmitField("Update")
 
 
 class MultiCheckboxField(SelectMultipleField):
