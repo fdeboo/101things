@@ -55,6 +55,7 @@ def context_processor():
 def before_request_func():
     """ Instantiates the SearchLocationForm so that it can be
     accessed globally in the app """
+
     g.searchform = SearchLocationForm()
 
 
@@ -63,8 +64,9 @@ def before_request_func():
 def index():
     """ If a search term is submitted, queries the database for case-
     insensitive matches. Otherwise, queries the database for all documents.
+
     Passes the results to the template in a limited batch so that large numbers
-    of results are divided over several pages and can be pagainated.
+    of results are divided over several pages and are paginated.
     Displays results for all locations in the database """
 
     cities = mongo.db.cities
@@ -160,7 +162,9 @@ def login():
 
 @app.route("/logout")
 def logout():
-    """ Description """
+    """ Logs the user out using logout_user function from flask_login and
+    redirects them to the home page """
+
     logout_user()
     return redirect(url_for("index"))
 
@@ -305,7 +309,9 @@ def reset_token(token):
 @app.route("/addlocation", methods=["GET", "POST"])
 @login_required
 def add_location():
-    """ Description """
+    """ Instantiates the Location form. Inserts a new document using data
+    retrieved from the form input """
+
     form = CreateLocationForm()
     cities = mongo.db.cities
     if form.validate_on_submit():
@@ -318,7 +324,10 @@ def add_location():
 @app.route("/addsuggestion/<location>", methods=["GET", "POST"])
 @login_required
 def add_suggestion(location):
-    """ Description """
+    """ Instanstiates the suggestion form. Updates the database using the
+    data retrieved from the form input. Redirects to the thingsToDo template.
+    """
+
     form = CreateSuggestionForm()
     cities = mongo.db.cities
     if form.validate_on_submit():
@@ -351,9 +360,15 @@ def add_suggestion(location):
 @app.route("/thingstodo/<city>", methods=["GET"])
 def suggestion_list(city):
     """ Runs a search for all documents in the database. If there is a filter
-    applied in the FilterResultsForm, runs an aggregrate query on the database
-    to match the criteria in the query before looking up user profile from the
-    users collecttion """
+    applied in the FilterResultsForm, uses the data retrieved from the page
+    arguements to construct the criteria for the match pipeline, used in a
+    mongo aggregation query. 
+    
+    Converts the results of the query to a list type. 
+    The number of list items returned to the template is limited to a batch of 
+    10. Pagination using flask_paginate handles the page number and offset 
+    for paging through to further batches of results. """
+
     form = FilterResultsForm()
     cities = mongo.db.cities
     location = cities.find_one(
@@ -523,15 +538,35 @@ def suggestion_list(city):
     )
 
 
-@app.route("/delete/<city>/<suggestion>", methods=["GET", "POST"])
+@app.route("/delete/<city>/<suggestion>", methods=["POST"])
 @login_required
 def delete_suggestion(city, suggestion):
-    """ Deletes the suggestion """
+    """ Takes the values for city and suggestion passed in the url and uses
+    them to locate the suggestion in the database. 'Pulls' the suggestion from
+    the array it belongs to and flashes a message to the user to confirm the
+    update. Returns user to the 'thingstodo' template """
+
     cities = mongo.db.cities
-    print(city)
-    print(suggestion)
     cities.update_one(
-        {"location": city}, {"$pull": {"thingsToDo": suggestion}}
+        {"location": city},
+        {"$pull": {"thingsToDo": {"suggestion": suggestion}}}
     )
     flash("Suggestion deleted.", "success")
+    return redirect(url_for("suggestion_list", city=city))
+
+
+@app.route("/edit/<city>/<suggestion>", methods=["POST"])
+@login_required
+def edit_suggestion(city, suggestion):
+    """ Takes the values for city and suggestion passed in the url and uses
+    them to locate the suggestion in the database. 'Pulls' the suggestion from
+    the array it belongs to and flashes a message to the user to confirm the
+    update. Returns user to the 'thingstodo' template """
+
+    cities = mongo.db.cities
+    cities.update_one(
+        {"location": city},
+        {"$pull": {"thingsToDo": {"suggestion": suggestion}}}
+    )
+    flash("Suggestion updated.", "success")
     return redirect(url_for("suggestion_list", city=city))

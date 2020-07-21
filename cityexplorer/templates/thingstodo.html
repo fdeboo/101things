@@ -85,7 +85,7 @@
                             </div>
                             <div class="modal-body">
                                 <p>Are you sure you want to delete <span>"{{ thing['suggestion']}}"</span>?</p>
-                                <p>Deleting this suggestion can not be reversed.</p>
+                                <p>Deleting this suggestion can not be reversed. {{ city['location'] }}</p>
                                 <p>{{ thing['location']}}</p>
                             </div>
                             <div class="modal-footer">
@@ -110,6 +110,8 @@
 
         <!-- Feature to filter results  -->
         <aside class="col-12 col-lg-3 p-4">
+        <div class="row">
+        <div class="col-4 col-lg-12">
             <h3>Filters:</h3>
             <!-- If filters in place, the filters are listed -->
             {% if filters|length > 0 %}
@@ -121,11 +123,12 @@
             <a href="{{url_for('suggestion_list', city=city['location']) }}" id="clearFilter"><i
                     class="fas fa-times-circle"></i>Clear filters</a>
             {% endif %}
+        </div>
 
             <!-- Filter form -->
-            <form method="GET" action="{{ url_for('suggestion_list', city=city['location']) }}" id="filterForm">
-                <fieldset class="form-group m-0">
-                    <div class="form-group px-3 py-2">
+            <form method="GET" action="{{ url_for('suggestion_list', city=city['location']) }}" id="filterForm" class="col-8 col-lg-12">
+                <fieldset class="form-group m-0 p-0 col-12">
+                    <div class="col-6 col-lg-12">
                         <b>{{ form.category.label(class="form-control-label") }}</b>
                         <table id="categories" class="filterOptions mb-2">
                             {% for subfield in form.category %}
@@ -140,7 +143,7 @@
                         <a href="#" id="showLess"><i class="fas fa-arrow-circle-up"></i>Show less</a>
                     </div>
 
-                    <div class="form-group px-3 py-2">
+                    <div class="col-6 col-lg-12">
                         <b>{{ form.cost.label(class="form-control-label") }}</b>
                         <table class="filterOptions">
                             {% for subfield in form.cost %}
@@ -154,6 +157,7 @@
                 </fieldset>
 
             </form>
+        </div>
         </aside>
 
 
