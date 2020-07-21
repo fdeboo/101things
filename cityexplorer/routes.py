@@ -22,6 +22,7 @@ from cityexplorer.forms import (
     ResetPasswordForm,
     CreateLocationForm,
     CreateSuggestionForm,
+    UpdateSuggestionForm,
     SearchLocationForm,
     FilterResultsForm,
 )
@@ -364,12 +365,13 @@ def suggestion_list(city):
     arguements to construct the criteria for the match pipeline, used in a
     mongo aggregation query. 
     
-    Converts the results of the query to a list type. 
-    The number of list items returned to the template is limited to a batch of 
-    10. Pagination using flask_paginate handles the page number and offset 
+    Converts the results of the query to a list type.
+    The number of list items returned to the template is limited to a batch of
+    10. Pagination using flask_paginate handles the page number and offset
     for paging through to further batches of results. """
 
     form = FilterResultsForm()
+    edit_form = UpdateSuggestionForm()
     cities = mongo.db.cities
     location = cities.find_one(
         {"location": city}, {"_id": 0, "location": 1, "bg_img": 1}
@@ -534,6 +536,7 @@ def suggestion_list(city):
         per_page=per_page,
         pagination=pagination,
         form=form,
+        edit_form=edit_form,
         title="Things to do",
     )
 
