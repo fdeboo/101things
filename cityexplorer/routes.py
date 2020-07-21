@@ -22,6 +22,7 @@ from cityexplorer.forms import (
     ResetPasswordForm,
     CreateLocationForm,
     CreateSuggestionForm,
+    EditSuggestionForm,
     SearchLocationForm,
     FilterResultsForm,
 )
@@ -57,6 +58,7 @@ def before_request_func():
     accessed globally in the app """
 
     g.searchform = SearchLocationForm()
+    g.editsuggestion = EditSuggestionForm()
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -287,7 +289,7 @@ def reset_token(token):
         return redirect(url_for("index"))
     user = User.verify_reset_token(token)
     if user is None:
-        flash("That is an invalid or expired token", "warning")
+        flash("That is an invalid or expired token", "danger")
         return redirect(url_for("reset_request"))
     form = ResetPasswordForm()
     if form.validate_on_submit():
@@ -362,11 +364,11 @@ def suggestion_list(city):
     """ Runs a search for all documents in the database. If there is a filter
     applied in the FilterResultsForm, uses the data retrieved from the page
     arguements to construct the criteria for the match pipeline, used in a
-    mongo aggregation query. 
-    
-    Converts the results of the query to a list type. 
-    The number of list items returned to the template is limited to a batch of 
-    10. Pagination using flask_paginate handles the page number and offset 
+    mongo aggregation query.
+
+    Converts the results of the query to a list type.
+    The number of list items returned to the template is limited to a batch of
+    10. Pagination using flask_paginate handles the page number and offset
     for paging through to further batches of results. """
 
     form = FilterResultsForm()
@@ -555,18 +557,32 @@ def delete_suggestion(city, suggestion):
     return redirect(url_for("suggestion_list", city=city))
 
 
-@app.route("/edit/<city>/<suggestion>", methods=["POST"])
+@app.route("/edit/<city>", methods=["POST"])
 @login_required
-def edit_suggestion(city, suggestion):
-    """ Takes the values for city and suggestion passed in the url and uses
-    them to locate the suggestion in the database. 'Pulls' the suggestion from
+def edit_suggestion(city):
+    """ Takes the values for form and city passed in the url and uses
+    them to locate the suggestion in the database. 'Pushes' the suggestion from
     the array it belongs to and flashes a message to the user to confirm the
     update. Returns user to the 'thingstodo' template """
 
     cities = mongo.db.cities
-    cities.update_one(
-        {"location": city},
-        {"$pull": {"thingsToDo": {"suggestion": suggestion}}}
-    )
-    flash("Suggestion updated.", "success")
+    if g.editsuggestion.validate_on_submit():
+        cities.update_one(
+            {"location": city},
+            {
+                "$push": {
+                    "thingsToDo": {
+                        "suggestion": g.editsuggestion.suggestion.data,
+                        "category": g.editsuggestion.category.data,
+                        "cost": g.editsuggestion.cost.data,
+                        "url": g.editsuggestion.url.data,
+                        "comment": g.editsuggestion.comment.data,
+                        "author": current_user.username,
+                    }
+                }
+            },
+        )
+        flash("Suggestion updated.", "success")
+        return redirect(url_for("suggestion_list", city=city))
+    flash("Update unsuccessful.", "danger")
     return redirect(url_for("suggestion_list", city=city))

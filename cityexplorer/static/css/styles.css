@@ -78,6 +78,10 @@ a i {
   margin-bottom: 20px;
 }
 
+.alert {
+  margin: 0;
+}
+
 .submit-btn {
   background-color: #184759;
   color: #fff;
@@ -209,7 +213,7 @@ input:-webkit-autofill:active {
   font-size: 2em;
 }
 
-.search-false span {
+span {
   font-family: "EB Garamond", serif;
   font-size: 1.2em;
   font-style: italic;
