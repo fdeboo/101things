@@ -85,17 +85,38 @@ def index():
         )
     else:
         query = cities.find({})
-        if cities.find({"thingsToDo": {"$exists": False}}):
+        if cities.find(
+            {
+                "$or": [
+                    {"thingsToDo": {"$exists": False}},
+                    {"thingsToDo": {"$size": 0}},
+                ]
+            }
+        ):
+
             cities.delete_many({"thingsToDo": {"$exists": False}})
+            cities.delete_many({"thingsToDo": {"$size": 0}})
     total = query.count()
     locations = query[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
+    suggestion_query = cities.aggregate(
+        [
+            {"$unwind": "$thingsToDo"},
+            {
+                "$project": {
+                    "author": "$thingsToDo.author",
+                    "suggestion": "$thingsToDo.suggestion",
+                }
+            },
+        ]
+    )
     return render_template(
         "home.html",
         locations=locations,
         searched=searched,
+        suggestions=suggestion_query,
         page=page,
         per_page=per_page,
         pagination=pagination,
@@ -230,6 +251,7 @@ def account():
             {"$unwind": "$user_profile"},
             {
                 "$project": {
+                    "location": "location",
                     "suggestion": "$thingsToDo.suggestion",
                     "cost": "$thingsToDo.cost",
                     "category": "$thingsToDo.category",
@@ -551,7 +573,7 @@ def delete_suggestion(city, suggestion):
     cities = mongo.db.cities
     cities.update_one(
         {"location": city},
-        {"$pull": {"thingsToDo": {"suggestion": suggestion}}}
+        {"$pull": {"thingsToDo": {"suggestion": suggestion}}},
     )
     flash("Suggestion deleted.", "success")
     return redirect(url_for("suggestion_list", city=city))
@@ -573,10 +595,7 @@ def edit_suggestion(city):
     if g.editsuggestion.validate_on_submit():
         print("validated")
         cities.update(
-            {
-                "location": city,
-                "thingsToDo.suggestion": suggestion
-            },
+            {"location": city, "thingsToDo.suggestion": suggestion},
             {
                 "$set": {
                     "thingsToDo.$": {
