@@ -38,18 +38,13 @@ def context_processor():
     Returns the results to the template as a list, with the key name
     'suggestions' """
 
-    query = mongo.db.cities.aggregate(
-        [
-            {"$unwind": "$thingsToDo"},
-            {
-                "$project": {
-                    "author": "$thingsToDo.author",
-                    "suggestion": "$thingsToDo.suggestion",
-                }
-            },
-        ]
-    )
-    return dict(suggestions=list(query))
+    def location_finder(doc_id):
+        location = mongo.db.cities.find_one(
+            {"_id": doc_id}, {"_id": 0, "location": 1, "bg_img": 1}
+        )
+        return list(location)
+
+    return dict(city=location_finder)
 
 
 @app.before_request
@@ -97,7 +92,7 @@ def index():
             cities.delete_many({"thingsToDo": {"$exists": False}})
             cities.delete_many({"thingsToDo": {"$size": 0}})
     total = query.count()
-    locations = query[offset: offset + per_page]
+    locations = query[offset : offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
@@ -251,13 +246,13 @@ def account():
             {"$unwind": "$user_profile"},
             {
                 "$project": {
-                    "location": "location",
+                    "id": "_id",
                     "suggestion": "$thingsToDo.suggestion",
                     "cost": "$thingsToDo.cost",
                     "category": "$thingsToDo.category",
                     "url": "$thingsToDo.url",
                     "comment": "$thingsToDo.comment",
-                    "author": "$user_profile.username",
+                    "author": "$thingsToDo.author",
                     "profile": "$user_profile.picture",
                 }
             },
@@ -268,7 +263,7 @@ def account():
     total = len(results)
     per_page = 10
     offset = (page - 1) * per_page
-    suggestions = results[offset: offset + per_page]
+    suggestions = results[offset : offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
@@ -327,6 +322,17 @@ def reset_token(token):
     return render_template(
         "reset_token.html", title="Reset Password", form=form
     )
+
+
+@app.route("/delete/<user>", methods=["POST"])
+@login_required
+def delete_account(user):
+    """ Takes the value for user passed in the url and uses it in the db query to locate the user in the database. Deletes the user object from the db, Flashes a message to the user to confirm the deletion. Returns user to the 'home' template """
+
+    users = mongo.db.users
+    users.delete_one({"username": user})
+    flash("Account deleted.", "success")
+    return redirect(url_for("index"))
 
 
 # Places routes
@@ -434,7 +440,12 @@ def suggestion_list(city):
                             "as": "user_profile",
                         }
                     },
-                    {"$unwind": "$user_profile"},
+                    {
+                        "$unwind": {
+                            "path": "$user_profile",
+                            "preserveNullAndEmptyArrays": True,
+                        }
+                    },
                     {
                         "$project": {
                             "suggestion": "$thingsToDo.suggestion",
@@ -442,7 +453,7 @@ def suggestion_list(city):
                             "category": "$thingsToDo.category",
                             "url": "$thingsToDo.url",
                             "comment": "$thingsToDo.comment",
-                            "author": "$user_profile.username",
+                            "author": "$thingsToDo.author",
                             "profile": "$user_profile.picture",
                         }
                     },
@@ -461,7 +472,12 @@ def suggestion_list(city):
                             "as": "user_profile",
                         }
                     },
-                    {"$unwind": "$user_profile"},
+                    {
+                        "$unwind": {
+                            "path": "$user_profile",
+                            "preserveNullAndEmptyArrays": True,
+                        }
+                    },
                     {
                         "$project": {
                             "suggestion": "$thingsToDo.suggestion",
@@ -469,7 +485,7 @@ def suggestion_list(city):
                             "category": "$thingsToDo.category",
                             "url": "$thingsToDo.url",
                             "comment": "$thingsToDo.comment",
-                            "author": "$user_profile.username",
+                            "author": "$thingsToDo.author",
                             "profile": "$user_profile.picture",
                         }
                     },
@@ -497,7 +513,12 @@ def suggestion_list(city):
                             "as": "user_profile",
                         }
                     },
-                    {"$unwind": "$user_profile"},
+                    {
+                        "$unwind": {
+                            "path": "$user_profile",
+                            "preserveNullAndEmptyArrays": True,
+                        }
+                    },
                     {
                         "$project": {
                             "suggestion": "$thingsToDo.suggestion",
@@ -505,7 +526,7 @@ def suggestion_list(city):
                             "category": "$thingsToDo.category",
                             "url": "$thingsToDo.url",
                             "comment": "$thingsToDo.comment",
-                            "author": "$user_profile.username",
+                            "author": "$thingsToDo.author",
                             "profile": "$user_profile.picture",
                         }
                     },
@@ -525,7 +546,12 @@ def suggestion_list(city):
                         "as": "user_profile",
                     }
                 },
-                {"$unwind": "$user_profile"},
+                {
+                    "$unwind": {
+                        "path": "$user_profile",
+                        "preserveNullAndEmptyArrays": True,
+                    }
+                },
                 {
                     "$project": {
                         "suggestion": "$thingsToDo.suggestion",
@@ -533,7 +559,7 @@ def suggestion_list(city):
                         "category": "$thingsToDo.category",
                         "url": "$thingsToDo.url",
                         "comment": "$thingsToDo.comment",
-                        "author": "$user_profile.username",
+                        "author": "$thingsToDo.author",
                         "profile": "$user_profile.picture",
                     }
                 },
@@ -543,7 +569,7 @@ def suggestion_list(city):
     total = len(results)
     per_page = 10
     offset = (page - 1) * per_page
-    suggestions = results[offset: offset + per_page]
+    suggestions = results[offset : offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
@@ -590,10 +616,7 @@ def edit_suggestion(city):
 
     cities = mongo.db.cities
     suggestion = g.editsuggestion.suggestion.data
-    print("this is " + suggestion)
-    print("this is " + city)
     if g.editsuggestion.validate_on_submit():
-        print("validated")
         cities.update(
             {"location": city, "thingsToDo.suggestion": suggestion},
             {

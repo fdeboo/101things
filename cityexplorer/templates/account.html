@@ -70,6 +70,8 @@
                         {{ form.submit(class="btn submit-btn") }}
                     </div>
             </form>
+            <a href="#" data-toggle="modal" data-target="#deleteAccountModal"><i class="fas fa-trash-alt"></i>Delete
+                Accout</a>
         </aside>
 
         <main class="col-12 col-lg-8 mr-4 content-section container">
@@ -119,8 +121,14 @@
                             </div>
                         </div>
                         <div class="author">
+                            <!-- Check to see if the variable is defined -->
+                            {% if thing['profile'] is not none %}
                             <img class="rounded-circle" src="{{ thing['profile'] }}">
+                            {% else %}
+                            <img src="https://res.cloudinary.com/fdeboo/image/upload/v1590514314/profile_pics/default.jpg"
+                                alt="profile">
                             <small>Suggested by <b>{{ thing['author'] }}</b></small>
+                            {% endif %}
 
                             {% if current_user.username == thing['author'] %}
                             <div class="d-flex justify-content-end align-items-end">
@@ -138,15 +146,42 @@
                     </div>
                 </div>
 
+
                 {% include 'includes/_edit_modal.html' %}
                 {% include 'includes/_delete_modal.html' %}
-                
+
                 {% endfor %}
             </div>
             {{ pagination.info }}
             {{ pagination.links }}
 
         </main>
+        <!-- Delete Suggestion Modal  -->
+        <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteAccountLabel">Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>Are you sure you want to delete your account?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Submits the city name and suggestion title as arguements to the 'delete_suggeston' route  -->
+                        <form method="POST" action="{{ url_for('delete_account', user=current_user.username) }}">
+                            <input type="submit" class="btn submit-btn" value="Confirm">
+                            <button type="button" class="btn submit-btn cancel-btn" data-dismiss="modal"
+                                aria-label="Close">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 </div>
 

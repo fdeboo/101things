@@ -58,7 +58,13 @@
                             </div>
                         </div>
                         <div class="author">
+                            {% if thing['profile'] %}
                             <img class="rounded-circle" src="{{ thing['profile'] }}">
+                            {% else %}
+                            <img class="rounded-circle"
+                                src="https://res.cloudinary.com/fdeboo/image/upload/v1590514314/profile_pics/default.jpg">
+                            {% endif %}
+                            
                             <small>Suggested by <b>{{ thing['author'] }}</b></small>
 
                             {% if current_user.username == thing['author'] %}
