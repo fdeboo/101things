@@ -560,18 +560,26 @@ def delete_suggestion(city, suggestion):
 @app.route("/edit/<city>", methods=["POST"])
 @login_required
 def edit_suggestion(city):
-    """ Takes the values for form and city passed in the url and uses
-    them to locate the suggestion in the database. 'Pushes' the suggestion from
-    the array it belongs to and flashes a message to the user to confirm the
-    update. Returns user to the 'thingstodo' template """
+    """ Takes the value of 'city' passed in the url and the suggestion
+    data from the form hidden field, uses both values to locate the suggestion
+    object in the database. 'Sets' the object's field values with the data
+    submitted in the editsuggestion form. Flashes a message to the user to
+    confirm the update. Returns user to the 'thingstodo' template """
 
     cities = mongo.db.cities
+    suggestion = g.editsuggestion.suggestion.data
+    print("this is " + suggestion)
+    print("this is " + city)
     if g.editsuggestion.validate_on_submit():
-        cities.update_one(
-            {"location": city},
+        print("validated")
+        cities.update(
             {
-                "$push": {
-                    "thingsToDo": {
+                "location": city,
+                "thingsToDo.suggestion": suggestion
+            },
+            {
+                "$set": {
+                    "thingsToDo.$": {
                         "suggestion": g.editsuggestion.suggestion.data,
                         "category": g.editsuggestion.category.data,
                         "cost": g.editsuggestion.cost.data,

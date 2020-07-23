@@ -4,10 +4,9 @@
 <div class="content-section container">
     <div class="row justify-content-center">
         <div class="col-md-6 col-md-offset-6">
-            <h3>{{location}}:</h3>
+            <h1 class="dark-gold">{{location}}:</h1>
             <form method="POST" action="">
                 {{ form.hidden_tag() }}
-                {{ form.location(value=location) }}
                 <fieldset class="form-group">
                     <div class="form-group">
                         {{ form.suggestion.label(class="form-control-label") }}

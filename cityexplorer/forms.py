@@ -138,7 +138,6 @@ class CreateLocationForm(FlaskForm):
 class CreateSuggestionForm(FlaskForm):
     """ Class """
 
-    location = HiddenField("Location")
     suggestion = StringField(
         "Suggestion", validators=[InputRequired(), Length(min=2, max=70)]
     )
@@ -188,10 +187,8 @@ class CreateSuggestionForm(FlaskForm):
 class EditSuggestionForm(FlaskForm):
     """ Class """
 
-    location = HiddenField("Location")
-    suggestion = StringField(
-        "Suggestion", validators=[InputRequired(), Length(min=2, max=70)]
-    )
+    suggestion = HiddenField("Suggestion")
+    disabledfield = StringField("Suggestion")
     category = SelectField(
         "Category",
         validators=[DataRequired()],
@@ -245,7 +242,6 @@ class MultiCheckboxField(SelectMultipleField):
 class FilterResultsForm(FlaskForm):
     """ Class """
 
-    location = HiddenField("Location")
     category = MultiCheckboxField(
         "Category",
         validators=[InputRequired()],

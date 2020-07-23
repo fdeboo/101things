@@ -7,7 +7,7 @@
         {% for suggestion in suggestions %}
         <div class="justify-content-center align-items-center">
             <i class="fas fa-quote-left light-blue fa-3x d-inline"></i>
-            <h3 class="d-inline mx-3"> {{ suggestion['suggestion'] }}
+            <h3 class="d-inline mx-3"><span> {{ suggestion['suggestion'] }}</span>
                 <br /><small class="d-inline">-{{ suggestion['author'] }}</small>
             </h3>
             <i class="fas fa-quote-right light-blue fa-3x d-inline-block"></i>
@@ -17,7 +17,7 @@
     <!-- Row: Locations -->
     <div class="row justify-content-center m-0">
         <div class="col-12 d-flex justify-content-between align-items-end main-title">
-            <h2 class="dark-gold">Locations</h2>
+            <h1 class="dark-gold">Locations</h1>
             <button class="btn submit-btn">
                 <a href="{{ url_for('add_location') }}">Add Location</a>
             </button>
@@ -37,7 +37,7 @@
         </div>
     </div>
     <!-- Row: Pagination -->
-    <div class="row justify-content-center" id="home-page-links">
+    <div class="row justify-content-center align-items-center flex-column" id="home-page-links">
         {{ pagination.info }}
         {{ pagination.links }}
     </div>

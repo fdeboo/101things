@@ -1,115 +1,287 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="row justify-content-center">
-    <aside class="col-md-3 border p-3">
-        <div class="media pt-3">
-            <img class="rounded-circle profile-img mx-2" src="{{ image_file }}" alt="user profile">
-            <div class="media-body">
-                <h2 class="account-heading mb-0">{{ current_user.username}}</h2>
-                <p class="text-secondary">{{ current_user.email }}</p>
-            </div>
-        </div>
-
-        <form method='POST' action='' enctype='multipart/form-data'>
-            {{ form.hidden_tag() }}
-            <fieldset class='form-group'>
-                <div class="form-group">
-                    {{ form.fname.label(class="form-control-label") }}
-                    {% if form.fname.errors %}
-                    {{ form.fname(class="form-control is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.fname.errors %}
-                        <span> {{ error }}</span>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                    {{ form.fname(class="form-control") }}
-                    {% endif %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.lname.label(class="form-control-label") }}
-                    {% if form.lname.errors %}
-                    {{ form.lname(class="form-control is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.lname.errors %}
-                        <span> {{ error }}</span>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                    {{ form.lname(class="form-control") }}
-                    {% endif %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.email.label(class="form-control-label") }}
-                    {% if form.email.errors %}
-                    {{ form.email(class="form-control is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.email.errors %}
-                        <span> {{ error }}</span>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                    {{ form.email(class="form-control") }}
-                    {% endif %}
-                </div>
-
-                <div class='form-group'>
-                    {{ form.picture.label() }}
-                    {{ form.picture( class='form-control-file' ) }}
-                    {% if form.picture.errors %}
-                    {% for error in form.picture.errors %}
-                    <span class='text-danger'>{{ error }}</span><br />
-                    {% endfor %}
-                    {% endif %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.submit(class="btn submit-btn") }}
-                </div>
-        </form>
-    </aside>
-    <main class="col-md-8 col-md-offset-8 ml-4">
-        <h2>Posts</h2>
-        {% for thing in things %}
-        <div class="accordion thingtodo" id="thingtodo">
-            <a href="#" id="heading{{ loop.index }}" class="text-left collapsed" data-toggle="collapse"
-                data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
-                <div class="suggestion-item py-2">
-                    <div class="d-inline pr-2">{{ loop.index + (page - 1) * per_page }}.</div>
-                    <div class="d-inline">{{ thing['suggestion'] }}</div>
-                </div>
-            </a>
-
-            <div id="collapse{{ loop.index }}" class="collapse pl-4 py-2 thing-grid"
-                aria-labelledby="heading{{ loop.index }}" data-parent="#thingtodo">
-                <ul class="thing-icons pr-3">
-                    <li>
-                        <i class="fas fa-tag light-gold"></i>
-                        <p>{{ thing['category'] }}</p>
-                    </li>
-                    <li>
-                        <i class="fas fa-money-bill-wave light-gold"></i>
-                        <p>{{ thing['cost'] }}</p>
-                    </li>
-                    <li>
-                        <i id="icon-url" class="fas fa-link light-gold"></i>
-                        <p><a href="{{ thing['url'] }}" target="_blank"> Visit website</a></p>
-                    </li>
-                </ul>
-                <div class="thing-comment">
-                    <div class="col-12">{{ thing['comment'] }}</div>
-                </div>
-                <div class="author">
-                    <img class="rounded-circle" src="{{ thing['profile'] }}">
-                    <small>Suggested by <b>{{ thing['author'] }}</b></small>
+<div class="container">
+    <div class="row justify-content-center">
+        <aside class="col-md-3 border p-3">
+            <div class="media pt-3">
+                <img class="rounded-circle profile-img mx-2" src="{{ image_file }}" alt="user profile">
+                <div class="media-body">
+                    <h2 class="account-heading mb-0">{{ current_user.username}}</h2>
+                    <p class="text-secondary">{{ current_user.email }}</p>
                 </div>
             </div>
 
-        </div>
-        {% endfor %}
-    </main>
+            <form method='POST' action='' enctype='multipart/form-data'>
+                {{ form.hidden_tag() }}
+                <fieldset class='form-group'>
+                    <div class="form-group">
+                        {{ form.fname.label(class="form-control-label") }}
+                        {% if form.fname.errors %}
+                        {{ form.fname(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.fname.errors %}
+                            <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.fname(class="form-control") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.lname.label(class="form-control-label") }}
+                        {% if form.lname.errors %}
+                        {{ form.lname(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.lname.errors %}
+                            <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.lname(class="form-control") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.email.label(class="form-control-label") }}
+                        {% if form.email.errors %}
+                        {{ form.email(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                            <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.email(class="form-control") }}
+                        {% endif %}
+                    </div>
+
+                    <div class='form-group'>
+                        {{ form.picture.label() }}
+                        {{ form.picture( class='form-control-file' ) }}
+                        {% if form.picture.errors %}
+                        {% for error in form.picture.errors %}
+                        <span class='text-danger'>{{ error }}</span><br />
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.submit(class="btn submit-btn") }}
+                    </div>
+            </form>
+        </aside>
+
+        <main class="col-12 col-lg-8 mr-4 content-section container">
+            <a href="{{url_for('index')}}" class="dark-gold"><i class="fas fa-arrow-circle-left"></i>Return to
+                Home</a>
+            <div class="d-flex align-items-end">
+                <h1 class="dark-gold">Posts</h1>
+            </div>
+            <div class="pl-0 py-2">
+                <!-- 'List' of Things To Do  -->
+                {% for thing in things %}
+                <div class="accordion thingtodo" id="thingtodo">
+                    <a href="#" id="heading{{ loop.index }}" class="text-left collapsed" data-toggle="collapse"
+                        data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
+                        <div class="suggestion-item py-2">
+                            <div class="d-inline pr-2">{{ loop.index + (page - 1) * per_page }}.</div>
+                            <p class="d-inline">{{ thing['suggestion'] }}</p>
+                        </div>
+                    </a>
+
+                    <!-- Collapsed content  -->
+                    <div id="collapse{{ loop.index }}" class="collapse pl-4 py-2 mb-4 thing-grid"
+                        aria-labelledby="heading{{ loop.index }}" data-parent="#thingtodo">
+                        <ul class="thing-icons pr-3">
+                            <li>
+                                <i class="fas fa-tag light-gold"></i>
+                                <p>{{ thing['category'] }}</p>
+                            </li>
+                            <li>
+                                <i class="fas fa-money-bill-wave light-gold"></i>
+                                <p>{{ thing['cost'] }}</p>
+                            </li>
+                            <li>
+                                <i id="icon-url" class="fas fa-link light-gold"></i>
+                                <!-- Check to see if the variable is empty-->
+                                {% if thing['url'] | length %}
+                                <p><a href="{{ thing['url'] }}" target="_blank"> Visit website</a></p>
+                                {% endif %}
+                            </li>
+                        </ul>
+                        <div class="thing-comment">
+
+                            <div class="col-12">
+                                <i class="fas fa-quote-left light-blue fa-lg"></i>
+                                {{ thing['comment'] }}
+                                <i class="fas fa-quote-right light-blue fa-lg"></i>
+                            </div>
+                        </div>
+                        <div class="author">
+                            <img class="rounded-circle" src="{{ thing['profile'] }}">
+                            <small>Suggested by <b>{{ thing['author'] }}</b></small>
+
+                            {% if current_user.username == thing['author'] %}
+                            <div class="d-flex justify-content-end align-items-end">
+                                <!--Triggers Edit Modal-->
+                                <button tyoe="button" class="mx-2" data-toggle="modal"
+                                    data-target="#editModal{{ loop.index }}"><i
+                                        class="fas fa-edit"></i></i>Edit</button>
+                                <!--Triggers Delete Modal-->
+                                <button type="button" class="mx-2" data-toggle="modal"
+                                    data-target="#deleteModal{{ loop.index }}"><i
+                                        class="fas fa-trash-alt"></i>Delete</button>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Suggestion Modal  -->
+                <div class="modal fade" id="editModal{{ loop.index }}" tabindex="-1" role="dialog"
+                    aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Edit
+                                    <span>"{{ thing['suggestion'] }}"</span></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form submits the city name as an arguement to the edit_suggestion route. -->
+                                <!--<form method="POST" action="">-->
+                                    <!-- editsuggestion is a global variable containing the instance of the EditSuggestionForm -->
+                                    {{ g.editsuggestion.csrf_token() }}
+                                    <fieldset class="form-group">
+                                        <div class="form-group">
+                                            {{ g.editsuggestion.suggestion(value=thing['suggestion']) }}
+                                            {{ g.editsuggestion.disabledfield.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.disabledfield.errors %}
+                                            {{ g.editsuggestion.disabledfield(class="form-control form-control is-invalid", value=thing['suggestion'], disabled=True) 
+                                            }}
+                                            <div class="invalid-feedback">
+                                                {% for error in g.editsuggestion.disabledfield.errors %}
+                                                <span> {{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ g.editsuggestion.disabledfield(class="form-control form-control", value=thing['suggestion'], disabled=True)
+                                            }}
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="form-group">
+                                            {{ g.editsuggestion.category.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.category.errors %}
+                                            {{ g.editsuggestion.category(class="form-control form-control is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in g.editsuggestion.category.errors %}
+                                                <span> {{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ g.editsuggestion.category(class="form-control form-control") }}
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="form-group">
+                                            {{ g.editsuggestion.cost.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.cost.errors %}
+                                            {{ g.editsuggestion.cost(class="form-control form-control is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in g.editsuggestion.category.errors %}
+                                                <span> {{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ g.editsuggestion.cost(class="form-control form-control") }}
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="form-group">
+                                            {{ g.editsuggestion.url.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.url.errors %}
+                                            {{ g.editsuggestion.url(class="form-control form-control is-invalid", value=thing['url']) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in g.editsuggestion.url.errors %}
+                                                <span> {{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ g.editsuggestion.url(class="form-control form-control", value=thing['url']) }}
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="form-group">
+                                            {{ g.editsuggestion.comment.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.comment.errors %}
+                                            {{ g.editsuggestion.comment(class="form-control form-control is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in g.editsuggestion.comment.errors %}
+                                                <span> {{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ g.editsuggestion.comment(class="form-control form-control") }}
+                                            {% endif %}
+                                        </div>
+
+                                    </fieldset>
+                            </div>
+                            <div class="modal-footer">
+
+                                <div class="form-group">
+                                    {{ g.editsuggestion.submit(class="btn submit-btn") }}
+                                    <button type="button" class="btn submit-btn cancel-btn" data-dismiss="modal"
+                                        aria-label="Close">Cancel</button>
+                                </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delete Suggestion Modal  -->
+                <div class="modal fade" id="deleteModal{{ loop.index }}" tabindex="-1" role="dialog"
+                    aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Delete
+                                    <span>"{{ thing['suggestion']}}"?</span></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <p>Are you sure you want to delete this suggestion?<br />
+                                    Deleting this suggestion can not be reversed.
+                                </p>
+                                <p>{{ thing['location']}}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <!-- Submits the city name and suggestion title as arguements to the 'delete_suggeston' route  -->
+                                <!-- <form method="POST"
+                                    action="">
+                                    <input type="submit" class="btn submit-btn" value="Delete">
+                                    <button type="button" class="btn submit-btn cancel-btn" data-dismiss="modal"
+                                        aria-label="Close">Cancel</button>
+                                </form> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {{ pagination.info }}
+            {{ pagination.links }}
+
+        </main>
+    </div>
 </div>
 
 
