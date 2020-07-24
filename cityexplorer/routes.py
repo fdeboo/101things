@@ -342,7 +342,9 @@ def add_location():
 
     form = CreateLocationForm()
     if form.validate_on_submit():
-        CITIES.insert({"location": form.location.data})
+        CITIES.insert_one(
+            {"location": form.location.data, "bg_img": form.image.data}
+        )
         location = form.location.data
         return redirect(url_for("add_suggestion", location=location))
     return render_template("addlocation.html", form=form, title="Add Location")
@@ -587,8 +589,23 @@ def suggestion_list(city):
     )
 
 
-@app.route("/account/<city>/<suggestion>", methods=["POST"])
-@app.route("/thingstodo/<city>/<suggestion>/<author>", methods=["POST"])
+@app.route("/delete/location/<city>", methods=["POST"])
+@login_required
+def delete_location(city):
+    """ Takes the value of 'city' passed in the url and uses it to identify the
+    document in the database. Deletes the document from
+    the array it belongs to and flashes a message to the user to confirm the
+    update. If the url contains a value for 'author, (the user routed from
+    their account page) redirect to account template. Else, (the user routed
+    from the thingstodo page) redirect to thingstodo template.  """
+    print(city)
+    CITIES.delete_one({"location": city})
+    flash("Suggestion deleted.", "success")
+    return redirect(url_for("index"))
+
+
+@app.route("/delete/suggestion/<city>/<suggestion>", methods=["POST"])
+@app.route("/delete/suggestion/<city>/<suggestion>/<author>", methods=["POST"])
 @login_required
 def delete_suggestion(city, suggestion, author=None):
     """ Takes the values for city and suggestion passed in the url and uses
@@ -602,24 +619,23 @@ def delete_suggestion(city, suggestion, author=None):
         {"location": city},
         {"$pull": {"thingsToDo": {"suggestion": suggestion}}},
     )
-    print(author)
     flash("Suggestion deleted.", "success")
     if author is not None:
         return redirect(url_for("account"))
     return redirect(url_for("suggestion_list", city=city))
 
 
-@app.route("/edit/<city>", methods=["POST"])
-@app.route("/edit/<author>/<city>", methods=["POST"])
+@app.route("/edit/suggestion/<city>", methods=["POST"])
+@app.route("/edit/suggestion/<author>/<city>", methods=["POST"])
 @login_required
 def edit_suggestion(city, author=None):
-    """ Takes the value of 'city' passed in the url and the suggestion
-    data from the form hidden field, uses both values to locate the suggestion
-    object in the database. 'Sets' the object's field values with the data
-    submitted in the editsuggestion form. Flashes a message to the user to
-    confirm the update. If the url contains a value for 'author, (the user
-    routed from their account page) redirect to account template. Else, (the
-    user routed from the thingstodo page) redirect to thingstodo template. """
+    """ Takes the values for city and suggestion passed in the url and uses
+    them to locate the suggestion object in the database. 'Sets' the object's
+    field values with the data submitted in the editsuggestion form. Flashes a 
+    message to the user to confirm the update. If the url contains a value for 
+    'author, (the user routed from their account page) redirect to account
+    template. Else, (the user routed from the thingstodo page) redirect to 
+    thingstodo template. """
 
     if g.editsuggestion.validate_on_submit():
         suggestion = g.editsuggestion.suggestion.data

@@ -36,14 +36,17 @@
                     {% if current_user.is_admin %}
                     <div style="background-color:#fff;">
                         <button tyoe="button" class="mx-2" data-toggle="modal"
-                            data-target="#editModal{{ loop.index }}"><i class="fas fa-camera"></i>Image</button>
+                            data-target="#del_locationModal{{ loop.index }}"><i
+                                class="fas fa-camera"></i>Image</button>
                         <!--Triggers Delete Modal-->
                         <button type="button" class="mx-2" data-toggle="modal"
-                            data-target="#deleteModal{{ loop.index }}"><i class="fas fa-trash-alt"></i>Remove</button>
+                            data-target="#del_locationModal{{ loop.index }}"><i
+                                class="fas fa-trash-alt"></i>Remove</button>
                     </div>
                     {% endif %}
                     </div>
                 </div>
+                {% include 'includes/_delete_location_modal.html' %}
                 {% endfor %}
             </div>
         </div>

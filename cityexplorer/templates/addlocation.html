@@ -6,10 +6,11 @@
         <div class="col-md-6 col-md-offset-6">
             <h1 class="dark-gold">Add Location</h1>
             <form method="POST" action="">
-                {{ form.hidden_tag() }}
+                {{ g.editsuggestion.csrf_token() }}
+                {{ form.image(value="https://res.cloudinary.com/fdeboo/image/upload/v1590666462/layout/bokeh-night-lights-city-9044_nxmprf.jpg") }}
                 <fieldset class="form-group">
                     <div class="form-group">
-                        {{ form.location.label(class="form-control-label hidden") }}
+                        {{ form.location.label(class="form-control-label") }}
                         {% if form.location.errors %}
                         {{ form.location(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">

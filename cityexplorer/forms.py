@@ -29,9 +29,7 @@ from cityexplorer import mongo
 class SearchLocationForm(FlaskForm):
     """ Class """
 
-    q = SearchField(
-        "Search", validators=[InputRequired(), Length(max=50)]
-    )
+    q = SearchField("Search", validators=[InputRequired(), Length(max=50)])
 
 
 class RegistrationForm(FlaskForm):
@@ -126,6 +124,7 @@ class CreateLocationForm(FlaskForm):
     location = StringField(
         "Location", validators=[InputRequired(), Length(min=2, max=25)]
     )
+    image = HiddenField()
     submit = SubmitField("Add Location")
 
     def validate_location(self, location):
