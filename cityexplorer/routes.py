@@ -33,23 +33,6 @@ CITIES = mongo.db.cities
 USERS = mongo.db.users
 
 
-@app.context_processor
-def context_processor():
-    """ Function can be called from any template in the app.
-    Processes the logic required to return a value to the template.
-    In this case, queries the database for all suggestions and their authors.
-    Returns the results to the template as a list, with the key name
-    'suggestions' """
-
-    def location_finder(doc_id):
-        location = CITIES.find_one(
-            {"_id": doc_id}, {"_id": 0, "location": 1, "bg_img": 1}
-        )
-        return list(location)
-
-    return dict(city=location_finder)
-
-
 @app.before_request
 def before_request_func():
     """ Instantiates the SearchLocationForm so that it can be
@@ -589,38 +572,41 @@ def suggestion_list(city):
 
 
 @app.route("/account/<city>/<suggestion>", methods=["POST"])
-@app.route("/thingstodo/<city>/<suggestion>", methods=["POST"])
+@app.route("/thingstodo/<city>/<suggestion>/<author>", methods=["POST"])
 @login_required
-def delete_suggestion(city, suggestion):
+def delete_suggestion(city, suggestion, author=None):
     """ Takes the values for city and suggestion passed in the url and uses
     them to locate the suggestion in the database. 'Pulls' the suggestion from
     the array it belongs to and flashes a message to the user to confirm the
-    update. Returns user to the 'thingstodo' template """
+    update. If the url contains a value for 'author, (the user routed from
+    their account page) redirect to account template. Else, (the user routed
+    from the thingstodo page) redirect to thingstodo template.  """
 
-    rule = request.url_rule
     CITIES.update_one(
         {"location": city},
         {"$pull": {"thingsToDo": {"suggestion": suggestion}}},
     )
+    print(author)
     flash("Suggestion deleted.", "success")
-    if "account" in rule.rule:
-        return redirect(url_for('account'))
-    elif "thingdtodo" in rule.rule:
-        return redirect(url_for('suggestion_list', city=city))
-
+    if author is not None:
+        return redirect(url_for("account"))
+    return redirect(url_for("suggestion_list", city=city))
 
 
 @app.route("/edit/<city>", methods=["POST"])
+@app.route("/edit/<author>/<city>", methods=["POST"])
 @login_required
-def edit_suggestion(city):
+def edit_suggestion(city, author=None):
     """ Takes the value of 'city' passed in the url and the suggestion
     data from the form hidden field, uses both values to locate the suggestion
     object in the database. 'Sets' the object's field values with the data
     submitted in the editsuggestion form. Flashes a message to the user to
-    confirm the update. Returns user to the 'thingstodo' template """
+    confirm the update. If the url contains a value for 'author, (the user
+    routed from their account page) redirect to account template. Else, (the
+    user routed from the thingstodo page) redirect to thingstodo template. """
 
-    suggestion = g.editsuggestion.suggestion.data
     if g.editsuggestion.validate_on_submit():
+        suggestion = g.editsuggestion.suggestion.data
         CITIES.update(
             {"location": city, "thingsToDo.suggestion": suggestion},
             {
@@ -636,7 +622,13 @@ def edit_suggestion(city):
                 }
             },
         )
+        print(author)
         flash("Suggestion updated.", "success")
+        if author is not None:
+            return redirect(url_for("account"))
         return redirect(url_for("suggestion_list", city=city))
+
     flash("Update unsuccessful.", "danger")
+    if author is not None:
+        return redirect(url_for("account"))
     return redirect(url_for("suggestion_list", city=city))

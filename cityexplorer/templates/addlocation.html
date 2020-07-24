@@ -2,32 +2,33 @@
 
 {% block content %}
 <div class="content-section container">
-<div class="row justify-content-center">
-    <div class="col-md-6 col-md-offset-6">
-        <form method="POST" action="">
-            {{ form.hidden_tag() }}
-            <fieldset class="form-group">
-                <div class="form-group">
-                    {{ form.location.label(class="form-control-label") }}
-                    {% if form.location.errors %}
-                    {{ form.location(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.location.errors %}
-                        <span> {{ error }}</span>
-                        {% endfor %}
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-md-offset-6">
+            <h1 class="dark-gold">Add Location</h1>
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <div class="form-group">
+                        {{ form.location.label(class="form-control-label hidden") }}
+                        {% if form.location.errors %}
+                        {{ form.location(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.location.errors %}
+                            <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.location(class="form-control form-control-lg") }}
+                        {% endif %}
                     </div>
-                    {% else %}
-                    {{ form.location(class="form-control form-control-lg") }}
-                    {% endif %}
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn submit-btn") }}
+                    <a href="{{ url_for('index') }}" class="btn submit-btn cancel-btn">Cancel</a>
                 </div>
-            </fieldset>
-            <div class="form-group">
-                {{ form.submit(class="btn submit-btn") }}
-                <a href="{{ url_for('index') }}" class="btn submit-btn cancel-btn">Cancel</a>
-            </div>
-        </form>
-        <br>
+            </form>
+            <br>
+        </div>
     </div>
-</div>
 </div>
 {% endblock content %}
