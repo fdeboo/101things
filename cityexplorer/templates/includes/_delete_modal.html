@@ -12,13 +12,11 @@
             <div class="modal-body text-center">
                 <p>Are you sure you want to delete this suggestion?<br />
                     Deleting this suggestion can not be reversed.
-                </p>
-                <p>{{ thing['location']}}</p>
             </div>
             <div class="modal-footer">
                 <!-- Submits the city name and suggestion title as arguements to the 'delete_suggeston' route  -->
                 <form method="POST"
-                    action="{{ url_for('delete_suggestion', city=city['location'], suggestion=thing['suggestion']) }}">
+                    action="{{ url_for('delete_suggestion', city=thing['location'], suggestion=thing['suggestion']) }}">
                     <input type="submit" class="btn submit-btn" value="Delete">
                     <button type="button" class="btn submit-btn cancel-btn" data-dismiss="modal"
                         aria-label="Close">Cancel</button>

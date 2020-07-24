@@ -6,7 +6,7 @@
             <div class="media pt-3">
                 <img class="rounded-circle profile-img mx-2" src="{{ image_file }}" alt="user profile">
                 <div class="media-body">
-                    <h2 class="account-heading mb-0">{{ current_user.username}}</h2>
+                    <h2 class="account-heading mb-0 dark-gold">{{ current_user.username}}</h2>
                     <p class="text-secondary">{{ current_user.email }}</p>
                 </div>
             </div>
@@ -81,82 +81,44 @@
                 <h1 class="dark-gold">Posts</h1>
             </div>
             <div class="pl-0 py-2">
-                <!-- 'List' of Things To Do  -->
-                {% for thing in things %}
-                <div class="accordion thingtodo" id="thingtodo">
-                    <a href="#" id="heading{{ loop.index }}" class="text-left collapsed" data-toggle="collapse"
-                        data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
-                        <div class="suggestion-item py-2">
-                            <div class="d-inline pr-2">{{ loop.index + (page - 1) * per_page }}.</div>
-                            <p class="d-inline">{{ thing['suggestion'] }}</p>
-                        </div>
-                    </a>
+                <!-- table of posts by user  -->
+                <table class="w-100" id="user-posts">
+                    <tr>
+                        <th class="text-left">Location</th>
+                        <th class="text-left">Suggestion</th>
+                        <th class="text-left">
+                            </th>
+                    </tr>
+                    {% for thing in things %}
 
-                    <!-- Collapsed content  -->
-                    <div id="collapse{{ loop.index }}" class="collapse pl-4 py-2 mb-4 thing-grid"
-                        aria-labelledby="heading{{ loop.index }}" data-parent="#thingtodo">
-                        <ul class="thing-icons pr-3">
-                            <li>
-                                <i class="fas fa-tag light-gold"></i>
-                                <p>{{ thing['category'] }}</p>
-                            </li>
-                            <li>
-                                <i class="fas fa-money-bill-wave light-gold"></i>
-                                <p>{{ thing['cost'] }}</p>
-                            </li>
-                            <li>
-                                <i id="icon-url" class="fas fa-link light-gold"></i>
-                                <!-- Check to see if the variable is empty-->
-                                {% if thing['url'] | length %}
-                                <p><a href="{{ thing['url'] }}" target="_blank"> Visit website</a></p>
-                                {% endif %}
-                            </li>
-                        </ul>
-                        <div class="thing-comment">
+                    <tr>
+                        <td class="text-left">{{ thing['location'] }}</td>
+                        <td class="text-left"><span>{{ thing['suggestion'] }}</span></td>
+                        <td class="text-left">
+                            <!--Triggers Edit Modal-->
+                            <button tyoe="button" class="mx-2" data-toggle="modal"
+                                data-target="#editModal{{ loop.index }}"><i class="fas fa-edit"></i>Edit</button>
+                            <!--Triggers Delete Modal-->
+                            <button type="button" class="mx-2" data-toggle="modal"
+                                data-target="#deleteModal{{ loop.index }}"><i
+                                    class="fas fa-trash-alt"></i>Delete</button>
 
-                            <div class="col-12">
-                                <i class="fas fa-quote-left light-blue fa-lg"></i>
-                                {{ thing['comment'] }}
-                                <i class="fas fa-quote-right light-blue fa-lg"></i>
-                            </div>
-                        </div>
-                        <div class="author">
-                            <!-- Check to see if the variable is defined -->
-                            {% if thing['profile'] is not none %}
-                            <img class="rounded-circle" src="{{ thing['profile'] }}">
-                            {% else %}
-                            <img src="https://res.cloudinary.com/fdeboo/image/upload/v1590514314/profile_pics/default.jpg"
-                                alt="profile">
-                            <small>Suggested by <b>{{ thing['author'] }}</b></small>
-                            {% endif %}
+                        </td>
+                    </tr>
 
-                            {% if current_user.username == thing['author'] %}
-                            <div class="d-flex justify-content-end align-items-end">
-                                <!--Triggers Edit Modal-->
-                                <button tyoe="button" class="mx-2" data-toggle="modal"
-                                    data-target="#editModal{{ loop.index }}"><i
-                                        class="fas fa-edit"></i></i>Edit</button>
-                                <!--Triggers Delete Modal-->
-                                <button type="button" class="mx-2" data-toggle="modal"
-                                    data-target="#deleteModal{{ loop.index }}"><i
-                                        class="fas fa-trash-alt"></i>Delete</button>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+                    {% include 'includes/_edit_modal.html' %}
+                    {% include 'includes/_delete_modal.html' %}
 
 
-                {% include 'includes/_edit_modal.html' %}
-                {% include 'includes/_delete_modal.html' %}
+                    {% endfor %}
+                </table>
 
-                {% endfor %}
             </div>
             {{ pagination.info }}
             {{ pagination.links }}
 
         </main>
-        <!-- Delete Suggestion Modal  -->
+        <!-- Delete Account Modal  -->
         <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -181,7 +143,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 </div>
 

@@ -12,7 +12,7 @@
             </div>
             <div class="modal-body">
                 <!-- Form submits the city name as an arguement to the edit_suggestion route. -->
-                <form method="POST" action="{{url_for('edit_suggestion', city=city['location'])}}">
+                <form method="POST" action="{{url_for('edit_suggestion', city=thing['location'])}}">
                     <!-- editsuggestion is a global variable containing the instance of the EditSuggestionForm -->
                     {{ g.editsuggestion.csrf_token() }}
                     <fieldset class="form-group">
@@ -36,6 +36,7 @@
                         <div class="form-group">
                             {{ g.editsuggestion.category.label(class="form-control-label") }}
                             {% if g.editsuggestion.category.errors %}
+                            {% set f = g.editsuggestion.cost.process_data(thing['category']) %}
                             {{ g.editsuggestion.category(class="form-control form-control is-invalid") }}
                             <div class="invalid-feedback">
                                 {% for error in g.editsuggestion.category.errors %}
@@ -43,6 +44,7 @@
                                 {% endfor %}
                             </div>
                             {% else %}
+                            {% set f = g.editsuggestion.cost.process_data(thing['category']) %}
                             {{ g.editsuggestion.category(class="form-control form-control") }}
                             {% endif %}
                         </div>
@@ -50,6 +52,7 @@
                         <div class="form-group">
                             {{ g.editsuggestion.cost.label(class="form-control-label") }}
                             {% if g.editsuggestion.cost.errors %}
+                            {% set f = g.editsuggestion.cost.process_data(thing['cost']) %}
                             {{ g.editsuggestion.cost(class="form-control form-control is-invalid") }}
                             <div class="invalid-feedback">
                                 {% for error in g.editsuggestion.category.errors %}
@@ -57,6 +60,7 @@
                                 {% endfor %}
                             </div>
                             {% else %}
+                            {% set f = g.editsuggestion.cost.process_data(thing['cost']) %}
                             {{ g.editsuggestion.cost(class="form-control form-control") }}
                             {% endif %}
                         </div>
@@ -78,6 +82,7 @@
                         <div class="form-group">
                             {{ g.editsuggestion.comment.label(class="form-control-label") }}
                             {% if g.editsuggestion.comment.errors %}
+                            {% set f = g.editsuggestion.comment.process_data(thing['comment']) %}
                             {{ g.editsuggestion.comment(class="form-control form-control is-invalid") }}
                             <div class="invalid-feedback">
                                 {% for error in g.editsuggestion.comment.errors %}
@@ -85,6 +90,8 @@
                                 {% endfor %}
                             </div>
                             {% else %}
+                            <!-- Sets the default content for the textarea-->
+                            {% set f = g.editsuggestion.comment.process_data(thing['comment']) %}
                             {{ g.editsuggestion.comment(class="form-control form-control") }}
                             {% endif %}
                         </div>

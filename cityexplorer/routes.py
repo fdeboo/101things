@@ -29,6 +29,9 @@ from cityexplorer.forms import (
 from cityexplorer import app, mongo
 from cityexplorer.utils import send_reset_email
 
+CITIES = mongo.db.cities
+USERS = mongo.db.users
+
 
 @app.context_processor
 def context_processor():
@@ -39,7 +42,7 @@ def context_processor():
     'suggestions' """
 
     def location_finder(doc_id):
-        location = mongo.db.cities.find_one(
+        location = CITIES.find_one(
             {"_id": doc_id}, {"_id": 0, "location": 1, "bg_img": 1}
         )
         return list(location)
@@ -66,7 +69,6 @@ def index():
     of results are divided over several pages and are paginated.
     Displays results for all locations in the database """
 
-    cities = mongo.db.cities
     searched = ""
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
@@ -75,12 +77,12 @@ def index():
     offset = (page - 1) * per_page
     if g.searchform.validate_on_submit():
         searched = g.searchform.q.data
-        query = cities.find(
+        query = CITIES.find(
             {"location": {"$regex": searched, "$options": "i"}}
         )
     else:
-        query = cities.find({})
-        if cities.find(
+        query = CITIES.find({})
+        if CITIES.find(
             {
                 "$or": [
                     {"thingsToDo": {"$exists": False}},
@@ -89,14 +91,14 @@ def index():
             }
         ):
 
-            cities.delete_many({"thingsToDo": {"$exists": False}})
-            cities.delete_many({"thingsToDo": {"$size": 0}})
+            CITIES.delete_many({"thingsToDo": {"$exists": False}})
+            CITIES.delete_many({"thingsToDo": {"$size": 0}})
     total = query.count()
-    locations = query[offset : offset + per_page]
+    locations = query[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
-    suggestion_query = cities.aggregate(
+    suggestion_query = CITIES.aggregate(
         [
             {"$unwind": "$thingsToDo"},
             {
@@ -126,10 +128,9 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = RegistrationForm()
-    users = mongo.db.users
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data)
-        users.insert(
+        USERS.insert(
             {
                 "username": form.username.data.lower(),
                 "fname": form.fname.data,
@@ -154,7 +155,7 @@ def login():
         return redirect(url_for("index"))
     form = LoginForm()
     if form.validate_on_submit():
-        user = mongo.db.users.find_one({"email": form.email.data.lower()})
+        user = USERS.find_one({"email": form.email.data.lower()})
         if user and check_password_hash(user["password"], form.password.data):
             user_data = User(
                 user["_id"],
@@ -192,8 +193,7 @@ def logout():
 def account():
     """ Description """
     form = UpdateAccountForm()
-    users = mongo.db.users
-    user = users.find_one({"username": current_user.username})
+    user = USERS.find_one({"username": current_user.username})
     if form.validate_on_submit():
         if form.picture.data:
             uploaded_image = upload(
@@ -207,7 +207,7 @@ def account():
             image_url = cloudinary_url(uploaded_image["public_id"])
         else:
             image_url = user["picture"]
-        users.update_one(
+        USERS.update_one(
             {"username": current_user.username},
             {
                 "$set": {
@@ -226,12 +226,11 @@ def account():
         form.lname.data = current_user.lname
         form.email.data = current_user.email
     image_file = user["picture"]
-    cities = mongo.db.cities
     query = ""
     page, per_page, offset = get_page_args(
         page_parameter="page", per_page_parameter="per_page"
     )
-    query = cities.aggregate(
+    query = CITIES.aggregate(
         [
             {"$unwind": "$thingsToDo"},
             {"$match": {"thingsToDo.author": current_user.username}},
@@ -246,7 +245,7 @@ def account():
             {"$unwind": "$user_profile"},
             {
                 "$project": {
-                    "id": "_id",
+                    "location": "$location",
                     "suggestion": "$thingsToDo.suggestion",
                     "cost": "$thingsToDo.cost",
                     "category": "$thingsToDo.category",
@@ -259,15 +258,13 @@ def account():
         ]
     )
     results = list(query)
-
     total = len(results)
     per_page = 10
     offset = (page - 1) * per_page
-    suggestions = results[offset : offset + per_page]
+    suggestions = results[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
-    print(str(suggestions))
     return render_template(
         "account.html",
         image_file=image_file,
@@ -287,7 +284,7 @@ def reset_request():
         return redirect(url_for("index"))
     form = RequestResetForm()
     if form.validate_on_submit():
-        user = mongo.db.users.find_one({"email": form.email.data})
+        user = USERS.find_one({"email": form.email.data})
         send_reset_email(user)
         flash(
             "An email has been sent with instructions to reset your password.",
@@ -311,7 +308,7 @@ def reset_token(token):
     form = ResetPasswordForm()
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data)
-        mongo.db.users.update_one(
+        USERS.update_one(
             {"email": user["email"]}, {"$set": {"password": hashed_password}}
         )
         flash(
@@ -327,10 +324,12 @@ def reset_token(token):
 @app.route("/delete/<user>", methods=["POST"])
 @login_required
 def delete_account(user):
-    """ Takes the value for user passed in the url and uses it in the db query to locate the user in the database. Deletes the user object from the db, Flashes a message to the user to confirm the deletion. Returns user to the 'home' template """
+    """ Takes the value for user passed in the url and uses it in the db query
+    to locate the user in the database. Deletes the user object from the db,
+    Flashes a message to the user to confirm the deletion. Returns user to the
+    'home' template """
 
-    users = mongo.db.users
-    users.delete_one({"username": user})
+    USERS.delete_one({"username": user})
     flash("Account deleted.", "success")
     return redirect(url_for("index"))
 
@@ -343,9 +342,8 @@ def add_location():
     retrieved from the form input """
 
     form = CreateLocationForm()
-    cities = mongo.db.cities
     if form.validate_on_submit():
-        cities.insert({"location": form.location.data})
+        CITIES.insert({"location": form.location.data})
         location = form.location.data
         return redirect(url_for("add_suggestion", location=location))
     return render_template("addlocation.html", form=form, title="Add Location")
@@ -359,9 +357,8 @@ def add_suggestion(location):
     """
 
     form = CreateSuggestionForm()
-    cities = mongo.db.cities
     if form.validate_on_submit():
-        cities.update(
+        CITIES.update(
             {"location": location},
             {
                 "$push": {
@@ -400,8 +397,7 @@ def suggestion_list(city):
     for paging through to further batches of results. """
 
     form = FilterResultsForm()
-    cities = mongo.db.cities
-    location = cities.find_one(
+    location = CITIES.find_one(
         {"location": city}, {"_id": 0, "location": 1, "bg_img": 1}
     )
     query = ""
@@ -428,7 +424,7 @@ def suggestion_list(city):
                 condition_b.append(cost_dict)
                 filters.append(cost)
         if len(condition_b) == 0:
-            query = cities.aggregate(
+            query = CITIES.aggregate(
                 [
                     {"$unwind": "$thingsToDo"},
                     {"$match": {"location": city, "$or": condition_a}},
@@ -448,6 +444,7 @@ def suggestion_list(city):
                     },
                     {
                         "$project": {
+                            "location": "$location",
                             "suggestion": "$thingsToDo.suggestion",
                             "cost": "$thingsToDo.cost",
                             "category": "$thingsToDo.category",
@@ -460,7 +457,7 @@ def suggestion_list(city):
                 ]
             )
         elif len(condition_a) == 0:
-            query = cities.aggregate(
+            query = CITIES.aggregate(
                 [
                     {"$unwind": "$thingsToDo"},
                     {"$match": {"location": city, "$or": condition_b}},
@@ -480,6 +477,7 @@ def suggestion_list(city):
                     },
                     {
                         "$project": {
+                            "location": "$location",
                             "suggestion": "$thingsToDo.suggestion",
                             "cost": "$thingsToDo.cost",
                             "category": "$thingsToDo.category",
@@ -493,7 +491,7 @@ def suggestion_list(city):
             )
 
         else:
-            query = cities.aggregate(
+            query = CITIES.aggregate(
                 [
                     {"$unwind": "$thingsToDo"},
                     {
@@ -521,6 +519,7 @@ def suggestion_list(city):
                     },
                     {
                         "$project": {
+                            "location": "$location",
                             "suggestion": "$thingsToDo.suggestion",
                             "cost": "$thingsToDo.cost",
                             "category": "$thingsToDo.category",
@@ -534,7 +533,7 @@ def suggestion_list(city):
             )
 
     else:
-        query = cities.aggregate(
+        query = CITIES.aggregate(
             [
                 {"$match": {"location": city}},
                 {"$unwind": "$thingsToDo"},
@@ -554,6 +553,7 @@ def suggestion_list(city):
                 },
                 {
                     "$project": {
+                        "location": "$location",
                         "suggestion": "$thingsToDo.suggestion",
                         "cost": "$thingsToDo.cost",
                         "category": "$thingsToDo.category",
@@ -569,14 +569,14 @@ def suggestion_list(city):
     total = len(results)
     per_page = 10
     offset = (page - 1) * per_page
-    suggestions = results[offset : offset + per_page]
+    suggestions = results[offset: offset + per_page]
     pagination = Pagination(
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
     jsfilters = json.dumps(filters)
     return render_template(
         "thingstodo.html",
-        city=location,
+        city_obj=location,
         things=suggestions,
         filters=filters,
         jsfilters=jsfilters,
@@ -588,7 +588,8 @@ def suggestion_list(city):
     )
 
 
-@app.route("/delete/<city>/<suggestion>", methods=["POST"])
+@app.route("/account/<city>/<suggestion>", methods=["POST"])
+@app.route("/thingstodo/<city>/<suggestion>", methods=["POST"])
 @login_required
 def delete_suggestion(city, suggestion):
     """ Takes the values for city and suggestion passed in the url and uses
@@ -596,13 +597,17 @@ def delete_suggestion(city, suggestion):
     the array it belongs to and flashes a message to the user to confirm the
     update. Returns user to the 'thingstodo' template """
 
-    cities = mongo.db.cities
-    cities.update_one(
+    rule = request.url_rule
+    CITIES.update_one(
         {"location": city},
         {"$pull": {"thingsToDo": {"suggestion": suggestion}}},
     )
     flash("Suggestion deleted.", "success")
-    return redirect(url_for("suggestion_list", city=city))
+    if "account" in rule.rule:
+        return redirect(url_for('account'))
+    elif "thingdtodo" in rule.rule:
+        return redirect(url_for('suggestion_list', city=city))
+
 
 
 @app.route("/edit/<city>", methods=["POST"])
@@ -614,10 +619,9 @@ def edit_suggestion(city):
     submitted in the editsuggestion form. Flashes a message to the user to
     confirm the update. Returns user to the 'thingstodo' template """
 
-    cities = mongo.db.cities
     suggestion = g.editsuggestion.suggestion.data
     if g.editsuggestion.validate_on_submit():
-        cities.update(
+        CITIES.update(
             {"location": city, "thingsToDo.suggestion": suggestion},
             {
                 "$set": {

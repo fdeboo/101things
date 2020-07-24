@@ -69,7 +69,7 @@ a:hover {
   color: #8c7811;
 }
 
-a i {
+i {
   margin-right: 5px;
 }
 
@@ -261,6 +261,25 @@ span {
 
 .account-heading {
   font-size: 1.5em;
+  font-family: "Patua One";
+}
+
+
+table #user-posts {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+#user-posts th,
+#user-posts td {
+  text-align: left;
+  padding: 16px;
+}
+
+#user-posts tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
 
 /* ThingsToDo page */
@@ -287,11 +306,6 @@ span {
   color: #8c7811;
   text-decoration: underline;
 }
-/*
-.suggestion-item:hover,
-.suggestion-item:focus {
-
-}*/
 
 div.thing-grid {
   display: grid;

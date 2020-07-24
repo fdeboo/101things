@@ -7,16 +7,16 @@
         <main class="col-12 col-lg-8 mr-4 content-section container">
             <a href="{{url_for('index')}}" class="dark-gold"><i class="fas fa-arrow-circle-left"></i>Return to Home</a>
             <div class="d-flex align-items-end">
-                <h1 class="dark-gold">101 Things to do in {{ city['location'] }}</h1>
+                <h1 class="dark-gold">101 Things to do in {{ city_obj['location'] }}</h1>
                 {% if current_user.is_authenticated %}
                 <button class="btn submit-btn ml-auto d-inline-block"> <a
-                        href="{{ url_for('add_suggestion', location=city['location']) }}">Add
+                        href="{{ url_for('add_suggestion', location=city_obj['location']) }}">Add
                         Suggestion
                     </a>
                 </button>
                 {% endif %}
             </div>
-            <img class="w-100 title-img" src="{{ city['bg_img'] }}">
+            <img class="w-100 title-img" src="{{ city_obj['bg_img'] }}">
             <div class="pl-0 py-2">
                 <!-- 'List' of Things To Do  -->
                 {% for thing in things %}
@@ -64,7 +64,7 @@
                             <img class="rounded-circle"
                                 src="https://res.cloudinary.com/fdeboo/image/upload/v1590514314/profile_pics/default.jpg">
                             {% endif %}
-                            
+
                             <small>Suggested by <b>{{ thing['author'] }}</b></small>
 
                             {% if current_user.username == thing['author'] %}
