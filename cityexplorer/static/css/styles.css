@@ -239,14 +239,17 @@ span {
     font-size: 1.3rem;
 }
 
-.location-card {
+.location-card .card-content {
   height: 220px;
   width: 220px;
   box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
+  border: 1px solid #fff;
+}
+
+.location-card div {
   text-align: center;
   background-size: cover;
   /*border-radius: 15px;*/
-  border: 1px solid #fff;
 }
 
 #home-page-links .pagination-page-info {

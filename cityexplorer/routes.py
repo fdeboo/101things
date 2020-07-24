@@ -136,16 +136,16 @@ def register():
 def login():
     """ Checks if the current user is already signed in and if so, redirects
     them to the home page.
-    
+
     Instantiates the Login form and when submitted, searches the database for
     a record matching the inputted data in the form email field. Hashes the
     password using the function from werkzeug.security and checks it against
-    the password for the user in the database. 
-    
+    the password for the user in the database.
+
     If the passwords match, the User object is instantiated with the properties
-    of the user in the database 
-    
-    Logs in the user and sends them to the page they were trying to access 
+    of the user in the database
+
+    Logs in the user and sends them to the page they were trying to access
     (if applicable), else redirects them to the home page """
 
     if current_user.is_authenticated:
