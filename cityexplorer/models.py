@@ -5,12 +5,14 @@ from cityexplorer import login_manager, mongo, app
 
 
 class User():
-    def __init__(self, _id, username, fname, lname, email):
+    def __init__(self, _id, username, fname, lname, email, profile_img, is_admin):
         self._id = _id
         self.username = username
         self.fname = fname
         self.lname = lname
         self.email = email
+        self.profile_img = profile_img
+        self.is_admin = is_admin
 
     def is_authenticated(self):
         return True
@@ -26,6 +28,9 @@ class User():
 
     @staticmethod
     def check_password(hashed_password, password):
+        """ Takes valuse for hashed password and password and directs them to
+        check_password_hash function """
+
         return check_password_hash(hashed_password, password)
 
     def get_reset_token(self, expires_sec=1800):
@@ -47,8 +52,11 @@ class User():
 
 @login_manager.user_loader
 def load_user(username):
+    """ Defines how to locate & match the user model to the user object in
+    the database """
+
     user = mongo.db.users.find_one({'username': username})
     if not user:
         return None
     return User(user['_id'], user['username'], user['fname'], user['lname'],
-                user['email'])
+                user['email'], user['profile_img'], user['is_admin'])

@@ -124,6 +124,7 @@ def register():
                     "https://res.cloudinary.com/fdeboo/"
                     "image/upload/v1590514314/profile_pics/default.jpg"
                 ),
+                "is_admin": False,
             }
         )
         flash("You are now registered and can log in", "success")
@@ -146,6 +147,7 @@ def login():
                 user["fname"],
                 user["lname"],
                 user["email"],
+                user["is_admin"],
             )
             login_user(user_data, remember=form.remember.data)
             next_page = request.args.get("next")
