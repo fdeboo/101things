@@ -134,7 +134,20 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    """ Description """
+    """ Checks if the current user is already signed in and if so, redirects
+    them to the home page.
+    
+    Instantiates the Login form and when submitted, searches the database for
+    a record matching the inputted data in the form email field. Hashes the
+    password using the function from werkzeug.security and checks it against
+    the password for the user in the database. 
+    
+    If the passwords match, the User object is instantiated with the properties
+    of the user in the database 
+    
+    Logs in the user and sends them to the page they were trying to access 
+    (if applicable), else redirects them to the home page """
+
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = LoginForm()
@@ -147,6 +160,7 @@ def login():
                 user["fname"],
                 user["lname"],
                 user["email"],
+                user["picture"],
                 user["is_admin"],
             )
             login_user(user_data, remember=form.remember.data)

@@ -67,7 +67,7 @@
 
                             <small>Suggested by <b>{{ thing['author'] }}</b></small>
 
-                            {% if current_user.username == thing['author'] %}
+                            {% if current_user.username == thing['author'] or current_user.is_admin %}
                             <div class="d-flex justify-content-end align-items-end">
                                 <!--Triggers Edit Modal-->
                                 <button tyoe="button" class="mx-2" data-toggle="modal"

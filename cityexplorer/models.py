@@ -28,9 +28,6 @@ class User():
 
     @staticmethod
     def check_password(hashed_password, password):
-        """ Takes valuse for hashed password and password and directs them to
-        check_password_hash function """
-
         return check_password_hash(hashed_password, password)
 
     def get_reset_token(self, expires_sec=1800):
@@ -59,4 +56,4 @@ def load_user(username):
     if not user:
         return None
     return User(user['_id'], user['username'], user['fname'], user['lname'],
-                user['email'], user['profile_img'], user['is_admin'])
+                user['email'], user['picture'], user['is_admin'])
