@@ -25,6 +25,7 @@ from cityexplorer.forms import (
     EditSuggestionForm,
     SearchLocationForm,
     FilterResultsForm,
+    UploadImageForm,
 )
 from cityexplorer import app, mongo
 from cityexplorer.utils import send_reset_email
@@ -40,6 +41,7 @@ def before_request_func():
 
     g.searchform = SearchLocationForm()
     g.editsuggestion = EditSuggestionForm()
+    g.uploadimage = UploadImageForm()
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -201,9 +203,11 @@ def account():
                 format="jpg",
                 width=150,
                 height=150,
-                crop="fill",
             )
-            image_url = cloudinary_url(uploaded_image["public_id"])
+            # image_url is the name provided for the first parameter of the cloudinary upload
+            # options is provided as a name for the dictionary of options
+            # giving both parameters a variable name keeps the url string separate
+            image_url, options = cloudinary_url(uploaded_image["public_id"])
         else:
             image_url = user["picture"]
         USERS.update_one(
@@ -598,10 +602,33 @@ def delete_location(city):
     update. If the url contains a value for 'author, (the user routed from
     their account page) redirect to account template. Else, (the user routed
     from the thingstodo page) redirect to thingstodo template.  """
-    print(city)
     CITIES.delete_one({"location": city})
     flash("Suggestion deleted.", "success")
     return redirect(url_for("index"))
+
+
+@app.route("/edit/location/<city>", methods=["POST"])
+@login_required
+def upload_image(city):
+    """ Takes the value of 'city' passed in the url and uses it to identify the
+    document in the database.  flashes a message to the user to confirm the
+    update. If the url contains a value for 'author, (the user routed from
+    their account page) redirect to account template. Else, (the user routed
+    from the thingstodo page) redirect to thingstodo template.  """
+
+    if g.updateimage.validate_on_submit():
+        uploaded_image = upload(
+            g.updateimage.picture.data,
+            folder="location",
+            format="jpg",
+        )
+        image_url, options = cloudinary_url(uploaded_image["public_id"])
+        CITIES.update_one(
+            {"location": city},
+            {"$set": {"bg_img": image_url}},
+            )
+        flash("Image Updated.", "success")
+        return redirect(url_for("index"))
 
 
 @app.route("/delete/suggestion/<city>/<suggestion>", methods=["POST"])
@@ -654,7 +681,6 @@ def edit_suggestion(city, author=None):
                 }
             },
         )
-        print(author)
         flash("Suggestion updated.", "success")
         if author is not None:
             return redirect(url_for("account"))

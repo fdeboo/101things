@@ -275,8 +275,10 @@ class FilterResultsForm(FlaskForm):
     )
     submit = SubmitField("Update")
 
+
 class UploadImageForm(FlaskForm):
-    picture = FileField(
-        "Provide a picture:", validators=[FileAllowed(["jpg", "png"])]
+    image = FileField(
+        "Provide a picture:",
+        validators=[InputRequired(), FileAllowed(["jpg", "png"])]
     )
     submit = SubmitField("Update")
