@@ -25,19 +25,14 @@
 
 <body>
     <div class="content container-lg px-0 d-flex flex-column">
-        {% include 'includes/_header.html' %}
-        {% include 'includes/_messages.html' %}
+        {% include 'layout/header.html' %}
+        {% include 'components/flash-messages.html' %}
         <!--PAGE CONTENT-->
         {% block content %}{% endblock content %}
     </div>
 
     <!--Footer-->   
-    <footer class="container-lg d-flex align-items-end">
-        <div class="row">
-            <a href="https://github.com/fdeboo" target="_blank"><i class="fab fa-github fa-lg white"></i></a>
-            <a href="https://linkedin.com/in/frandeboo" target="_blank"><i class="fab fa-linkedin fa-lg white"></i></a>
-        </div>
-    </footer>
+    {% include 'layout/footer.html' %}
 
 <!--Scripts-->
     <script src="https://kit.fontawesome.com/d23270b885.js" crossorigin="anonymous"></script>

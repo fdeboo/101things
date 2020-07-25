@@ -13,6 +13,8 @@ def send_reset_email(user):
         user["fname"],
         user["lname"],
         user["email"],
+        user["picture"],
+        user["is_admin"],
     )
     token = this_user.get_reset_token()
     msg = Message(
@@ -27,7 +29,7 @@ If you did not make this request then simply ignore this email and no changes
 will be made.
 """
     msg.html = render_template(
-        "reset_email.html", username=this_user, token=token
+        "components/reset_email.html", username=this_user, token=token
     )
 
     mail.send(msg)

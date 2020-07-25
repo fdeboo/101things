@@ -95,7 +95,7 @@ def index():
         ]
     )
     return render_template(
-        "home.html",
+        "pages/home.html",
         locations=locations,
         searched=searched,
         suggestions=suggestion_query,
@@ -131,7 +131,7 @@ def register():
         )
         flash("You are now registered and can log in", "success")
         return redirect(url_for("login"))
-    return render_template("register.html", form=form, title="Register")
+    return render_template("pages/register.html", form=form, title="Register")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -177,7 +177,7 @@ def login():
                 "Login Unsuccessful, Please check email and password.",
                 "danger",
             )
-    return render_template("login.html", form=form, title="Login")
+    return render_template("pages/login.html", form=form, title="Login")
 
 
 @app.route("/logout")
@@ -270,7 +270,7 @@ def account():
         page=page, per_page=per_page, total=total, css_framework="bootstrap4"
     )
     return render_template(
-        "account.html",
+        "pages/account.html",
         image_file=image_file,
         things=suggestions,
         page=page,
@@ -296,7 +296,7 @@ def reset_request():
         )
         return redirect(url_for("login"))
     return render_template(
-        "reset_request.html", title="Reset Password", form=form
+        "pages/reset_request.html", title="Reset Password", form=form
     )
 
 
@@ -321,7 +321,7 @@ def reset_token(token):
         )
         return redirect(url_for("login"))
     return render_template(
-        "reset_token.html", title="Reset Password", form=form
+        "pages/reset_token.html", title="Reset Password", form=form
     )
 
 
@@ -352,7 +352,7 @@ def add_location():
         )
         location = form.location.data
         return redirect(url_for("add_suggestion", location=location))
-    return render_template("addlocation.html", form=form, title="Add Location")
+    return render_template("pages/addlocation.html", form=form, title="Add Location")
 
 
 @app.route("/addsuggestion/<location>", methods=["GET", "POST"])
@@ -383,7 +383,7 @@ def add_suggestion(location):
         flash(location + " added", "success")
         return redirect(url_for("suggestion_list", city=location))
     return render_template(
-        "addsuggestion.html",
+        "pages/addsuggestion.html",
         location=location,
         form=form,
         title="Add Suggestion",
@@ -581,7 +581,7 @@ def suggestion_list(city):
     )
     jsfilters = json.dumps(filters)
     return render_template(
-        "thingstodo.html",
+        "pages/thingstodo.html",
         city_obj=location,
         things=suggestions,
         filters=filters,

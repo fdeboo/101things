@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends 'layout/base.html' %}
 {% block content %}
 <div class="content-section container d-flex flex-column flex-grow-1">
     {% if locations.count() > 0 %}
@@ -37,8 +37,8 @@
                             {% endif %}
                         </div>
                     </div>
-                    {% include 'includes/_upload_image_modal.html' %}
-                    {% include 'includes/_delete_location_modal.html' %}
+                    {% include 'components/upload-image-modal.html' %}
+                    {% include 'components/delete-location-modal.html' %}
                     {% endfor %}
                 </div>
             </div>
