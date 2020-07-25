@@ -618,8 +618,7 @@ def upload_image(city):
     from the thingstodo page) redirect to thingstodo template.  """
 
     print('directed successfully')
-    if request.method == 'POST':
-        print(g.updateimage.image.data)
+    if g.updateimage.validate_on_submit():
         uploaded_image = upload(
             g.updateimage.image.data,
             folder="locations",
