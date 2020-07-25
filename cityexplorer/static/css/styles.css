@@ -21,8 +21,45 @@ body {
 /* Site Footer */
 footer {
   flex-shrink: 0;
-  height: 50px;
   background-color: #608ba6; 
+  font-size: 14px;
+  padding: 10px 15px 40px 15px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 50% 30% 20%;
+  grid-column-gap: 10px;;
+}
+
+#footer-about {
+  grid-column: 1/2;
+}
+
+#footer-about div {
+  max-width: 500px;
+}
+
+#footer-contact {
+  grid-column: 2/3;
+}
+
+#footer-links {
+  grid-column: 3/4;
+}
+
+footer h4 {
+  font-size: 1.2em;
+}
+
+footer p {
+  margin-bottom: 0;
+}
+
+footer ul {
+  list-style-type: none;
+  list-style-position: inside;
+  padding: 0;
 }
 
 /* Font colours */
@@ -236,7 +273,7 @@ span {
 }
 
 .main-title h1 {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
 
 .location-card .card-content {
