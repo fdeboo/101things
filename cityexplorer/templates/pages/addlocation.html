@@ -12,14 +12,14 @@
                     <div class="form-group">
                         {{ form.location.label(class="form-control-label") }}
                         {% if form.location.errors %}
-                        {{ form.location(class="form-control form-control-lg is-invalid") }}
+                        {{ form.location(class="form-control is-invalid") }}
                         <div class="invalid-feedback">
                             {% for error in form.location.errors %}
                             <span> {{ error }}</span>
                             {% endfor %}
                         </div>
                         {% else %}
-                        {{ form.location(class="form-control form-control-lg") }}
+                        {{ form.location(class="form-control") }}
                         {% endif %}
                     </div>
                 </fieldset>

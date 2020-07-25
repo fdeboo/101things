@@ -18,14 +18,14 @@
                         <div class="form-group">
                             {{ g.updateimage.image.label(class="form-control-label") }}
                             {% if g.updateimage.image.errors %}
-                            {{ g.updateimage.image(class="form-control form-control-lg is-invalid") }}
+                            {{ g.updateimage.image(class="form-control is-invalid") }}
                             <div class="invalid-feedback">
                                 {% for error in g.updateimage.image.errors %}
                                 <span> {{ error }}</span>
                                 {% endfor %}
                             </div>
                             {% else %}
-                            {{ g.updateimage.image(class="form-control form-control-lg") }}
+                            {{ g.updateimage.image(class="form-control") }}
                             {% endif %}
                         </div>
                     </fieldset>
