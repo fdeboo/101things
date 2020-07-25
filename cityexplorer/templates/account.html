@@ -91,8 +91,8 @@
                     {% for thing in things %}
 
                     <tr>
-                        <td class="text-left">{{ thing['location'] }}</td>
-                        <td class="text-left"><span>{{ thing['suggestion'] }}</span></td>
+                        <td class="text-left">{{ thing.location }}</td>
+                        <td class="text-left"><span>{{ thing.suggestion }}</span></td>
                         <td class="text-left">
                             <!--Triggers Edit Modal-->
                             <button tyoe="button" class="mx-2" data-toggle="modal"
@@ -109,7 +109,7 @@
                     {% include 'includes/_edit_modal_part_a.html' %}
                     <!-- Form submits the names of both city and author as arguements to the edit_suggestion route. -->
                     <form method="POST"
-                        action="{{url_for('edit_suggestion', author=thing['author'], city=thing['location'])}}">
+                        action="{{url_for('edit_suggestion', author=thing.author, city=thing.location)}}">
 
                     {% include 'includes/_edit_modal_part_b.html' %}
 
@@ -117,7 +117,7 @@
                     {% include 'includes/_delete_modal_part_a.html' %}
                     <!-- Submits the city name and suggestion title as arguements to the 'delete_suggeston' route  -->
                         <form method="POST" action="{{ url_for('delete_suggestion',
-                            city=thing['location'], suggestion=thing['suggestion'], author=thing['author']) }}">
+                            city=thing.location, suggestion=thing.suggestion, author=thing.author) }}">
                     {% include 'includes/_delete_modal_part_b.html' %}
 
 

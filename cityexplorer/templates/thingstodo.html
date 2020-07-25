@@ -7,16 +7,16 @@
         <main class="col-12 col-lg-8 mr-4 content-section container">
             <a href="{{url_for('index')}}" class="dark-gold"><i class="fas fa-arrow-circle-left"></i>Return to Home</a>
             <div class="d-flex align-items-end">
-                <h1 class="dark-gold">101 Things to do in {{ city_obj['location'] }}</h1>
+                <h1 class="dark-gold">101 Things to do in {{ city_obj.location }}</h1>
                 {% if current_user.is_authenticated %}
                 <button class="btn submit-btn ml-auto d-inline-block"> <a
-                        href="{{ url_for('add_suggestion', location=city_obj['location']) }}">Add
+                        href="{{ url_for('add_suggestion', location=city_obj.location) }}">Add
                         Suggestion
                     </a>
                 </button>
                 {% endif %}
             </div>
-            <img class="w-100 title-img" src="{{ city_obj['bg_img'] }}">
+            <img class="w-100 title-img" src="{{ city_obj.bg_img }}">
             <div class="pl-0 py-2">
                 <!-- 'List' of Things To Do  -->
                 {% for thing in things %}
@@ -25,7 +25,7 @@
                         data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
                         <div class="suggestion-item py-2">
                             <div class="d-inline pr-2">{{ loop.index + (page - 1) * per_page }}.</div>
-                            <p class="d-inline">{{ thing['suggestion'] }}</p>
+                            <p class="d-inline">{{ thing.suggestion }}</p>
                         </div>
                     </a>
 
@@ -35,17 +35,17 @@
                         <ul class="thing-icons pr-3">
                             <li>
                                 <i class="fas fa-tag light-gold"></i>
-                                <p>{{ thing['category'] }}</p>
+                                <p>{{ thing.category }}</p>
                             </li>
                             <li>
                                 <i class="fas fa-money-bill-wave light-gold"></i>
-                                <p>{{ thing['cost'] }}</p>
+                                <p>{{ thing.cost }}</p>
                             </li>
                             <li>
                                 <i id="icon-url" class="fas fa-link light-gold"></i>
                                 <!-- Check to see if the variable is empty-->
-                                {% if thing['url'] | length %}
-                                <p><a href="{{ thing['url'] }}" target="_blank"> Visit website</a></p>
+                                {% if thing.url | length %}
+                                <p><a href="{{ thing.url }}" target="_blank"> Visit website</a></p>
                                 {% endif %}
                             </li>
                         </ul>
@@ -53,21 +53,21 @@
 
                             <div class="col-12">
                                 <i class="fas fa-quote-left light-blue fa-lg"></i>
-                                {{ thing['comment'] }}
+                                {{ thing.comment }}
                                 <i class="fas fa-quote-right light-blue fa-lg"></i>
                             </div>
                         </div>
                         <div class="author">
-                            {% if thing['profile'] %}
-                            <img class="rounded-circle" src="{{ thing['profile'] }}">
+                            {% if thing.profile %}
+                            <img class="rounded-circle" src="{{ thing.profile }}">
                             {% else %}
                             <img class="rounded-circle"
                                 src="https://res.cloudinary.com/fdeboo/image/upload/v1590514314/profile_pics/default.jpg">
                             {% endif %}
 
-                            <small>Suggested by <b>{{ thing['author'] }}</b></small>
+                            <small>Suggested by <b>{{ thing.author }}</b></small>
 
-                            {% if current_user.username == thing['author'] or current_user.is_admin %}
+                            {% if current_user.username == thing.author or current_user.is_admin %}
                             <div class="d-flex justify-content-end align-items-end">
                                 <!--Triggers Edit Modal-->
                                 <button tyoe="button" class="mx-2" data-toggle="modal"
@@ -87,7 +87,7 @@
                 {% include 'includes/_edit_modal_part_a.html' %}
                 <!-- Form submits the names of both city and author as arguements to the edit_suggestion route. -->
                 <form method="POST"
-                    action="{{url_for('edit_suggestion', city=thing['location'])}}">
+                    action="{{url_for('edit_suggestion', city=thing.location)}}">
 
                 {% include 'includes/_edit_modal_part_b.html' %}
 
@@ -95,7 +95,7 @@
                 {% include 'includes/_delete_modal_part_a.html' %}
                     <!-- Submits the city name and suggestion title as arguements to the 'delete_suggeston' route  -->
                     <form method="POST" action="{{ url_for('delete_suggestion',
-                            city=thing['location'], suggestion=thing['suggestion']) }}">
+                            city=thing.location, suggestion=thing.suggestion) }}">
                 {% include 'includes/_delete_modal_part_b.html' %}
 
                 {% endfor %}
@@ -117,13 +117,13 @@
                         <li>{{ filt }}</li>
                         {% endfor %}
                     </ul>
-                    <a href="{{url_for('suggestion_list', city=city_obj['location']) }}" id="clearFilter"><i
+                    <a href="{{url_for('suggestion_list', city=city_obj.location) }}" id="clearFilter"><i
                             class="fas fa-times-circle"></i>Clear filters</a>
                     {% endif %}
                 </div>
 
                 <!-- Filter form -->
-                <form method="GET" action="{{ url_for('suggestion_list', city=city_obj['location']) }}" id="filterForm"
+                <form method="GET" action="{{ url_for('suggestion_list', city=city_obj.location) }}" id="filterForm"
                     class="col-8 col-lg-12">
                     <fieldset class="form-group m-0 p-0 col-12">
                         <div class="col-6 col-lg-12">

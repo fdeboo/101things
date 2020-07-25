@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Delete <span>"{{ location['location']}}"?</span></h5>
+                <h5 class="modal-title" id="deleteModalLabel">Delete <span>"{{ location.location }}"?</span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -15,7 +15,7 @@
             </div>
             <div class="modal-footer">
                 <!-- Submits the city name and suggestion title as arguements to the 'delete_suggeston' route  -->
-                <form method="POST" action="{{ url_for('delete_location', city=location['location']) }}">
+                <form method="POST" action="{{ url_for('delete_location', city=location.location) }}">
                     <input type="submit" class="btn submit-btn" value="Delete" />
                     <button type="button" class="btn submit-btn cancel-btn" data-dismiss="modal"
                         aria-label="Close">Cancel
