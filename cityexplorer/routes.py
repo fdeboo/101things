@@ -41,7 +41,7 @@ def before_request_func():
 
     g.searchform = SearchLocationForm()
     g.editsuggestion = EditSuggestionForm()
-    g.uploadimage = UploadImageForm()
+    g.updateimage = UploadImageForm()
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -197,6 +197,7 @@ def account():
     user = USERS.find_one({"username": current_user.username})
     if form.validate_on_submit():
         if form.picture.data:
+            print(form.picture.data)
             uploaded_image = upload(
                 form.picture.data,
                 folder="profile_pics",
@@ -616,10 +617,12 @@ def upload_image(city):
     their account page) redirect to account template. Else, (the user routed
     from the thingstodo page) redirect to thingstodo template.  """
 
-    if g.updateimage.validate_on_submit():
+    print('directed successfully')
+    if request.method == 'POST':
+        print(g.updateimage.image.data)
         uploaded_image = upload(
-            g.updateimage.picture.data,
-            folder="location",
+            g.updateimage.image.data,
+            folder="locations",
             format="jpg",
         )
         image_url, options = cloudinary_url(uploaded_image["public_id"])
@@ -628,6 +631,9 @@ def upload_image(city):
             {"$set": {"bg_img": image_url}},
             )
         flash("Image Updated.", "success")
+        return redirect(url_for("index"))
+    else:
+        flash("Unsuccessful.", "danger")
         return redirect(url_for("index"))
 
 

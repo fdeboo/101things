@@ -235,11 +235,19 @@ span {
   border-bottom: 1px solid #594e16;
 }
 
-.main-title h2 {
+.main-title h1 {
     font-size: 1.3rem;
 }
 
 .location-card .card-content {
+  height: 220px;
+  width: 220px;
+  box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
+  border: 1px solid #fff;
+  text-shadow: 2px 2px 5px #000;
+}
+
+.location-card .card-content h1 {
   height: 220px;
   width: 220px;
   box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
