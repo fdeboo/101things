@@ -66,12 +66,12 @@ def index():
     else:
         query = CITIES.find({})
         if CITIES.find(
-            {
-                "$or": [
-                    {"thingsToDo": {"$exists": False}},
-                    {"thingsToDo": {"$size": 0}},
-                ]
-            }
+                {
+                    "$or": [
+                        {"thingsToDo": {"$exists": False}},
+                        {"thingsToDo": {"$size": 0}},
+                    ]
+                }
         ):
 
             CITIES.delete_many({"thingsToDo": {"$exists": False}})
@@ -631,10 +631,10 @@ def delete_suggestion(city, suggestion, author=None):
 def edit_suggestion(city, author=None):
     """ Takes the values for city and suggestion passed in the url and uses
     them to locate the suggestion object in the database. 'Sets' the object's
-    field values with the data submitted in the editsuggestion form. Flashes a 
-    message to the user to confirm the update. If the url contains a value for 
+    field values with the data submitted in the editsuggestion form. Flashes a
+    message to the user to confirm the update. If the url contains a value for
     'author, (the user routed from their account page) redirect to account
-    template. Else, (the user routed from the thingstodo page) redirect to 
+    template. Else, (the user routed from the thingstodo page) redirect to
     thingstodo template. """
 
     if g.editsuggestion.validate_on_submit():
