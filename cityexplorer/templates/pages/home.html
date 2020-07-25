@@ -81,22 +81,4 @@
     </div>
     {% endif %}
 </div>
-
-<script>
-    $(document).ready(function () {
-        $("#banner-container div").first().addClass("active")
-        let content = $("#banner-container").children();
-        var i = 0;
-
-        setInterval(() => {
-            console.log(i)
-            content.filter(".active").fadeOut(1000);
-            setTimeout(() => {
-                content.filter(".active").removeClass('active');
-                content.eq(i).fadeIn(1000).addClass('active');
-            }, 1000);
-            i = (i + 1) % content.length; // Wraps around if it hits the end
-        }, 7000);
-    });
-</script>
 {% endblock content %}

@@ -192,7 +192,11 @@ def logout():
 @app.route("/account", methods=["GET", "POST"])
 @login_required
 def account():
-    """ Description """
+    """" image_url is the name provided for the first parameter of the
+    cloudinary upload options is provided as a name for the dictionary
+    of options giving both parameters a variable name keeps the url
+    string separate """
+
     form = UpdateAccountForm()
     user = USERS.find_one({"username": current_user.username})
     if form.validate_on_submit():
@@ -205,10 +209,8 @@ def account():
                 width=150,
                 height=150,
             )
-            # image_url is the name provided for the first parameter of the cloudinary upload
-            # options is provided as a name for the dictionary of options
-            # giving both parameters a variable name keeps the url string separate
             image_url, options = cloudinary_url(uploaded_image["public_id"])
+
         else:
             image_url = user["picture"]
         USERS.update_one(
