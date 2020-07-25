@@ -2,18 +2,6 @@
 {% block content %}
 <div class="content-section container">
     {% if locations.count() > 0 %}
-    <!-- Row: FadeIn/Out Suggestion Examples -->
-    <div class="row justify-content-center text-center mb-4" id="banner-container">
-        {% for suggestion in suggestions %}
-        <div class="justify-content-center align-items-center">
-            <i class="fas fa-quote-left light-blue fa-3x d-inline"></i>
-            <h3 class="d-inline mx-3"><span> {{ suggestion.suggestion }}</span>
-                <br /><small class="d-inline">-{{ suggestion.author }}</small>
-            </h3>
-            <i class="fas fa-quote-right light-blue fa-3x d-inline-block"></i>
-        </div>
-        {% endfor %}
-    </div>
     <!-- Row: Locations -->
     <div class="row justify-content-center m-0">
         <div class="col-12 d-flex justify-content-between align-items-end main-title">
@@ -27,23 +15,24 @@
                 {% for location in locations %}
                 <!-- Location Cards -->
                 <div class="my-3 px-2 location-card">
-                    <div class="card card-content" style="background-image:url('{{ location.bg_img }}')">
-                        <a class="dark-gold" href="{{ url_for('suggestion_list', city=location.location) }}">
-                            <div class="card-body d-flex">
-                                <h2 class="align-self-center">101 Things to do in {{ location.location }}</h2>
+                    <div class="card card-content d-flex flex-column"
+                        style="background-image:url('{{ location.bg_img }}')">
+                        <a class="dark-gold flex-grow-1 d-flex align-items-center" href="{{ url_for('suggestion_list', city=location.location) }}">
+                            <div class="card-body">
+                                <h2 class="my-0 white">101 Things to do in {{ location.location }}</h2>
                             </div>
                         </a>
-                    {% if current_user.is_admin %}
-                    <div style="background-color:#fff;">
-                        <button tyoe="button" class="mx-2" data-toggle="modal"
-                            data-target="#del_locationModal{{ loop.index }}"><i
-                                class="fas fa-camera"></i>Image</button>
-                        <!--Triggers Delete Modal-->
-                        <button type="button" class="mx-2" data-toggle="modal"
-                            data-target="#del_locationModal{{ loop.index }}"><i
-                                class="fas fa-trash-alt"></i>Remove</button>
-                    </div>
-                    {% endif %}
+                        {% if current_user.is_admin %}
+                        <div style="background-color:#fff;">
+                            <button tyoe="button" class="mx-2" data-toggle="modal"
+                                data-target="#del_locationModal{{ loop.index }}"><i
+                                    class="fas fa-camera"></i>Image</button>
+                            <!--Triggers Delete Modal-->
+                            <button type="button" class="mx-2" data-toggle="modal"
+                                data-target="#del_locationModal{{ loop.index }}"><i
+                                    class="fas fa-trash-alt"></i>Remove</button>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% include 'includes/_delete_location_modal.html' %}
@@ -55,6 +44,19 @@
     <div class="row justify-content-center align-items-center flex-column" id="home-page-links">
         {{ pagination.info }}
         {{ pagination.links }}
+    </div>
+
+    <!-- Row: FadeIn/Out Suggestion Examples -->
+    <div class="row justify-content-center text-center my-5" id="banner-container">
+        {% for suggestion in suggestions %}
+        <div class="justify-content-center align-items-center">
+            <i class="fas fa-quote-left light-blue fa-3x d-inline"></i>
+            <h3 class="d-inline mx-3"><span> {{ suggestion.suggestion }}</span>
+                <br /><small class="d-inline">-{{ suggestion.author }}</small>
+            </h3>
+            <i class="fas fa-quote-right light-blue fa-3x d-inline-block"></i>
+        </div>
+        {% endfor %}
     </div>
 
     {% else %}
