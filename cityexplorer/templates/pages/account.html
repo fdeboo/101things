@@ -1,0 +1,162 @@
+{% extends "layout/base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <aside class="col-12 col-lg-3 border p-3">
+            <div class="media pt-3">
+                <img class="rounded-circle profile-img mx-2" src="{{ image_file }}" alt="user profile">
+                <div class="media-body">
+                    <h2 class="account-heading mb-0 dark-gold">{{ current_user.username}}</h2>
+                    <p class="text-secondary">{{ current_user.email }}</p>
+                </div>
+            </div>
+
+            <form method='POST' action='' enctype='multipart/form-data'>
+                {{ form.hidden_tag() }}
+                <fieldset class='form-group'>
+                    <div class="form-group">
+                        {{ form.fname.label(class="form-control-label") }}
+                        {% if form.fname.errors %}
+                        {{ form.fname(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.fname.errors %}
+                            <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.fname(class="form-control") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.lname.label(class="form-control-label") }}
+                        {% if form.lname.errors %}
+                        {{ form.lname(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.lname.errors %}
+                            <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.lname(class="form-control") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.email.label(class="form-control-label") }}
+                        {% if form.email.errors %}
+                        {{ form.email(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                            <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.email(class="form-control") }}
+                        {% endif %}
+                    </div>
+
+                    <div class='form-group'>
+                        {{ form.picture.label() }}
+                        {{ form.picture( class='form-control-file' ) }}
+                        {% if form.picture.errors %}
+                        {% for error in form.picture.errors %}
+                        <span class='text-danger'>{{ error }}</span><br />
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.submit(class="btn submit-btn") }}
+                    </div>
+            </form>
+            <small><a href="#" data-toggle="modal" data-target="#deleteAccountModal"
+                    style:"text-decoration:underline;">Delete
+                    Accout</a></small>
+        </aside>
+
+        <main class="col-12 col-lg-8 mr-4 content-section container">
+            <a href="{{url_for('index')}}" class="dark-gold"><i class="fas fa-arrow-circle-left"></i>Return to
+                Home</a>
+            <h1 class="dark-gold">Posts</h1>
+            <div class="pl-0 py-2">
+                <!-- table of posts by user  -->
+                <table class="w-100" id="user-posts">
+                    <tr>
+                        <th class="text-left">Location</th>
+                        <th class="text-left">Suggestion</th>
+                        <th class="text-left">
+                        </th>
+                    </tr>
+                    {% for thing in things %}
+
+                    <tr>
+                        <td class="text-left">{{ thing.location }}</td>
+                        <td class="text-left"><span>{{ thing.suggestion }}</span></td>
+                        <td class="text-left">
+                            <!--Triggers Edit Modal-->
+                            <button tyoe="button" class="mx-2" data-toggle="modal"
+                                data-target="#editModal{{ loop.index }}"><i class="fas fa-edit"></i>Edit</button>
+                            <!--Triggers Delete Modal-->
+                            <button type="button" class="mx-2" data-toggle="modal"
+                                data-target="#deleteModal{{ loop.index }}"><i
+                                    class="fas fa-trash-alt"></i>Delete</button>
+
+                        </td>
+                    </tr>
+
+                    <!-- Edit Modal -->
+                    {% include 'components/modals/edit-suggestion-pt-a.html' %}
+                    <!-- Form submits the names of both city and author as arguements to the edit_suggestion route. -->
+                    <form method="POST"
+                        action="{{url_for('edit_suggestion', author=thing.author, city=thing.location)}}">
+
+                    {% include 'components/modals/edit-suggestion-pt-b.html' %}
+
+                    <!-- Delete Modal -->
+                    {% include 'components/modals/delete-suggestion-pt-a.html' %}
+                    <!-- Submits the city name and suggestion title as arguements to the 'delete_suggeston' route  -->
+                        <form method="POST" action="{{ url_for('delete_suggestion',
+                            city=thing.location, suggestion=thing.suggestion, author=thing.author) }}">
+                    {% include 'components/modals/delete-suggestion-pt-b.html' %}
+
+
+                    {% endfor %}
+                </table>
+
+            </div>
+            {{ pagination.info }}
+            {{ pagination.links }}
+
+        </main>
+        <!-- Delete Account Modal  -->
+        <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteAccountLabel">Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>Are you sure you want to delete your account?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Submits the city name and suggestion title as arguements to the 'delete_suggeston' route  -->
+                        <form method="POST" action="{{ url_for('delete_account', user=current_user.username) }}">
+                            <input type="submit" class="btn submit-btn" value="Confirm">
+                            <button type="button" class="btn submit-btn cancel-btn" data-dismiss="modal"
+                                aria-label="Close">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock content %}

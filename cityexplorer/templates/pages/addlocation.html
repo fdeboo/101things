@@ -1,0 +1,35 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="content-section container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-md-offset-6">
+            <h1 class="dark-gold">Add Location</h1>
+            <form method="POST" action="">
+                {{ g.editsuggestion.csrf_token() }}
+                {{ form.image(value="https://res.cloudinary.com/fdeboo/image/upload/v1590666462/layout/bokeh-night-lights-city-9044_nxmprf.jpg") }}
+                <fieldset class="form-group">
+                    <div class="form-group">
+                        {{ form.location.label(class="form-control-label") }}
+                        {% if form.location.errors %}
+                        {{ form.location(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.location.errors %}
+                            <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.location(class="form-control") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn submit-btn") }}
+                    <a href="{{ url_for('index') }}" class="btn submit-btn cancel-btn">Cancel</a>
+                </div>
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
+{% endblock content %}

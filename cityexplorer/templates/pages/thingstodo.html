@@ -1,0 +1,167 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+
+        <main class="col-12 col-lg-8 mr-lg-4 content-section container">
+            <a href="{{url_for('index')}}" class="dark-gold"><i class="fas fa-arrow-circle-left"></i>Return to Home</a>
+            <div class="d-flex align-items-end">
+                <h1 class="dark-gold">101 Things to do in {{ city_obj.location }}</h1>
+                {% if current_user.is_authenticated %}
+                <button class="btn submit-btn ml-auto d-inline-block"> <a
+                        href="{{ url_for('add_suggestion', location=city_obj.location) }}">Add
+                        Suggestion
+                    </a>
+                </button>
+                {% endif %}
+            </div>
+            <img class="w-100 title-img" src="{{ city_obj.bg_img }}">
+            <div class="pl-0 py-2">
+                <!-- 'List' of Things To Do  -->
+                {% for thing in things %}
+                <div class="accordion thingtodo" id="thingtodo">
+                    <a href="#" id="heading{{ loop.index }}" class="text-left collapsed" data-toggle="collapse"
+                        data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
+                        <div class="suggestion-item py-2">
+                            <div class="d-inline pr-2">{{ loop.index + (page - 1) * per_page }}.</div>
+                            <p class="d-inline">{{ thing.suggestion }}</p>
+                        </div>
+                    </a>
+
+                    <!-- Collapsed content  -->
+                    <div id="collapse{{ loop.index }}" class="collapse pl-4 py-2 mb-4 thing-grid"
+                        aria-labelledby="heading{{ loop.index }}" data-parent="#thingtodo">
+                        <ul class="thing-icons pr-3">
+                            <li>
+                                <i class="fas fa-tag light-gold"></i>
+                                <p>{{ thing.category }}</p>
+                            </li>
+                            <li>
+                                <i class="fas fa-money-bill-wave light-gold"></i>
+                                <p>{{ thing.cost }}</p>
+                            </li>
+                            <li>
+                                <i id="icon-url" class="fas fa-link light-gold"></i>
+                                <!-- Check to see if the variable is empty-->
+                                {% if thing.url | length %}
+                                <p><a href="{{ thing.url }}" target="_blank"> Visit website</a></p>
+                                {% endif %}
+                            </li>
+                        </ul>
+                        <div class="thing-comment">
+
+                            <div class="col-12">
+                                <i class="fas fa-quote-left light-blue fa-lg"></i>
+                                {{ thing.comment }}
+                                <i class="fas fa-quote-right light-blue fa-lg"></i>
+                            </div>
+                        </div>
+                        <div class="author">
+                            {% if thing.profile %}
+                            <img class="rounded-circle" src="{{ thing.profile }}">
+                            {% else %}
+                            <img class="rounded-circle"
+                                src="https://res.cloudinary.com/fdeboo/image/upload/v1590514314/profile_pics/default.jpg">
+                            {% endif %}
+
+                            <small>Suggested by <b>{{ thing.author }}</b></small>
+
+                            {% if current_user.username == thing.author or current_user.is_admin %}
+                            <div class="d-flex justify-content-end align-items-end">
+                                <!--Triggers Edit Modal-->
+                                <button tyoe="button" class="mx-2" data-toggle="modal"
+                                    data-target="#editModal{{ loop.index }}"><i
+                                        class="fas fa-edit"></i></i>Edit</button>
+                                <!--Triggers Delete Modal-->
+                                <button type="button" class="mx-2" data-toggle="modal"
+                                    data-target="#deleteModal{{ loop.index }}"><i
+                                        class="fas fa-trash-alt"></i>Delete</button>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Modal -->
+                {% include 'components/modals/edit-suggestion-pt-a.html' %}
+                <!-- Form submits the names of both city and author as arguements to the edit_suggestion route. -->
+                <form method="POST"
+                    action="{{url_for('edit_suggestion', city=thing.location)}}">
+
+                {% include 'components/modals/edit-suggestion-pt-b.html' %}
+
+                    <!-- Delete Modal -->
+                {% include 'components/modals/delete-suggestion-pt-a.html' %}
+                    <!-- Submits the city name and suggestion title as arguements to the 'delete_suggeston' route  -->
+                    <form method="POST" action="{{ url_for('delete_suggestion',
+                            city=thing.location, suggestion=thing.suggestion) }}">
+                {% include 'components/modals/delete-suggestion-pt-b.html' %}
+
+                {% endfor %}
+            </div>
+            {{ pagination.info }}
+            {{ pagination.links }}
+
+        </main>
+
+        <!-- Feature to filter results  -->
+        <aside class="col-12 col-lg-3 p-4">
+            <div class="row">
+                <div class="col-4 col-lg-12">
+                    <h3>Filters:</h3>
+                    <!-- If filters in place, the filters are listed -->
+                    {% if filters|length > 0 %}
+                    <ul id="filtersList">
+                        {% for filt in filters %}
+                        <li>{{ filt }}</li>
+                        {% endfor %}
+                    </ul>
+                    <a href="{{url_for('suggestion_list', city=city_obj.location) }}" id="clearFilter"><i
+                            class="fas fa-times-circle"></i>Clear filters</a>
+                    {% endif %}
+                </div>
+
+                <!-- Filter form -->
+                <form method="GET" action="{{ url_for('suggestion_list', city=city_obj.location) }}" id="filterForm"
+                    class="col-8 col-lg-12 container">
+                    <fieldset class="form-group">
+                    <div class="m-0 p-0 row">
+                        <div class="col-6 col-lg-12 mb-4">
+                            <b>{{ form.category.label(class="form-control-label") }}</b>
+                            <table id="categories" class="filterOptions mb-2">
+                                {% for subfield in form.category %}
+                                <tr>
+                                    <td>{{ subfield }}</td>
+                                    <td>{{ subfield.label }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                            <a href="#" id="loadMore"><i class="fas fa-arrow-circle-down"></i>Load
+                                more</a>
+                            <a href="#" id="showLess"><i class="fas fa-arrow-circle-up"></i>Show less</a>
+                        </div>
+
+                        <div class="col-4 col-lg-12">
+                            <b>{{ form.cost.label(class="form-control-label") }}</b>
+                            <table class="filterOptions">
+                                {% for subfield in form.cost %}
+                                <tr>
+                                    <td>{{ subfield }}</td>
+                                    <td>{{ subfield.label }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                    </fieldset>
+
+                </form>
+            </div>
+        </aside>
+
+
+    </div>
+</div>
+
+{% endblock content %}

@@ -4,10 +4,29 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pytest = "*"
+pylint = "*"
+flake8 = "*"
+autopep8 = "*"
+pep8 = "*"
+black = "*"
 
 [packages]
 flask = "*"
 dnspython = "*"
+flask-pymongo = "*"
+gunicorn = "*"
+wtforms = "*"
+flask-wtf = "*"
+email-validator = "*"
+pillow = "*"
+cloudinary = "*"
+flask-mail = "*"
+flask-login = "*"
+flask-paginate = "*"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true

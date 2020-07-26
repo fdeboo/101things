@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description"
+        content="An for local adventurers to share their experiences and for travellers to gather itinery inspiration">
+    <meta name="keywords" content="travel, cities, to do, inspiration, ideas, reccommendation">
+    <meta name="author" content="Frances DeBoo">
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>101 things</title>
+    {% endif %}
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/styles.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+
+<body>
+    <div class="content container-lg px-0 d-flex flex-column">
+        {% include 'layout/header.html' %}
+        {% include 'components/flash-messages.html' %}
+        <!--PAGE CONTENT-->
+        {% block content %}{% endblock content %}
+    </div>
+
+    <!--Footer-->
+    {% include 'layout/footer.html' %}
+
+    <!--Scripts-->
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://kit.fontawesome.com/d23270b885.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="{{url_for('static', filename='js/scripts.js')}}"></script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+<div class="content-section container d-flex flex-column flex-grow-1">
+    {% if locations.count() > 0 %}
+    <div class="locations flex-grow-1">
+        <!-- Row: Locations -->
+        <div class="row justify-content-center m-0">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-end main-title">
+                    <h1 class="dark-gold">Locations</h1>
+                    <a href="{{ url_for('add_location') }}" class="btn submit-btn">Add Location</a>
+                </div>
+            </div>
+            <div class="col-12 justify-content-center align-items-center flex-nowrap">
+                <div class="d-flex flex-wrap justify-content-center">
+                    {% for location in locations %}
+                    <!-- Location Cards -->
+                    <div class="my-3 px-2 location-card">
+                        <div class="card card-content d-flex flex-column"
+                            style="background-image:url('{{ location.bg_img }}')">
+                            <a class="dark-gold flex-grow-1 d-flex"
+                                href="{{ url_for('suggestion_list', city=location.location) }}">
+                                <div class="card-body p-2 m-3 d-flex">
+                                    <h2 class="my-0 white align-self-center">101 Things to do in {{ location.location }}
+                                    </h2>
+                                </div>
+                            </a>
+                            {% if current_user.is_admin %}
+                            <div id="admin-controls">
+                                <button tyoe="button" class="mx-2" data-toggle="modal"
+                                    data-target="#uploadImageModal{{ loop.index }}"><i
+                                        class="fas fa-camera"></i>Image</button>
+                                <!--Triggers Delete Modal-->
+                                <button type="button" class="mx-2" data-toggle="modal"
+                                    data-target="#del_locationModal{{ loop.index }}"><i
+                                        class="fas fa-trash-alt"></i>Remove</button>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% include 'components/modals/upload-image.html' %}
+                    {% include 'components/modals/delete-location.html' %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- Row: Pagination -->
+        <div class="row justify-content-center align-items-center flex-column" id="home-page-links">
+            {{ pagination.info }}
+            {{ pagination.links }}
+        </div>
+    </div>
+
+    <!-- Row: FadeIn/Out Suggestion Examples -->
+    <div class="row justify-content-center text-center my-4">
+        <div class="col-12" id="banner-container">
+            {% for suggestion in suggestions %}
+            <div class="justify-content-center align-items-center">
+                <i class="fas fa-quote-left light-blue fa-3x d-inline"></i>
+                <h3 class="d-inline mx-3"><span> {{ suggestion.suggestion }}</span>
+                    <br /><small class="d-inline dark-gold">-{{ suggestion.author }}</small>
+                </h3>
+                <i class="fas fa-quote-right light-blue fa-3x d-inline-block"></i>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% else %}
+    <div class="row flex-column align-items-center text-center search-false">
+        <img class="my-3" src="{{ url_for('static', filename='images/searchicon_lg.png')}}"
+            style="width:50px;height:50px;" />
+        <p> <span>{{searched}}</span> not found.<br /> Do you want to add this location?
+        </p>
+    </div>
+    <!-- Row: Buttons -->
+    <div class="row justify-content-center mt-3">
+        <button class="btn submit-btn">
+            <a href="{{ url_for('add_location') }}">Add Location</a>
+        </button>
+        <button class="btn submit-btn cancel-btn">
+            <a href="{{ url_for('index') }}">Go Back</a>
+        </button>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock content %}
