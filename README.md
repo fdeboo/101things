@@ -44,44 +44,59 @@ Visit 101 Things [here](https://cityexplorer-ms.herokuapp.com/)
 
 
 #### Wireframes <a name="wireframes"></a>
-+ The header contains a hero image background and the navigation bar has a transparent background so that the header image is visible beneath.
-+ The header will contain the search bar so it accessible on whichever page the user has navigated to
++ The navigation bar will be contained within the header and will have a transparent background so that the so that the hero-image in the header is visible beneath.
++ The header will contain the search bar so it accessible on whichever page the user has navigated to.
 + The content section is where the page templates are displayed. All templates will have a top margin of 50px to space it from the header.
-+ The locations added to the database appear as cards on the home page and will also contain image backgrounds to add colour to the page
-+ A reel of suggestions and the username of the author is displayed on the home screen to give the user an idea of the kind of suggestions
++ The footer has a 'sticky' position so that even if the content does not fill the viewport height, the footer will remain anchored at the bottom of the screen.
 
 
 <div align="center">
 
 Display on large screens: <br /><br />
-  <img src="wireframes/lg_screen_ui.png">
+  <img src="wireframes/mainlayout.png">
 
 </div>
 
 
 <div align="center">
 Display on mobile devices: <br /><br />
-  <img src="wireframes/mobile_ui.png">
+  <img src="wireframes/mainlayout-mobile.png">
 
 </div>
 
-+ The footer has a 'sticky' position so that even if the content does not fill the viewport height, the footer will remain anchored at the bottom of the screen.
+
++ The home page will display all the locations in the database as cards and will also contain image backgrounds to add colour to the page
++ A animated reel looping through all the user suggestions will be displayed on the home page as example posts.
++ A button invites users to add location to the database if it doesn't already exist
++ Any searches made will direct to the home page and the location card that matches the search will be displayed
++ If no results in a search are found, the home page sontent is replace by a "No results found message"
++ Admin users will be able to see links on the cards that enable them to change the location's associated image or delete the location from the database
 
 <div align="center">
 
-Content in the central circle is limited to the most important information: <br /><br />
-  <img src="wireframes/centercircle.png">
+Home template for large screens: <br /><br />
+  <img src="wireframes/home.png">
 
 </div>
 
-+ Modals are used for the
-+ Each modal should follow the same layout for consistency.
 
+<div align="center">
+
+Home template for mobile screens: <br /><br />
+  <img src="wireframes/home-mobile.png">
+
+</div>
+
+
+An admin user view: <br /><br />
+  <img src="wireframes/adminviewe.png">
+
+</div>
 
 
 
 #### Design <a name="design"></a>
-+ The design is intended to feel modern but warm and traditional. It uses earth tones. 
++ The design is intended to feel modern but warm and traditional. It uses earth tones inspired by travel. 
 + The colour pallette used in the app in  fill the UI so that it feels vibrant and positive.
 + The game takes precedence over everything else. The navigation bar providing any extra links will be tucked away off screen and toggled down from the top using a imple burger icon.
 + Font Awesome icons are employed as visual cues to help make the UI as intuitive as possible. It is important that these are used in moderation so that they do not become distracting. 
