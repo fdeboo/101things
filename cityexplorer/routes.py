@@ -49,7 +49,6 @@ def before_request_func():
 def index():
     """ If a search term is submitted, queries the database for case-
     insensitive matches. Otherwise, queries the database for all documents.
-
     Passes the results to the template in a limited batch so that large numbers
     of results are divided over several pages and are paginated.
     Displays results for all locations in the database """
@@ -138,15 +137,12 @@ def register():
 def login():
     """ Checks if the current user is already signed in and if so, redirects
     them to the home page.
-
     Instantiates the Login form and when submitted, searches the database for
     a record matching the inputted data in the form email field. Hashes the
     password using the function from werkzeug.security and checks it against
     the password for the user in the database.
-
     If the passwords match, the User object is instantiated with the properties
     of the user in the database
-
     Logs in the user and sends them to the page they were trying to access
     (if applicable), else redirects them to the home page """
 
@@ -398,7 +394,6 @@ def suggestion_list(city):
     applied in the FilterResultsForm, uses the data retrieved from the page
     arguements to construct the criteria for the match pipeline, used in a
     mongo aggregation query.
-
     Converts the results of the query to a list type.
     The number of list items returned to the template is limited to a batch of
     10. Pagination using flask_paginate handles the page number and offset
