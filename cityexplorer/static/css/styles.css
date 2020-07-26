@@ -239,6 +239,10 @@ footer p {
   margin-bottom: 5px;
 }
 
+#email-flow {
+  word-break: break-all;
+}
+
 footer ul {
   list-style-type: none;
   list-style-position: inside;

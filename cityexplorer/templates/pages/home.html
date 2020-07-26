@@ -8,9 +8,7 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-end main-title">
                     <h1 class="dark-gold">Locations</h1>
-                    <button class="btn submit-btn">
-                        <a href="{{ url_for('add_location') }}">Add Location</a>
-                    </button>
+                    <a href="{{ url_for('add_location') }}" class="btn submit-btn">Add Location</a>          
                 </div>
             </div>
             <div class="col-12 justify-content-center align-items-center flex-nowrap">
@@ -84,20 +82,4 @@
     {% endif %}
 </div>
 
-<script>
-    $(document).ready(function () {
-        $("#banner-container div").first().addClass("active");
-        let content = $("#banner-container").children();
-        var i = 0;
-
-        setInterval(() => {
-            content.filter(".active").fadeOut(1000);
-            setTimeout(() => {
-                content.filter(".active").removeClass('active');
-                content.eq(i).fadeIn(1000).addClass('active');
-            }, 1000);
-            i = (i + 1) % content.length; // Wraps around if it hits the end
-        }, 7000);
-    });
-</script>
 {% endblock content %}
