@@ -1,0 +1,49 @@
+<header class="hero-content">
+    <nav class="navbar navbar-expand-lg navbar-dark pb-2 w-100">
+        <div class="container">
+            <a class="navbar-brand logo" href="{{ url_for('index') }}"><i class="fas fa-map-marker-alt pale-pink"></i>
+                101
+                things</a>
+            <div class="d-flex justify-content-end">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <ul class="collapse navbar-collapse navbar-nav" id="navbarSupportedContent">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-li"><a class="btn py-0" href="{{url_for('account') }}">Account</a></li>
+                    <li class="nav-li"><a class="btn py-0" href="{{url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                    <li class="nav-li"><a class="btn py-0" href="{{ url_for('login') }}">Login</a></li>
+                    <li class="nav-li"><a class="btn py-0" href="{{url_for('register') }}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container pb-3">
+        <div class="row p-4 d-flex justify-content-center text-center">
+            <form method="POST" action="{{ url_for('index') }}" class="d-flex search-form">
+                <div class="search-bar">
+                    <img class="" src="{{ url_for('static', filename='images/searchicon.png') }}">
+                </div>
+                {{ g.searchform.hidden_tag() }}
+                {% if g.searchform.q.errors %}
+                {{ g.searchform.q(class="is-invalid search-input search-bar pl-3", placeholder="search a location...", autocomplete="off") }}
+                <div class="invalid-feedback">
+                    {% for error in g.searchform.q.errors %}
+                    <span> {{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                {% else %}
+                {{ g.searchform.q(class="search-input search-bar pl-3", placeholder="search location...") }}
+                {% endif %}
+            </form>
+        </div>
+        
+    </div>
+
+
+</header>

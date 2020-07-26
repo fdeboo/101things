@@ -1,0 +1,321 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+
+        <main class="col-12 col-lg-8 mr-4 content-section container">
+            <a href="{{url_for('index')}}" class="dark-gold"><i class="fas fa-arrow-circle-left"></i>Return to Home</a>
+            <div class="d-flex align-items-end">
+                <h1 class="dark-gold">101 Things to do in {{ city['location'] }}</h1>
+                {% if current_user.is_authenticated %}
+                <button class="btn submit-btn ml-auto d-inline-block"> <a
+                        href="{{ url_for('add_suggestion', location=city['location']) }}">Add
+                        Suggestion
+                    </a>
+                </button>
+                {% endif %}
+            </div>
+            <img class="w-100 title-img" src="{{ city['bg_img'] }}">
+            <div class="pl-0 py-2">
+                <!-- 'List' of Things To Do  -->
+                {% for thing in things %}
+                <div class="accordion thingtodo" id="thingtodo">
+                    <a href="#" id="heading{{ loop.index }}" class="text-left collapsed" data-toggle="collapse"
+                        data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapseOne">
+                        <div class="suggestion-item py-2">
+                            <div class="d-inline pr-2">{{ loop.index + (page - 1) * per_page }}.</div>
+                            <p class="d-inline">{{ thing['suggestion'] }}</p>
+                        </div>
+                    </a>
+
+                    <!-- Collapsed content  -->
+                    <div id="collapse{{ loop.index }}" class="collapse pl-4 py-2 mb-4 thing-grid"
+                        aria-labelledby="heading{{ loop.index }}" data-parent="#thingtodo">
+                        <ul class="thing-icons pr-3">
+                            <li>
+                                <i class="fas fa-tag light-gold"></i>
+                                <p>{{ thing['category'] }}</p>
+                            </li>
+                            <li>
+                                <i class="fas fa-money-bill-wave light-gold"></i>
+                                <p>{{ thing['cost'] }}</p>
+                            </li>
+                            <li>
+                                <i id="icon-url" class="fas fa-link light-gold"></i>
+                                <p><a href="{{ thing['url'] }}" target="_blank"> Visit website</a></p>
+                            </li>
+                        </ul>
+                        <div class="thing-comment">
+
+                            <div class="col-12">
+                                <i class="fas fa-quote-left light-blue fa-lg"></i>
+                                {{ thing['comment'] }}
+                                <i class="fas fa-quote-right light-blue fa-lg"></i>
+                            </div>
+                        </div>
+                        <div class="author">
+                            <img class="rounded-circle" src="{{ thing['profile'] }}">
+                            <small>Suggested by <b>{{ thing['author'] }}</b></small>
+                            <div class="d-flex justify-content-end align-items-end">
+                                <!--Triggers Edit Modal-->
+                                <button tyoe="button" class="mx-2" data-toggle="modal"
+                                    data-target="#editModal{{ loop.index }}"><i
+                                        class="fas fa-edit"></i></i>Edit</button>
+                                <!--Triggers Delete Modal-->
+                                <button type="button" class="mx-2" data-toggle="modal"
+                                    data-target="#deleteModal{{ loop.index }}"><i
+                                        class="fas fa-trash-alt"></i>Delete</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Suggestion Modal  -->
+                <div class="modal fade" id="editModal{{ loop.index }}" tabindex="-1" role="dialog"
+                    aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Edit
+                                    <span>"{{ thing['suggestion'] }}"</span></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="{{url_for('edit_suggestion', city=city['location'])}}">
+                                    {{ g.editsuggestion.hidden_tag() }}
+                                    {{ g.editsuggestion.location(value=location) }}
+                                    <fieldset class="form-group">
+                                        <div class="form-group">
+                                            {{ g.editsuggestion.suggestion.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.suggestion.errors %}
+                                            {{ g.editsuggestion.suggestion(class="form-control form-control is-invalid", value=thing['suggestion'], disabled=True) 
+                                            }}
+                                            <div class="invalid-feedback">
+                                                {% for error in g.editsuggestion.suggestion.errors %}
+                                                <span> {{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ g.editsuggestion.suggestion(class="form-control form-control", value=thing['suggestion'], disabled=True)
+                                            }}
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="form-group">
+                                            {{ g.editsuggestion.category.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.category.errors %}
+                                            {{ g.editsuggestion.category(class="form-control form-control is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in g.editsuggestion.category.errors %}
+                                                <span> {{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ g.editsuggestion.category(class="form-control form-control") }}
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="form-group">
+                                            {{ g.editsuggestion.cost.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.cost.errors %}
+                                            {{ g.editsuggestion.cost(class="form-control form-control is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in g.editsuggestion.category.errors %}
+                                                <span> {{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ g.editsuggestion.cost(class="form-control form-control") }}
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="form-group">
+                                            {{ g.editsuggestion.url.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.url.errors %}
+                                            {{ g.editsuggestion.url(class="form-control form-control is-invalid", value=thing['url']) }}
+                                            <div class="invalid-feedback">
+                                                {% for error in g.editsuggestion.url.errors %}
+                                                <span> {{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ g.editsuggestion.url(class="form-control form-control", value=thing['url']) }}
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="form-group">
+                                            {{ g.editsuggestion.comment.label(class="form-control-label") }}
+                                            {% if g.editsuggestion.comment.errors %}
+                                            {{ g.editsuggestion.comment(class="form-control form-control is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in g.editsuggestion.comment.errors %}
+                                                <span> {{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ g.editsuggestion.comment(class="form-control form-control") }}
+                                            {% endif %}
+                                        </div>
+
+                                    </fieldset>
+                            </div>
+                            <div class="modal-footer">
+
+                                <div class="form-group">
+                                    {{ g.editsuggestion.submit(class="btn submit-btn") }}
+                                    <button type="button" class="btn submit-btn cancel-btn" data-dismiss="modal"
+                                        aria-label="Close">Cancel</button>
+                                </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delete Suggestion Modal  -->
+                <div class="modal fade" id="deleteModal{{ loop.index }}" tabindex="-1" role="dialog"
+                    aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Delete Suggestion?</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <p>Are you sure you want to delete<br />
+                                    <span class="d-block">"{{ thing['suggestion']}}"?</span>
+                                    Deleting this suggestion can not be reversed.
+                                </p>
+                                <p>{{ thing['location']}}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <!-- Submits the city name and suggestion title as arguements to the 'delete_suggeston' route  -->
+                                <form method="POST"
+                                    action="{{ url_for('delete_suggestion', city=city['location'], suggestion=thing['suggestion']) }}">
+                                    <input type="submit" class="btn submit-btn" value="Delete">
+                                    <button type="button" class="btn submit-btn cancel-btn" data-dismiss="modal"
+                                        aria-label="Close">Cancel</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {{ pagination.info }}
+            {{ pagination.links }}
+
+        </main>
+
+        <!-- Feature to filter results  -->
+        <aside class="col-12 col-lg-3 p-4">
+            <div class="row">
+                <div class="col-4 col-lg-12">
+                    <h3>Filters:</h3>
+                    <!-- If filters in place, the filters are listed -->
+                    {% if filters|length > 0 %}
+                    <ul id="filtersList">
+                        {% for filt in filters %}
+                        <li>{{ filt }}</li>
+                        {% endfor %}
+                    </ul>
+                    <a href="{{url_for('suggestion_list', city=city['location']) }}" id="clearFilter"><i
+                            class="fas fa-times-circle"></i>Clear filters</a>
+                    {% endif %}
+                </div>
+
+                <!-- Filter form -->
+                <form method="GET" action="{{ url_for('suggestion_list', city=city['location']) }}" id="filterForm"
+                    class="col-8 col-lg-12">
+                    <fieldset class="form-group m-0 p-0 col-12">
+                        <div class="col-6 col-lg-12">
+                            <b>{{ form.category.label(class="form-control-label") }}</b>
+                            <table id="categories" class="filterOptions mb-2">
+                                {% for subfield in form.category %}
+                                <tr>
+                                    <td>{{ subfield }}</td>
+                                    <td>{{ subfield.label }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                            <a href="#" id="loadMore"><i class="fas fa-arrow-circle-down"></i>Load
+                                more</a>
+                            <a href="#" id="showLess"><i class="fas fa-arrow-circle-up"></i>Show less</a>
+                        </div>
+
+                        <div class="col-6 col-lg-12">
+                            <b>{{ form.cost.label(class="form-control-label") }}</b>
+                            <table class="filterOptions">
+                                {% for subfield in form.cost %}
+                                <tr>
+                                    <td>{{ subfield }}</td>
+                                    <td>{{ subfield.label }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+        </aside>
+
+
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        // Takes the 'filters' variable passed from the view and converts it from a list type to a json array.
+        // Loops through the array and uses the value on each iteration in a jquery selector, to identify the checkbox (input) with matching value.
+        // Sets the identified input to 'checked'
+
+        let filterarray = {{ filters | tojson }};
+        $.each(filterarray, function (index, value) {
+            $("input[value='" + value + "']").attr("checked", "checked");
+        });
+
+        // Limits the number of table rows 'shown' to 5.
+        // When Load More link is clicked, the limit is extended to show full table
+        // Link is hidden and Show Less link is shownn
+
+        total_tr = $("#categories tr").length;
+        let limit = 5;
+        $('#categories tr:lt(' + limit + ')').show();
+        $('#loadMore').click(function () {
+            // variablename = (condition) ? value1:value2
+            limit = total_tr;
+            $('#categories tr:lt(' + limit + ')').slideDown(300, "swing", function () {
+                $('#showLess').show()
+                $('#loadMore').hide()
+            });
+        });
+
+        // When Show Less link is clicked, limit is returned to value of 5
+        // Any table rows excluded from the first 5 rows in the table are hidden
+
+        $('#showLess').click(function () {
+            limit = 5;
+            $('#categories tr').not(':lt(' + limit + ')').slideUp(300, "swing", function () {
+                $('#showLess').hide()
+                $('#loadMore').show()
+            });
+        });
+    });
+
+
+    // Whenever a checkbox is checked (input provided), the form is submiited
+
+    $("form input").change(function () {
+        $(this).closest('form').submit();
+    });
+</script>
+{% endblock content %}
