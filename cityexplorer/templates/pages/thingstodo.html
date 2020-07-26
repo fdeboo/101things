@@ -124,9 +124,10 @@
 
                 <!-- Filter form -->
                 <form method="GET" action="{{ url_for('suggestion_list', city=city_obj.location) }}" id="filterForm"
-                    class="col-8 col-lg-12">
-                    <fieldset class="form-group m-0 p-0 col-12">
-                        <div class="col-6 col-lg-12">
+                    class="col-8 col-lg-12 container">
+                    <fieldset class="form-group">
+                    <div class="m-0 p-0 row">
+                        <div class="col-6 col-lg-12 mb-4">
                             <b>{{ form.category.label(class="form-control-label") }}</b>
                             <table id="categories" class="filterOptions mb-2">
                                 {% for subfield in form.category %}
@@ -141,7 +142,7 @@
                             <a href="#" id="showLess"><i class="fas fa-arrow-circle-up"></i>Show less</a>
                         </div>
 
-                        <div class="col-6 col-lg-12">
+                        <div class="col-4 col-lg-12">
                             <b>{{ form.cost.label(class="form-control-label") }}</b>
                             <table class="filterOptions">
                                 {% for subfield in form.cost %}
@@ -152,6 +153,7 @@
                                 {% endfor %}
                             </table>
                         </div>
+                    </div>
                     </fieldset>
 
                 </form>
@@ -162,6 +164,7 @@
     </div>
 </div>
 <script>
+$(document).ready(function () {
     /* Takes the 'filters' variable passed from the view and converts it from a list type to a json array.
     Loops through the array and uses the value on each iteration in a jquery selector, to identify the checkbox (input)
     with matching value.
@@ -170,5 +173,37 @@
     $.each(filterarray, function (index, value) {
         $("input[value='" + value + "']").attr("checked", "checked");
     });
+
+    /* Limits the number of table rows 'shown' to 5.
+    When Load More link is clicked, the limit is extended to show full table
+    Link is hidden and Show Less link is shownn */
+    total_tr = $("#categories tr").length;
+    let limit = 5;
+    $('#categories tr:lt(' + limit + ')').show();
+    $('#loadMore').click(function () {
+        // variablename = (condition) ? value1:value2
+        limit = total_tr;
+        $('#categories tr:lt(' + limit + ')').slideDown(300, "swing", function () {
+            $('#showLess').show()
+            $('#loadMore').hide()
+        });
+    });
+
+    /* When Show Less link is clicked, limit is returned to value of 5
+    Any table rows excluded from the first 5 rows in the table are hidden */
+    $('#showLess').click(function () {
+        limit = 5;
+        $('#categories tr').not(':lt(' + limit + ')').slideUp(300, "swing", function () {
+            $('#showLess').hide()
+            $('#loadMore').show()
+        });
+        });
+});
+
+
+/* Whenever a checkbox is checked (input provided), the form is submiited */
+$("form input").change(function () {
+$(this).closest('form').submit();
+});
 </script>
 {% endblock content %}

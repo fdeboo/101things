@@ -53,7 +53,7 @@
     </div>
 
     <!-- Row: FadeIn/Out Suggestion Examples -->
-    <div class="row justify-content-center text-center" id="banner-container">
+    <div class="row justify-content-center text-center my-4" id="banner-container">
         {% for suggestion in suggestions %}
         <div class="justify-content-center align-items-center">
             <i class="fas fa-quote-left light-blue fa-3x d-inline"></i>
@@ -83,4 +83,21 @@
     </div>
     {% endif %}
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#banner-container div").first().addClass("active");
+        let content = $("#banner-container").children();
+        var i = 0;
+
+        setInterval(() => {
+            content.filter(".active").fadeOut(1000);
+            setTimeout(() => {
+                content.filter(".active").removeClass('active');
+                content.eq(i).fadeIn(1000).addClass('active');
+            }, 1000);
+            i = (i + 1) % content.length; // Wraps around if it hits the end
+        }, 7000);
+    });
+</script>
 {% endblock content %}

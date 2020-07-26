@@ -1,7 +1,6 @@
 
 $(document).ready(function () {
 
-    console.log('check')
     $("#banner-container div").first().addClass("active")
     let content = $("#banner-container").children();
     var i = 0;
