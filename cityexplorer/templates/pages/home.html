@@ -5,11 +5,13 @@
     <div class="locations flex-grow-1">
         <!-- Row: Locations -->
         <div class="row justify-content-center m-0">
-            <div class="col-12 d-flex justify-content-between align-items-end main-title">
-                <h1 class="dark-gold">Locations</h1>
-                <button class="btn submit-btn">
-                    <a href="{{ url_for('add_location') }}">Add Location</a>
-                </button>
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-end main-title">
+                    <h1 class="dark-gold">Locations</h1>
+                    <button class="btn submit-btn">
+                        <a href="{{ url_for('add_location') }}">Add Location</a>
+                    </button>
+                </div>
             </div>
             <div class="col-12 justify-content-center align-items-center flex-nowrap">
                 <div class="d-flex flex-wrap justify-content-center">
@@ -18,14 +20,14 @@
                     <div class="my-3 px-2 location-card">
                         <div class="card card-content d-flex flex-column"
                             style="background-image:url('{{ location.bg_img }}')">
-                            <a class="dark-gold flex-grow-1 d-flex align-items-center"
+                            <a class="dark-gold flex-grow-1 d-flex"
                                 href="{{ url_for('suggestion_list', city=location.location) }}">
-                                <div class="card-body">
-                                    <h2 class="my-0 white">101 Things to do in {{ location.location }}</h2>
+                                <div class="card-body p-2 m-3 d-flex">
+                                    <h2 class="my-0 white align-self-center">101 Things to do in {{ location.location }}</h2>
                                 </div>
                             </a>
                             {% if current_user.is_admin %}
-                            <div style="background-color:#fff;">
+                            <div id="admin-controls">
                                 <button tyoe="button" class="mx-2" data-toggle="modal"
                                     data-target="#uploadImageModal{{ loop.index }}"><i
                                         class="fas fa-camera"></i>Image</button>

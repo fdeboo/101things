@@ -1,29 +1,40 @@
 <footer class="container-lg">
-    <div class="footer-grid white">
-        <div id="footer-about">
-            <div>
-                <h4>About</h4>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aliquam recusandae a earum exercitationem.
-                    Nam, vitae corporis earum quia blanditiis exercitationem error. Sapiente molestias rem suscipit
-                    possimus neque! Quos, eaque optio!</p>
+    <div class="row white px-3">
+        <div class="col-7 container">
+            <div class="row">
+                <div class="col-12 col-md-8">
+                    <h4>About</h4>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aliquam recusandae a earum
+                        exercitationem.
+                        Nam, vitae corporis earum quia blanditiis exercitationem error. Sapiente molestias rem suscipit
+                        possimus neque! Quos, eaque optio!</p>
+                </div>
             </div>
         </div>
-        <div id="footer-contact">
-            <h4>Contact</h4>
-            <p><i class="fas fa-map-marker-alt"></i> London, NW10</p>
-            <p><i class="fas fa-at"></i> 101thingsinmycity@gmail.com</p>
-            <a href="https://github.com/fdeboo" target="_blank"><i class="fab fa-github fa-lg white"></i></a>
-            <a href="https://linkedin.com/in/frandeboo" target="_blank"><i class="fab fa-linkedin fa-lg white"></i></a>
+        <div class="col-5 container">
+            <div class="row">
+                <div class="col-12 col-md-8">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> London, NW10</p>
+                    <p><i class="fas fa-at"></i> 101thingsinmycity@gmail.com</p>
+                    <div class="pt-2">
+                        <a href="https://github.com/fdeboo" target="_blank">
+                            <i class="fab fa-github fa-lg white"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/frandeboo" target="_blank">
+                            <i class="fab fa-linkedin fa-lg white"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <h4>Links</h4>
+                    <ul>
+                        <li><a href="{{url_for('index')}}" class="white">Home</a></li>
+                        <li><a href="{{url_for('register')}}" class="white">Register</a></li>
+                        <li><a href="{{url_for('login')}}" class=" white">Login</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div id="footer-links">
-            <h4>Links</h4>
-            <ul>
-                <li><a href="{{url_for('index')}}">Home</a></li>
-                <li><a href="{{url_for('register')}}">Register</a></li>
-                <li><a href="{{url_for('login')}}">Login</a></li>
-            </ul>
-        </div>
-
-
     </div>
 </footer>

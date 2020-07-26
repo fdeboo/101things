@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,500&family=Lato:wght@300;400;700&family=Patua+One&display=swap");
 
-/* html set to 100% and .content set to flex:1 auto; so that the footer is always fixed to the bottom of the window */
+/* PAGE STRUCTURE:
+html set to 100% and .content set to flex:1 auto; so that the footer is always
+fixed to the bottom of the window */
+
 html {
   height: 100%;
 }
@@ -18,48 +21,11 @@ body {
   background-color: #fff;
 }
 
-/* Site Footer */
 footer {
   flex-shrink: 0;
   background-color: #608ba6; 
   font-size: 14px;
-  padding: 10px 15px 40px 15px;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: 50% 30% 20%;
-  grid-column-gap: 10px;;
-}
-
-#footer-about {
-  grid-column: 1/2;
-}
-
-#footer-about div {
-  max-width: 500px;
-}
-
-#footer-contact {
-  grid-column: 2/3;
-}
-
-#footer-links {
-  grid-column: 3/4;
-}
-
-footer h4 {
-  font-size: 1.2em;
-}
-
-footer p {
-  margin-bottom: 0;
-}
-
-footer ul {
-  list-style-type: none;
-  list-style-position: inside;
-  padding: 0;
+  padding: 15px 20px 40px 20px;
 }
 
 /* Font colours */
@@ -108,6 +74,10 @@ a:hover {
 
 i {
   margin-right: 5px;
+}
+
+aside {
+  background-color: whitesmoke;
 }
 
 .content-section {
@@ -256,6 +226,25 @@ span {
   font-style: italic;
 }
 
+/* Site Footer */
+#footer-about {
+  max-width: 400px;
+}
+
+footer h4 {
+  font-size: 1.2em;
+}
+
+footer p {
+  margin-bottom: 5px;
+}
+
+footer ul {
+  list-style-type: none;
+  list-style-position: inside;
+  padding: 0;
+}
+
 /* Home page */
 #banner-container div {
   text-align: center;
@@ -280,21 +269,23 @@ span {
   height: 220px;
   width: 220px;
   box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
-  border: 1px solid #fff;
-  text-shadow: 2px 2px 5px #000;
-}
-
-.location-card .card-content h1 {
-  height: 220px;
-  width: 220px;
-  box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
-  border: 1px solid #fff;
+  text-shadow: 1px 1px 4px #000;
+  border: 0;
 }
 
 .location-card div {
   text-align: center;
   background-size: cover;
-  /*border-radius: 15px;*/
+
+}
+
+.location-card #admin-controls {
+  background-color: #fff;
+}
+
+.location-card .card-body {
+  border: 2px solid #fff;
+
 }
 
 #home-page-links .pagination-page-info {
@@ -347,7 +338,6 @@ table #user-posts {
 .suggestion-item {
   font-size: 1.3em;
   font-weight: 400;
-  /*border-bottom: 1px solid #dee2e6;*/
 }
 
 .suggestion-item p:hover {
@@ -414,10 +404,6 @@ ul.thing-icons li p {
 }
 
 /* Filter Aside */
-aside {
-  background-color: whitesmoke;
-}
-
 ul#filtersList {
   list-style-position: outside;
   margin-bottom: 8px;
