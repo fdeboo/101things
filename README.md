@@ -1,6 +1,6 @@
  <div align="center">
 
-<img src="" alt="101 things Logo"/>
+<img src="wireframes/mockup.png" alt="Mockup on all Devices"/>
  
  </div>
 <br />
