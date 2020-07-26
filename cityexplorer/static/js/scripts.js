@@ -1,6 +1,7 @@
 
 $(document).ready(function () {
 
+    console.log('check')
     $("#banner-container div").first().addClass("active")
     let content = $("#banner-container").children();
     var i = 0;
@@ -14,14 +15,6 @@ $(document).ready(function () {
         }, 1000);
         i = (i + 1) % content.length; // Wraps around if it hits the end
     }, 7000);
-
-    /* Takes the 'filters' variable passed from the view and converts it from a list type to a json array.
-    Loops through the array and uses the value on each iteration in a jquery selector, to identify the checkbox (input) with matching value.
-    Sets the identified input to 'checked' */
-    let filterarray = {{ filters | tojson }};
-    $.each(filterarray, function (index, value) {
-        $("input[value='" + value + "']").attr("checked", "checked");
-    });
 
     /* Limits the number of table rows 'shown' to 5.
     When Load More link is clicked, the limit is extended to show full table

@@ -161,5 +161,14 @@
 
     </div>
 </div>
-
+<script>
+    /* Takes the 'filters' variable passed from the view and converts it from a list type to a json array.
+    Loops through the array and uses the value on each iteration in a jquery selector, to identify the checkbox (input)
+    with matching value.
+    Sets the identified input to 'checked' */
+    let filterarray = {{ filters | tojson }};
+    $.each(filterarray, function (index, value) {
+        $("input[value='" + value + "']").attr("checked", "checked");
+    });
+</script>
 {% endblock content %}
