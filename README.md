@@ -3,54 +3,53 @@
 <img src="wireframes/mockup.png" alt="Mockup on all Devices"/>
  
  </div>
-<br />
-<div>
-
-An app that encourages adventurers around the world to share and advise others on what to do in their local area. The lists of '101' things, in turn provide a rich resource for any visitors who are less familiar with the location, to feel assured that they are not missing out on anything. View the 101 things app [here](https://github.com/fdeboo/101things)
-
-</div>
 
 # Table of contents
-1. [UX](#introduction)
+1. [Introduction](#introduction)
     * [Objective](#objective)
     * [User stories](#users)
     * [Wireframes](#wireframes)
     * [Design Notes](#design)
-2. [Features](#features)
+2. [UX](#design)
+3. [Features](#features)
     * [Existing Features](#existing_feat)
     * [Features left to implment](#future_feat)
-3. [Technologies Used](#technologies)
-4. [Testing](#testing)
-5. [Deployment](#deployment)
-6. [Credits](#credits)
+4. [Technologies Used](#technologies)
+5. [Testing](#testing)
+6. [Deployment](#deployment)
+7. [Credits](#credits)
     * [Content](#content)
     * [Media](#media)
     * [Acknowledgements](#acknowledgements)
 
-## UX <a name="introduction"></a>
+## Introduction <a name="introduction"></a>
 
 #### Objective <a name="strategy"></a>
 + The focus of this project is to create a platform for adventurers to share their good experiences of their local area with other travellers in the community who would benefit from the local knowledge and advice. 
 + The app is designed for people who love to travel and explore. The colour themes will be inspired by the earth/globe.
 
+Visit 101 Things [here](https://cityexplorer-ms.herokuapp.com/) 
+
 
 #### User Stories <a name="users"></a>
 "As a user, I would like to ___________"
 + Add my location to the app
-+ Add a suggestion to the list
++ Add suggestions to the list
 + Search for a city in the app
++ Browse suggestions by all users for a location
 + Find all free things to do in a city
 + View all my own suggestions
 + Edit my suggestion
 + Find all suggestions that are Museums
 
 
-
-
 #### Wireframes <a name="wireframes"></a>
-+ The game interface will be relative to the size of the view port. This means that whatever device the game is played on, there should be no overflowing content requiring the user to scroll. 
++ The header contains a hero image background and the navigation bar has a transparent background so that the header image is visible beneath.
++ The header will contain the search bar so it accessible on whichever page the user has navigated to
++ The content section is where the page templates are displayed. All templates will have a top margin of 50px to space it from the header.
++ The locations added to the database appear as cards on the home page and will also contain image backgrounds to add colour to the page
++ A reel of suggestions and the username of the author is displayed on the home screen to give the user an idea of the kind of suggestions
 
-+ The game interface will be divided into the 4 game colours, each 50% of the viewport's width and height. 
 
 <div align="center">
 
@@ -66,7 +65,7 @@ Display on mobile devices: <br /><br />
 
 </div>
 
-+ The central circle is the focal point of the UI and will contain the game logo and the features that are vital to the game; the play button and a link to the instructions. Any other features will be accessible via a toggled navigation bar, keeping the UI minimal and uncluttered. 
++ The footer has a 'sticky' position so that even if the content does not fill the viewport height, the footer will remain anchored at the bottom of the screen.
 
 <div align="center">
 
@@ -75,27 +74,22 @@ Content in the central circle is limited to the most important information: <br 
 
 </div>
 
-+ Modals are used to display any further content and features, overlaying the game interface but crucially not navigating away from it.
++ Modals are used for the
 + Each modal should follow the same layout for consistency.
 
-<div align="center">
 
- Illustrations that support the text are displayed on larger screens but are removed on smaller devices<br /><br />
-  <img src="wireframes/modal_lg_ui.png">      <img src="wireframes/modal_sm_ui.png">
-
-</div>
 
 
 #### Design <a name="design"></a>
-+ The design is intended to be minimalistic but should provide enough information to be intuitive. 
-+ The colours of Simon game fill the UI so that it feels vibrant and positive.
++ The design is intended to feel modern but warm and traditional. It uses earth tones. 
++ The colour pallette used in the app in  fill the UI so that it feels vibrant and positive.
 + The game takes precedence over everything else. The navigation bar providing any extra links will be tucked away off screen and toggled down from the top using a imple burger icon.
 + Font Awesome icons are employed as visual cues to help make the UI as intuitive as possible. It is important that these are used in moderation so that they do not become distracting. 
 
 ##### Typography
-+ The fonts chosen for this project are <b>"Londrina Solid"</b> and <b>"Montserrat."</b> from google fonts
-+ Londrina Solid is used for the Game Title and headings. It exudes friendly character and stability due to a combination of it's rounded corners and solid weight.
-+ The Modal headings also use Londrina Solid, but using a lighter weight for better legibility.
++ The fonts chosen for this project are <b>"Patua One,"</b> <b>"Lato"</b> and <b>"EB Garamond."</b> from google fonts
++ Patua One is used for the logo and top level headings and for the location card. It's serifs are traditional
++ Any quoted data such as the searched input or suggestions , but using a lighter weight for better legibility.
 + All headings and titles are written in lowercase to compliment the informality of the site.
 + Montserrat was chosen for all paragraph text and navigational links where legibility was most important. The font pairs well with Londrina Solid because it is neutral, has a clean rounded form and is light in weight.
 
