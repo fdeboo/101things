@@ -144,7 +144,6 @@ button:focus {
 .pagination-page-info {
   padding: 0.6em;
   padding-left: 0;
-  width: 40em;
   margin: 0.5em 0;
   font-size: 12px;
 }
@@ -235,12 +234,27 @@ footer h4 {
   font-size: 1.2em;
 }
 
-footer p {
+.grid {
+  display: grid;
+  grid-template-columns: 20px auto;
+  grid-template-rows: auto auto;
   margin-bottom: 5px;
 }
+.grid p {
+  grid-column: 2/3;
+}
 
-#email-flow {
+.grid #adress {
+  grid-row: 2/3;
+}
+
+.grid #email-flow {
   word-break: break-all;
+  grid-row: 2/3;
+}
+
+.grid i {
+  grid-column: 1/2;
 }
 
 footer ul {

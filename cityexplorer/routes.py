@@ -350,7 +350,11 @@ def add_location():
         )
         location = form.location.data
         return redirect(url_for("add_suggestion", location=location))
-    return render_template("pages/addlocation.html", form=form, title="Add Location")
+    return render_template(
+        "pages/addlocation.html",
+        form=form,
+        title="Add Location",
+        )
 
 
 @app.route("/addsuggestion/<location>", methods=["GET", "POST"])
