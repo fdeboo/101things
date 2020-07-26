@@ -14,10 +14,13 @@
 3. [Features](#features)
     * [Existing Features](#existing_feat)
     * [Features left to implment](#future_feat)
-4. [Technologies Used](#technologies)
-5. [Testing](#testing)
-6. [Deployment](#deployment)
-7. [Credits](#credits)
+4. [Information Architecture](#models)
+    * [Users](#users)
+    * [Cities](#cities)
+5. [Technologies Used](#technologies)
+6. [Testing](#testing)
+7. [Deployment](#deployment)
+8. [Credits](#credits)
     * [Content](#content)
     * [Media](#media)
     * [Acknowledgements](#acknowledgements)
@@ -93,65 +96,162 @@ An admin user view: <br /><br />
 
 </div>
 
++ The thingstodo page will display all the suggestions that have been added for the selected location
++ A filter form allows the results to be refined. When any of the checkboxes are checked, the page updates the results automatically.
++ Once filters are applied, the selected filters are displayed in a list and can be cleared on the click on a link
++ Pagination limits the number of results per page and provides links to the next set of results.
++ The suggestions can be clicked to expand the result and display the information provided by the user author. 
++ If no cost or url provided, the field is left blank
++ Any admin user, or author of the selected content can edit or delete the suggestion record
++ If a user posted a suggestion but since deleted their account, the roundel displaying their profile picture is replaced with a default picture
 
+<div align="center">
+
+Thingstodo template for large screens: <br /><br />
+  <img src="wireframes/thingstodo.png">
+
+</div>
+
+
+<div align="center">
+
+Home template for mobile screens: <br /><br />
+  <img src="wireframes/thingstodo-mobile.png">
+
+</div>
+
+
+Layout of expanded content showing admin and author view (with edit and delete buttons): <br /><br />
+  <img src="wireframes/suggestions.png">
+
+</div>
 
 #### Design <a name="design"></a>
 + The design is intended to feel modern but warm and traditional. It uses earth tones inspired by travel. 
-+ The colour pallette used in the app in  fill the UI so that it feels vibrant and positive.
-+ The game takes precedence over everything else. The navigation bar providing any extra links will be tucked away off screen and toggled down from the top using a imple burger icon.
+
+<div align="center">
+
+Colours used in the desing: <br /><br />
+  <img src="wireframes/colour-swatch.png">
+
+</div>
+
++ The colour pallette used in the app add warmth and comfort.
 + Font Awesome icons are employed as visual cues to help make the UI as intuitive as possible. It is important that these are used in moderation so that they do not become distracting. 
 
 ##### Typography
 + The fonts chosen for this project are <b>"Patua One,"</b> <b>"Lato"</b> and <b>"EB Garamond."</b> from google fonts
 + Patua One is used for the logo and top level headings and for the location card. It's serifs are traditional
-+ Any quoted data such as the searched input or suggestions , but using a lighter weight for better legibility.
-+ All headings and titles are written in lowercase to compliment the informality of the site.
-+ Montserrat was chosen for all paragraph text and navigational links where legibility was most important. The font pairs well with Londrina Solid because it is neutral, has a clean rounded form and is light in weight.
++ Any quoted data such as the searched input returned in the 'no results found' message is written in EB Garamond italic. This serif font is traditional and elegant and compliments Patua One.
+
 
 
 ## Features <a name="features"></a>
 #### Existing Features <a name="existing_feat"></a>
 + User Login
-    + Every time the user repeats back the complete sequence correctly, 5 points is added to their running score. The points total is updated on the UI so that the user is aware of their progress.
-+ Accout Page and Update Details
-    + The modal is accessed via a link, which is primely positioned just beneath the play button for visibility. It provides 2-step instructions for any users who are new to the game.  
+    + A user can register an account which allows them to create locations or add suggestions for a location.
+    + If a user is already logged in, the login page redirects them to the home page
+    + If a user is trying to access a restricted feature, they are redirected to the login page
+    + Once their credentials have been verified, the user is directed on to the page they were trying to access, or to the home page
+
++ Accout Page and Management
+    + The user account page enables a user to update their account details
+    + Any suggestions that the user has contributed are listed in their account page with buttons to edit or delete the record
+    + The user can upload an a profile picture that will be displayed against any suggestions that they contribute. They can update this picture anytime.
+    + Users can delete their account and it will remove their record from the database. This will not affect the posts that they have made which will still credit them as authors
+    + A user can request their password to be reset by clicking on 'Forgot Password' in the Login Template and providing their email address. This sends out an email containing a reset password token.
+    + For security, the token expires if not used straight away and the user must send a new request 
+
 + Add Location 
-    + This modal allows the user to choose alternative game sounds from a drop down menu. 
-    + The settings are implemented straight away after clicking 'OK' 
-    + The user may also choose the starting level for the game from this panel.
+    + A user can add a location to the app if they are logged in
+    + The form takes the location name 
+    + Submitting the location redirects the to immediate add a suggestion to the record
+    + The form validates if a location already exists and returns an error message to the user
+
 + Add a Suggestion
-    + Presents...
+    + A user can provide a suggestion for any existing location if they are logged in
+    + The suggestion title and category are required fields. The url field verifies if the input is a correct url format.
+
 + Edit Suggestion
-    + An option...
-+ Search for a location
-    + Enables...
-+ Filter List items
-    + Launched...
-+ Level up
-    + The duration of each colour flash is decreassed once the user reaches a target score. This triggers an animation on screen that lets the user that they have reached a new level. As a result, the speed of the game increases which makes the game more challenging.
+    + Editing suggestions is a feature reserved for admin users or the author of the suggestion
+    + Opens up a modal with the form inside. The fields are prefilled with the current data for the suggestion record.
+    + All fields except for the suggestion title can be edited. This is so that the suggestion cannot be completely swapped to sometihng completely different. 
+
++ Search for a Location
+    + The search form is located in the Header which means it can accessed and submitted from anywhere in the app.
+    + The search box has rounded corners and responds to being hovered over or focused by extending in length.
+
++ Filters
+    + The thingstodo template contains a filter results form with 2 fields containig a list of checkboxes. The page responds to any checkbox being checked or unchecked and adds or removes the filter accordingly. 
+    + Multiple choices within the same field, returns results that either _choice 1_ or _choice 2_ etc.
+    + Choices from the two different form fileds filter results that correspond to _choice 1_ and _choice 2_.
+
++ Admin User
+    + An admin account is able to view reserved buttons for each location on the home page. The image button allows them to provide or update a picture for the location. The Remove button allows them to delete the location from the database
+
++ Protection against empty Locations
+    + If a user creates a Location they are directed to add a suggestion straight away. If they navigate away from this form without submitting it, the location is removed from the database so as not to hold documents with no 'things to do' data.
+    + Similarly, if a user deletes all their suggestions from the 'things to do' list and leaves the list empty, the location will be deleted when the home page is rendered.
+    + The 
+
 
 #### Features Left to Implement <a name="future_feat"></a>
-+ The opportunity for a user to create a username against which their highscores can be saved
-+ High scores are available for all global users of the game, making the game more competitive
++ Users to upload pictures related to the suggestions contributed
++ User Ratings for suggestions so that the top rated 101 suggestions are listed
+
+## Information Architecture  <a name="models"></a>
+#### Users Collection <a name="users"></a>
+
+    "users": {
+        "username": "<string",
+        "fname": "<string",
+        "lname": "<string",
+        "email": "<string",
+        "password": "<string",
+        "picture": "<string",
+        "is_admin": "<boolean>",
+    }
+
+#### Cities Collecion <a name="cities"></a>
+
+    "cities": {
+        "_id": "<ObjectId>",
+        "location": "<string>"
+        "thingstodo": [
+            {
+                "suggestion": "<string",
+                "category": "<string",
+                "cost": "<string",
+                "url": "<string",
+                "comment": "<string",
+                "author": "<string",
+            }
+        ]
+        "bg_img": "<string>"
+    }
 
 ## Technologies Used <a name="technologies"></a>
 #### Frontend:
-+ HTML, CSS, Javascript
++ HTML5, CSS3, Javascript
     + Frontend programming languages
-+ [JQuery](https://jquery.com/)
++ [JQuery 3.5.1](https://jquery.com/)
     + Simplifies access and manipluation of the DOM
-+ [Bootstrap](https://getbootstrap.com/)
+    + Used to load more/show less results in the filter results form
+    + Used to fade in/out of each suggestion in loop on home page
++ [Bootstrap 4.5](https://getbootstrap.com/)
     + Provides the visual formatting of the website and it's responsiveness accross all devices
-+ [Cloudinary](https://cloudinary.com/)
-    + Manages and delivers the images, optimized for every device and channel.
-+ [Google Fonts](https://fonts.google.com/)
-    + Provides access to the web fonts used in this project
-+ [Font Awesome](https://fontawesome.com/)
-    + Provides the icons used in this project to guide the users' navigation.
+    + Made use of the layout containers and components to keep consistency in templates
+
 
 #### Backend:
++ [Python 3,7](https://www.python.org/downloads/release/python-370/)
+    + For processing all backend logic
++ [Flask](https://flask.palletsprojects.com/en/1.1.x/)
+    + The web application framework that provided many of the extensions used in this project
+    + flask-paginate provided pagination of results
+    + flask login manages the 
 + [MongoDB](https://www.mongodb.com/)
-    + Provides the NoSQL database
+    + Provides the NoSQL database for the app
 
 #### Other:
 + [Visual Studio Code](https://code.visualstudio.com/)
@@ -160,8 +260,9 @@ An admin user view: <br /><br />
     + The platform where the project code is stored remotely
 + [Heroku](https://heroku.com/)
     + For deployment of the app
-+ Adobe Illustrator
-    + Facilitated the creation of images used in this project 
++ [Balsamiq](https://balsamiq.com/wireframes/)
+    + For the creation of the wireframes used in this project
+
 
 
 ## Testing <a name="testing"></a>
@@ -208,6 +309,11 @@ The following steps were taken to deploy the project to Heroku where <b>101 thin
 4. In your local IDE, open the terminal ensure the current working directory is set to where you want the clone to be created
 5. Type <code>git clone</code> and then paste the copied link: <pre><code>git clone https://github.com/fdeboo/101things</code></pre>
 6. Press enter. This completes the deployment.
+7. Create a MongoDB account.
+8. Reproduce collections as per [Information Architecture](#models)
+9. Create a Cloudinary account for storing images
+10. Install pipenv by typing <code> brew pipenv </code>
+11. Create virtual environment <code> pipenv shell </code>
 
 
 ## Credits <a name="credits"></a>
@@ -217,17 +323,9 @@ All paragraph text and content was written by me.
 
 #### Media <a name="media"></a> 
 ##### Images
-+ The...
-
-
-#### Code <a name="code"></a> 
-+ My understanding of... [Pretty Printed ]() 
-+ My understanding of... was explained to me at []() 
-+ The code used to... was sourced from this... [Stack Overflow]() post.
-+ The code...
-+ [W3Schools](w3schools.com) was 
++ The images used in this project were sourced from [Pexels.com](https://www.pexels.com/)
 
 #### Acknowledgements <a name="acknowledgements"></a>
 Special thanks to, 
-+ Mentor Aaron Sinott, for the sessions that ran into overtime 
-+ [GBrachetta](https://github.com/GBrachetta) 
++ Mentor Aaron Sinott
++ [GBrachetta](https://github.com/GBrachetta) for getting me going on this project with his advice and recomendations.
