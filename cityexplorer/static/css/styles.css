@@ -242,10 +242,11 @@ footer h4 {
 }
 .grid p {
   grid-column: 2/3;
+  margin-bottom: 0;
 }
 
-.grid #adress {
-  grid-row: 2/3;
+.grid #address {
+  grid-row: 1/2;
 }
 
 .grid #email-flow {
@@ -255,6 +256,7 @@ footer h4 {
 
 .grid i {
   grid-column: 1/2;
+  align-self: center;
 }
 
 footer ul {
