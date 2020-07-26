@@ -604,8 +604,13 @@ def delete_location(city):
     update. If the url contains a value for 'author, (the user routed from
     their account page) redirect to account template. Else, (the user routed
     from the thingstodo page) redirect to thingstodo template.  """
+
+    if current_user.is_admin is False:
+        flash("Not Allowed.", "danger")
+        return redirect(url_for('suggestion_list', city=city))
+
     CITIES.delete_one({"location": city})
-    flash("Suggestion deleted.", "success")
+    flash("Location deleted.", "success")
     return redirect(url_for("index"))
 
 
@@ -618,7 +623,10 @@ def upload_image(city):
     their account page) redirect to account template. Else, (the user routed
     from the thingstodo page) redirect to thingstodo template.  """
 
-    print('directed successfully')
+    if current_user.is_admin is False:
+        flash("Not Allowed.", "danger")
+        return redirect(url_for('suggestion_list', city=city))
+
     if g.updateimage.validate_on_submit():
         uploaded_image = upload(
             g.updateimage.image.data,
@@ -669,6 +677,9 @@ def edit_suggestion(city, author=None):
     'author, (the user routed from their account page) redirect to account
     template. Else, (the user routed from the thingstodo page) redirect to
     thingstodo template. """
+    print(current_user.username)
+    print(author)
+    print(current_user.is_admin)
 
     if g.editsuggestion.validate_on_submit():
         suggestion = g.editsuggestion.suggestion.data
